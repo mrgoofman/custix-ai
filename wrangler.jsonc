@@ -1,6 +1,13 @@
 {
   "name": "custix-ai",
-  "pages_build_output_dir": ".open-next/assets",
+  "main": ".open-next/worker.js",
+  "assets": {
+    "directory": ".open-next/assets",
+    "binding": "ASSETS"
+  },
   "compatibility_date": "2025-05-01",
-  "compatibility_flags": ["nodejs_compat"]
+  "compatibility_flags": ["nodejs_compat"],
+  "vars": {
+    "NEXT_PUBLIC_BASE_URL": "https://custix.ai"
+  }
 }
