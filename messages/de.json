@@ -1,12 +1,13 @@
 {
   "meta": {
-    "title": "custix.ai — Dokumente anonymisieren für KI",
+    "title": "custix.ai. Dokumente anonymisieren für KI",
     "description": "Anonymisieren Sie Dokumente in 5 Sekunden. 100% lokal, DSGVO-konform, keine Cloud. Für Anwälte, Steuerberater und mehr."
   },
   "nav": {
     "solutions": "Lösungen",
     "pricing": "Preise",
     "about": "Über uns",
+    "download": "Download",
     "cta": "Kostenlos testen",
     "forYourIndustry": "Für Ihre Branche",
     "moreIndustries": "Weitere Branchen",
@@ -19,7 +20,7 @@
   "hero": {
     "headline": "Dokumente anonymisieren in 5 Sekunden",
     "subheadline": "KI sicher nutzen mit custix",
-    "description": "Nutzen Sie ChatGPT, Claude & Co. — ohne Mandantendaten zu gefährden. custix anonymisiert Ihre Dokumente lokal in Sekunden und re-identifiziert KI-Antworten automatisch.",
+    "description": "Nutzen Sie ChatGPT, Claude & Co.. ohne Mandantendaten zu gefährden. custix anonymisiert Ihre Dokumente lokal in Sekunden und re-identifiziert KI-Antworten automatisch.",
     "cta": "14 Tage kostenlos testen",
     "secondaryCta": "So funktioniert's"
   },
@@ -86,7 +87,7 @@
     },
     "step3": {
       "title": "KI sicher nutzen",
-      "description": "Verwenden Sie den anonymisierten Text mit jeder KI — ohne Datenschutzrisiko."
+      "description": "Verwenden Sie den anonymisierten Text mit jeder KI. ohne Datenschutzrisiko."
     },
     "step4": {
       "title": "Automatisch re-identifizieren",
@@ -98,7 +99,7 @@
     "items": [
       {
         "q": "Werden meine Daten in die Cloud gesendet?",
-        "a": "Nein. custix läuft zu 100% lokal auf Ihrem Rechner. Keine Daten verlassen Ihr Gerät — weder zur Anonymisierung noch zur Verarbeitung."
+        "a": "Nein. custix läuft zu 100% lokal auf Ihrem Rechner. Keine Daten verlassen Ihr Gerät. weder zur Anonymisierung noch zur Verarbeitung."
       },
       {
         "q": "Ist custix DSGVO-konform?",
@@ -110,7 +111,7 @@
       },
       {
         "q": "Funktioniert custix mit ChatGPT und Claude?",
-        "a": "Ja. custix ist KI-unabhängig — Sie können den anonymisierten Text mit jedem KI-Tool verwenden, einschließlich ChatGPT, Claude, Gemini und anderen."
+        "a": "Ja. custix ist KI-unabhängig. Sie können den anonymisierten Text mit jedem KI-Tool verwenden, einschließlich ChatGPT, Claude, Gemini und anderen."
       },
       {
         "q": "Was kostet custix?",
@@ -118,7 +119,7 @@
       },
       {
         "q": "Wie funktioniert die Re-Identifizierung?",
-        "a": "Nachdem Sie die KI-Antwort erhalten haben, setzt custix automatisch die Originaldaten wieder ein — alles lokal, ohne Cloud."
+        "a": "Nachdem Sie die KI-Antwort erhalten haben, setzt custix automatisch die Originaldaten wieder ein. alles lokal, ohne Cloud."
       }
     ]
   },
@@ -159,7 +160,7 @@
   "about": {
     "title": "Über custix",
     "subtitle": "Wir glauben, dass Datenschutz kein Hindernis für Innovation sein sollte.",
-    "description": "custix.ai wurde von einem Team aus Juristen und Entwicklern gegründet, die aus erster Hand wissen, wie schwierig es ist, KI in regulierten Branchen einzusetzen. Unser Ziel: KI für alle zugänglich machen — ohne Kompromisse beim Datenschutz.",
+    "description": "custix.ai wurde von einem Team aus Juristen und Entwicklern gegründet, die aus erster Hand wissen, wie schwierig es ist, KI in regulierten Branchen einzusetzen. Unser Ziel: KI für alle zugänglich machen. ohne Kompromisse beim Datenschutz.",
     "teamTitle": "Unser Team",
     "team": {
       "laurenz": {
@@ -212,7 +213,8 @@
       "other": "Sonstiges"
     },
     "submit": "Kostenlos testen",
-    "success": "Vielen Dank! Prüfen Sie Ihre E-Mail für die nächsten Schritte.",
+    "success": "Vielen Dank!",
+    "successSubtext": "Prüfen Sie Ihre E-Mail für den Download-Link.",
     "privacy": "Mit der Anmeldung stimmen Sie unserer Datenschutzerklärung zu."
   },
   "cookie": {
@@ -242,12 +244,12 @@
   },
   "funnel": {
     "lawyers": {
-      "h1": "Mandantendaten anonymisieren — KI sicher nutzen als Anwalt",
+      "h1": "Mandantendaten anonymisieren. KI sicher nutzen als Anwalt",
       "subtitle": "KI nutzen. Mandanten schützen.",
-      "intro": "Als Anwalt unterliegen Sie der anwaltlichen Verschwiegenheitspflicht nach § 43a BRAO. Die Nutzung von Cloud-KI wie ChatGPT oder Claude mit Mandantendaten kann diese Pflicht verletzen — und berufsrechtliche Konsequenzen nach sich ziehen.",
+      "intro": "Als Anwalt unterliegen Sie der anwaltlichen Verschwiegenheitspflicht nach § 43a BRAO. Die Nutzung von Cloud-KI wie ChatGPT oder Claude mit Mandantendaten kann diese Pflicht verletzen. und berufsrechtliche Konsequenzen nach sich ziehen.",
       "painTitle": "Das Problem",
       "pains": [
-        "KI-Tools senden Daten an US-Server — ein DSGVO-Verstoß",
+        "KI-Tools senden Daten an US-Server. ein DSGVO-Verstoß",
         "Die Verschwiegenheitspflicht verbietet die Weitergabe von Mandantendaten an Dritte",
         "Manuelles Schwärzen kostet 30-60 Minuten pro Dokument",
         "Ohne KI verlieren Sie gegenüber Kanzleien, die KI bereits nutzen"
@@ -255,7 +257,7 @@
       "solutionTitle": "Die Lösung mit custix",
       "solutions": [
         "Automatische Anonymisierung in unter 5 Sekunden",
-        "100% lokale Verarbeitung — keine Daten verlassen Ihren Rechner",
+        "100% lokale Verarbeitung. keine Daten verlassen Ihren Rechner",
         "Automatische Re-Identifizierung der KI-Antworten",
         "Kompatibel mit allen KI-Tools: ChatGPT, Claude, Gemini & mehr"
       ],
@@ -264,7 +266,7 @@
         "items": [
           {
             "title": "Schriftsätze erstellen",
-            "description": "Nutzen Sie KI für Entwürfe — mit anonymisierten Mandantendaten."
+            "description": "Nutzen Sie KI für Entwürfe. mit anonymisierten Mandantendaten."
           },
           {
             "title": "Rechtliche Recherche",
@@ -272,14 +274,14 @@
           },
           {
             "title": "Vertragsanalyse",
-            "description": "Lassen Sie KI Verträge prüfen — ohne sensible Daten offenzulegen."
+            "description": "Lassen Sie KI Verträge prüfen. ohne sensible Daten offenzulegen."
           }
         ]
       },
       "cta": "14 Tage kostenlos testen"
     },
     "taxAdvisors": {
-      "h1": "Mandantendaten anonymisieren — KI sicher nutzen als Steuerberater",
+      "h1": "Mandantendaten anonymisieren. KI sicher nutzen als Steuerberater",
       "subtitle": "KI nutzen. Mandanten schützen.",
       "intro": "Als Steuerberater sind Sie an das Steuergeheimnis nach § 57 StBerG gebunden. Die Nutzung von Cloud-KI mit Mandantendaten kann diese Pflicht verletzen und steuerrechtliche Konsequenzen nach sich ziehen.",
       "painTitle": "Das Problem",
@@ -292,7 +294,7 @@
       "solutionTitle": "Die Lösung mit custix",
       "solutions": [
         "Steuererklärungen und Gutachten in Sekunden anonymisiert",
-        "Lokale Verarbeitung — kein Datentransfer an Dritte",
+        "Lokale Verarbeitung. kein Datentransfer an Dritte",
         "KI-Antworten werden automatisch re-identifiziert",
         "Funktioniert mit allen gängigen KI-Tools"
       ],
@@ -301,7 +303,7 @@
         "items": [
           {
             "title": "Steuererklärungen prüfen",
-            "description": "KI-gestützte Analyse von Steuererklärungen — ohne Mandantendaten preiszugeben."
+            "description": "KI-gestützte Analyse von Steuererklärungen. ohne Mandantendaten preiszugeben."
           },
           {
             "title": "Gutachten erstellen",
@@ -316,9 +318,9 @@
       "cta": "14 Tage kostenlos testen"
     },
     "hr": {
-      "h1": "Bewerberdaten anonymisieren — KI datenschutzkonform im Recruiting nutzen",
+      "h1": "Bewerberdaten anonymisieren. KI datenschutzkonform im Recruiting nutzen",
       "subtitle": "KI nutzen. Bewerberdaten schützen.",
-      "intro": "Im Recruiting fallen sensible Bewerberdaten an — Namen, Adressen, Fotos, Geburtsdaten. Die Nutzung von KI-Tools mit diesen Daten erfordert DSGVO-konforme Prozesse.",
+      "intro": "Im Recruiting fallen sensible Bewerberdaten an. Namen, Adressen, Fotos, Geburtsdaten. Die Nutzung von KI-Tools mit diesen Daten erfordert DSGVO-konforme Prozesse.",
       "painTitle": "Das Problem",
       "pains": [
         "Bewerberdaten sind besonders schützenswerte personenbezogene Daten",
@@ -342,7 +344,7 @@
           },
           {
             "title": "Stellenausschreibungen optimieren",
-            "description": "Nutzen Sie KI für bessere Job-Inserate — mit anonymisierten Referenzdaten."
+            "description": "Nutzen Sie KI für bessere Job-Inserate. mit anonymisierten Referenzdaten."
           },
           {
             "title": "Interviewvorbereitung",
@@ -353,9 +355,9 @@
       "cta": "14 Tage kostenlos testen"
     },
     "healthcare": {
-      "h1": "Patientendaten anonymisieren — KI sicher nutzen im Gesundheitswesen",
+      "h1": "Patientendaten anonymisieren. KI sicher nutzen im Gesundheitswesen",
       "subtitle": "KI nutzen. Patientendaten schützen.",
-      "intro": "Im Gesundheitswesen unterliegen Patientendaten dem besonderen Schutz der ärztlichen Schweigepflicht und der DSGVO. KI kann die medizinische Arbeit revolutionieren — wenn die Daten geschützt bleiben.",
+      "intro": "Im Gesundheitswesen unterliegen Patientendaten dem besonderen Schutz der ärztlichen Schweigepflicht und der DSGVO. KI kann die medizinische Arbeit revolutionieren. wenn die Daten geschützt bleiben.",
       "painTitle": "Das Problem",
       "pains": [
         "Patientendaten sind besonders sensible Daten nach DSGVO Art. 9",
@@ -379,20 +381,20 @@
           },
           {
             "title": "Fallanalyse",
-            "description": "Nutzen Sie KI für differentialdiagnostische Überlegungen — ohne Patientendaten preiszugeben."
+            "description": "Nutzen Sie KI für differentialdiagnostische Überlegungen. ohne Patientendaten preiszugeben."
           },
           {
             "title": "Medizinische Dokumentation",
-            "description": "Effiziente Dokumentation mit KI — DSGVO-konform und lokal."
+            "description": "Effiziente Dokumentation mit KI. DSGVO-konform und lokal."
           }
         ]
       },
       "cta": "14 Tage kostenlos testen"
     },
     "insurance": {
-      "h1": "Schadensberichte anonymisieren — KI sicher nutzen in der Versicherung",
+      "h1": "Schadensberichte anonymisieren. KI sicher nutzen in der Versicherung",
       "subtitle": "KI nutzen. Kundendaten schützen.",
-      "intro": "In der Versicherungsbranche enthalten Schadensberichte hochsensible personenbezogene Daten. KI kann die Schadensbearbeitung beschleunigen — aber nur mit richtigem Datenschutz.",
+      "intro": "In der Versicherungsbranche enthalten Schadensberichte hochsensible personenbezogene Daten. KI kann die Schadensbearbeitung beschleunigen. aber nur mit richtigem Datenschutz.",
       "painTitle": "Das Problem",
       "pains": [
         "Schadensberichte enthalten sensible Kundendaten und medizinische Informationen",
@@ -404,7 +406,7 @@
       "solutions": [
         "Schadensberichte automatisch anonymisieren",
         "KI-gestützte Schadensbewertung ohne Datenschutzrisiko",
-        "Lokale Verarbeitung — keine Cloud-Übertragung",
+        "Lokale Verarbeitung. keine Cloud-Übertragung",
         "Schnellere Fallbearbeitung durch KI-Unterstützung"
       ],
       "useCases": {
@@ -416,23 +418,32 @@
           },
           {
             "title": "Betrugserkennung",
-            "description": "Nutzen Sie KI-Muster zur Betrugserkennung — ohne sensible Kundendaten offenzulegen."
+            "description": "Nutzen Sie KI-Muster zur Betrugserkennung. ohne sensible Kundendaten offenzulegen."
           },
           {
             "title": "Korrespondenz",
-            "description": "KI-generierte Schreiben an Versicherte — mit automatischer Re-Identifizierung."
+            "description": "KI-generierte Schreiben an Versicherte. mit automatischer Re-Identifizierung."
           }
         ]
       },
       "cta": "14 Tage kostenlos testen"
     }
   },
+  "download": {
+    "title": "custix für Anwälte",
+    "subtitle": "Kostenfrei testen",
+    "version": "Version",
+    "published": "veröffentlicht am",
+    "downloadButton": "Download",
+    "unavailable": "Aktuell ist kein Build verfügbar. Bitte versuchen Sie es später erneut.",
+    "localNote": "custix arbeitet komplett lokal. Keine Daten verlassen Ihr Gerät. Updates installieren sich automatisch."
+  },
   "legal": {
     "imprintTitle": "Impressum",
-    "imprintContent": "Angaben gemäß § 5 TMG — Inhalte werden in Kürze ergänzt.",
+    "imprintContent": "Angaben gemäß § 5 TMG. Inhalte werden in Kürze ergänzt.",
     "privacyTitle": "Datenschutzerklärung",
-    "privacyContent": "Datenschutzerklärung gemäß DSGVO — Inhalte werden in Kürze ergänzt.",
+    "privacyContent": "Datenschutzerklärung gemäß DSGVO. Inhalte werden in Kürze ergänzt.",
     "termsTitle": "Allgemeine Geschäftsbedingungen",
-    "termsContent": "AGB — Inhalte werden in Kürze ergänzt."
+    "termsContent": "AGB. Inhalte werden in Kürze ergänzt."
   }
 }

@@ -64,7 +64,8 @@ export function SignupModal() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
               </svg>
             </div>
-            <p className="text-lg font-semibold text-navy">{t("success")}</p>
+            <p className="text-lg font-semibold text-navy mb-2">{t("success")}</p>
+            <p className="text-sm text-muted">{t("successSubtext")}</p>
           </div>
         ) : (
           <>

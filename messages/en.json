@@ -1,12 +1,13 @@
 {
   "meta": {
-    "title": "custix.ai — Anonymize Documents for AI",
+    "title": "custix.ai. Anonymize Documents for AI",
     "description": "Anonymize documents in 5 seconds. 100% local, GDPR-compliant, no cloud. For lawyers, tax advisors, and more."
   },
   "nav": {
     "solutions": "Solutions",
     "pricing": "Pricing",
     "about": "About",
+    "download": "Download",
     "cta": "Start Free Trial",
     "forYourIndustry": "For Your Industry",
     "moreIndustries": "More Industries",
@@ -19,7 +20,7 @@
   "hero": {
     "headline": "Anonymize Documents in 5 Seconds",
     "subheadline": "Use AI Safely with custix",
-    "description": "Use ChatGPT, Claude & more — without risking client data. custix anonymizes your documents locally in seconds and re-identifies AI responses automatically.",
+    "description": "Use ChatGPT, Claude & more. without risking client data. custix anonymizes your documents locally in seconds and re-identifies AI responses automatically.",
     "cta": "Start 14-Day Free Trial",
     "secondaryCta": "See How It Works"
   },
@@ -86,7 +87,7 @@
     },
     "step3": {
       "title": "Use AI Safely",
-      "description": "Use the anonymized text with any AI — no data protection risk."
+      "description": "Use the anonymized text with any AI. no data protection risk."
     },
     "step4": {
       "title": "Auto Re-Identify",
@@ -98,7 +99,7 @@
     "items": [
       {
         "q": "Does my data get sent to the cloud?",
-        "a": "No. custix runs 100% locally on your computer. No data leaves your device — not for anonymization, not for processing."
+        "a": "No. custix runs 100% locally on your computer. No data leaves your device. not for anonymization, not for processing."
       },
       {
         "q": "Is custix GDPR-compliant?",
@@ -110,7 +111,7 @@
       },
       {
         "q": "Does custix work with ChatGPT and Claude?",
-        "a": "Yes. custix is AI-agnostic — you can use the anonymized text with any AI tool, including ChatGPT, Claude, Gemini, and others."
+        "a": "Yes. custix is AI-agnostic. you can use the anonymized text with any AI tool, including ChatGPT, Claude, Gemini, and others."
       },
       {
         "q": "How much does custix cost?",
@@ -118,7 +119,7 @@
       },
       {
         "q": "How does re-identification work?",
-        "a": "After receiving the AI response, custix automatically reinserts the original data — all locally, no cloud involved."
+        "a": "After receiving the AI response, custix automatically reinserts the original data. all locally, no cloud involved."
       }
     ]
   },
@@ -159,7 +160,7 @@
   "about": {
     "title": "About custix",
     "subtitle": "We believe privacy shouldn't be a barrier to innovation.",
-    "description": "custix.ai was founded by a team of lawyers and developers who know firsthand how hard it is to use AI in regulated industries. Our goal: make AI accessible to everyone — without compromising data protection.",
+    "description": "custix.ai was founded by a team of lawyers and developers who know firsthand how hard it is to use AI in regulated industries. Our goal: make AI accessible to everyone. without compromising data protection.",
     "teamTitle": "Our Team",
     "team": {
       "laurenz": {
@@ -212,7 +213,8 @@
       "other": "Other"
     },
     "submit": "Start Free Trial",
-    "success": "Thank you! Check your email for next steps.",
+    "success": "Thank you!",
+    "successSubtext": "Check your email for the download link.",
     "privacy": "By signing up, you agree to our Privacy Policy."
   },
   "cookie": {
@@ -242,12 +244,12 @@
   },
   "funnel": {
     "lawyers": {
-      "h1": "Anonymize Client Data — Use AI Safely as a Lawyer",
+      "h1": "Anonymize Client Data. Use AI Safely as a Lawyer",
       "subtitle": "Use AI. Protect Clients.",
-      "intro": "As a lawyer, you are bound by attorney-client privilege. Using cloud-based AI like ChatGPT or Claude with client data can violate this obligation — and lead to serious professional consequences.",
+      "intro": "As a lawyer, you are bound by attorney-client privilege. Using cloud-based AI like ChatGPT or Claude with client data can violate this obligation. and lead to serious professional consequences.",
       "painTitle": "The Problem",
       "pains": [
-        "AI tools send data to US servers — a GDPR violation",
+        "AI tools send data to US servers. a GDPR violation",
         "Attorney-client privilege prohibits sharing client data with third parties",
         "Manual redaction takes 30-60 minutes per document",
         "Without AI, you fall behind firms that already use it"
@@ -255,7 +257,7 @@
       "solutionTitle": "The Solution with custix",
       "solutions": [
         "Automatic anonymization in under 5 seconds",
-        "100% local processing — no data leaves your computer",
+        "100% local processing. no data leaves your computer",
         "Automatic re-identification of AI responses",
         "Compatible with all AI tools: ChatGPT, Claude, Gemini & more"
       ],
@@ -264,7 +266,7 @@
         "items": [
           {
             "title": "Draft Legal Briefs",
-            "description": "Use AI for drafts — with anonymized client data."
+            "description": "Use AI for drafts. with anonymized client data."
           },
           {
             "title": "Legal Research",
@@ -272,14 +274,14 @@
           },
           {
             "title": "Contract Analysis",
-            "description": "Have AI review contracts — without exposing sensitive data."
+            "description": "Have AI review contracts. without exposing sensitive data."
           }
         ]
       },
       "cta": "Start 14-Day Free Trial"
     },
     "taxAdvisors": {
-      "h1": "Anonymize Client Data — Use AI Safely as a Tax Advisor",
+      "h1": "Anonymize Client Data. Use AI Safely as a Tax Advisor",
       "subtitle": "Use AI. Protect Clients.",
       "intro": "As a tax advisor, you are bound by tax secrecy obligations. Using cloud-based AI with client data can violate these obligations and lead to legal consequences.",
       "painTitle": "The Problem",
@@ -292,7 +294,7 @@
       "solutionTitle": "The Solution with custix",
       "solutions": [
         "Tax filings and opinions anonymized in seconds",
-        "Local processing — no data transfer to third parties",
+        "Local processing. no data transfer to third parties",
         "AI responses are automatically re-identified",
         "Works with all major AI tools"
       ],
@@ -301,7 +303,7 @@
         "items": [
           {
             "title": "Review Tax Filings",
-            "description": "AI-powered analysis of tax filings — without exposing client data."
+            "description": "AI-powered analysis of tax filings. without exposing client data."
           },
           {
             "title": "Create Tax Opinions",
@@ -316,9 +318,9 @@
       "cta": "Start 14-Day Free Trial"
     },
     "hr": {
-      "h1": "Anonymize Applicant Data — Use AI in Recruiting, GDPR-Compliant",
+      "h1": "Anonymize Applicant Data. Use AI in Recruiting, GDPR-Compliant",
       "subtitle": "Use AI. Protect Applicant Data.",
-      "intro": "In recruiting, sensitive applicant data is processed — names, addresses, photos, dates of birth. Using AI tools with this data requires GDPR-compliant processes.",
+      "intro": "In recruiting, sensitive applicant data is processed. names, addresses, photos, dates of birth. Using AI tools with this data requires GDPR-compliant processes.",
       "painTitle": "The Problem",
       "pains": [
         "Applicant data is especially sensitive personal data",
@@ -342,7 +344,7 @@
           },
           {
             "title": "Optimize Job Postings",
-            "description": "Use AI for better job ads — with anonymized reference data."
+            "description": "Use AI for better job ads. with anonymized reference data."
           },
           {
             "title": "Interview Preparation",
@@ -353,9 +355,9 @@
       "cta": "Start 14-Day Free Trial"
     },
     "healthcare": {
-      "h1": "Anonymize Patient Data — Use AI Safely in Healthcare",
+      "h1": "Anonymize Patient Data. Use AI Safely in Healthcare",
       "subtitle": "Use AI. Protect Patient Data.",
-      "intro": "In healthcare, patient data is protected by medical confidentiality and GDPR. AI can revolutionize medical work — if the data remains protected.",
+      "intro": "In healthcare, patient data is protected by medical confidentiality and GDPR. AI can revolutionize medical work. if the data remains protected.",
       "painTitle": "The Problem",
       "pains": [
         "Patient data is especially sensitive under GDPR Article 9",
@@ -379,20 +381,20 @@
           },
           {
             "title": "Case Analysis",
-            "description": "Use AI for differential diagnosis — without revealing patient data."
+            "description": "Use AI for differential diagnosis. without revealing patient data."
           },
           {
             "title": "Medical Documentation",
-            "description": "Efficient documentation with AI — GDPR-compliant and local."
+            "description": "Efficient documentation with AI. GDPR-compliant and local."
           }
         ]
       },
       "cta": "Start 14-Day Free Trial"
     },
     "insurance": {
-      "h1": "Anonymize Claims Reports — Use AI Safely in Insurance",
+      "h1": "Anonymize Claims Reports. Use AI Safely in Insurance",
       "subtitle": "Use AI. Protect Customer Data.",
-      "intro": "In the insurance industry, claims reports contain highly sensitive personal data. AI can accelerate claims processing — but only with proper data protection.",
+      "intro": "In the insurance industry, claims reports contain highly sensitive personal data. AI can accelerate claims processing. but only with proper data protection.",
       "painTitle": "The Problem",
       "pains": [
         "Claims reports contain sensitive customer and medical information",
@@ -404,7 +406,7 @@
       "solutions": [
         "Automatically anonymize claims reports",
         "AI-powered claims assessment without data protection risks",
-        "Local processing — no cloud transfer",
+        "Local processing. no cloud transfer",
         "Faster case processing with AI support"
       ],
       "useCases": {
@@ -416,23 +418,32 @@
           },
           {
             "title": "Fraud Detection",
-            "description": "Use AI patterns for fraud detection — without exposing customer data."
+            "description": "Use AI patterns for fraud detection. without exposing customer data."
           },
           {
             "title": "Correspondence",
-            "description": "AI-generated letters to policyholders — with automatic re-identification."
+            "description": "AI-generated letters to policyholders. with automatic re-identification."
           }
         ]
       },
       "cta": "Start 14-Day Free Trial"
     }
   },
+  "download": {
+    "title": "custix for Lawyers",
+    "subtitle": "Try for free",
+    "version": "Version",
+    "published": "released on",
+    "downloadButton": "Download",
+    "unavailable": "No build currently available. Please try again later.",
+    "localNote": "custix runs completely locally. No data leaves your device. Updates install automatically."
+  },
   "legal": {
     "imprintTitle": "Legal Notice",
-    "imprintContent": "Information pursuant to § 5 TMG — Content will be added shortly.",
+    "imprintContent": "Information pursuant to § 5 TMG. Content will be added shortly.",
     "privacyTitle": "Privacy Policy",
-    "privacyContent": "Privacy policy pursuant to GDPR — Content will be added shortly.",
+    "privacyContent": "Privacy policy pursuant to GDPR. Content will be added shortly.",
     "termsTitle": "Terms of Service",
-    "termsContent": "Terms of Service — Content will be added shortly."
+    "termsContent": "Terms of Service. Content will be added shortly."
   }
 }
