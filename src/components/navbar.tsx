@@ -46,8 +46,8 @@ export function Navbar() {
     <header className="sticky top-0 z-50 bg-surface/95 backdrop-blur border-b border-muted/20">
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
         <Link href="/" className="flex items-center gap-2">
-          <Image src="/logo.png" alt="custix.ai" width={28} height={28} />
-          <span className="text-xl font-bold font-heading text-navy">custix.ai</span>
+          <Image src="/icon.png" alt="" width={24} height={24} />
+          <Image src="/logo-custix.png" alt="custix" width={100} height={28} className="hidden sm:block" />
         </Link>
 
         {/* Desktop nav */}

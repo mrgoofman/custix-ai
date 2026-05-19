@@ -13,8 +13,8 @@ export function Footer() {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
           <div className="col-span-2 md:col-span-1">
             <div className="flex items-center gap-2">
-              <Image src="/logo.png" alt="custix.ai" width={24} height={24} className="brightness-0 invert" />
-              <span className="text-xl font-bold font-heading">custix.ai</span>
+              <Image src="/icon.png" alt="" width={22} height={22} className="brightness-0 invert" />
+              <Image src="/logo-custix.png" alt="custix" width={90} height={25} className="brightness-0 invert" />
             </div>
             <p className="mt-2 text-sm text-white/60">{t("tagline")}</p>
           </div>
