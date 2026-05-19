@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useTranslations, useLocale } from "next-intl";
 import { Link, usePathname, useRouter } from "@/i18n/navigation";
 import { Menu, X, ChevronDown, Globe } from "lucide-react";
+import Image from "next/image";
 
 export function Navbar() {
   const t = useTranslations("nav");
@@ -44,8 +45,9 @@ export function Navbar() {
   return (
     <header className="sticky top-0 z-50 bg-surface/95 backdrop-blur border-b border-muted/20">
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-        <Link href="/" className="text-xl font-bold font-heading text-navy">
-          custix.ai
+        <Link href="/" className="flex items-center gap-2">
+          <Image src="/logo.png" alt="custix.ai" width={28} height={28} />
+          <span className="text-xl font-bold font-heading text-navy">custix.ai</span>
         </Link>
 
         {/* Desktop nav */}

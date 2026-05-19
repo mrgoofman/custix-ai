@@ -1,9 +1,13 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { User } from "lucide-react";
+import Image from "next/image";
 
-const teamMembers = ["laurenz", "lorenz", "moritz"] as const;
+const teamMembers = [
+  { key: "laurenz" as const, photo: "/team-laurenz.jpg" },
+  { key: "lorenz" as const, photo: "/team-lorenz.jpg" },
+  { key: "moritz" as const, photo: "/team-moritz.jpg" },
+];
 
 export function AboutContent() {
   const t = useTranslations("about");
@@ -29,22 +33,28 @@ export function AboutContent() {
           </h2>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {teamMembers.map((member) => (
+            {teamMembers.map(({ key, photo }) => (
               <div
-                key={member}
+                key={key}
                 className="bg-surface rounded-2xl border border-muted/20 p-6 text-center"
               >
-                <div className="w-24 h-24 rounded-full bg-snow flex items-center justify-center mx-auto mb-4 border border-muted/20">
-                  <User className="w-10 h-10 text-muted" />
+                <div className="w-28 h-28 rounded-full overflow-hidden mx-auto mb-4 border-2 border-muted/20">
+                  <Image
+                    src={photo}
+                    alt={t(`team.${key}.name`)}
+                    width={112}
+                    height={112}
+                    className="w-full h-full object-cover"
+                  />
                 </div>
                 <h3 className="text-lg font-bold font-heading text-navy">
-                  {t(`team.${member}.name`)}
+                  {t(`team.${key}.name`)}
                 </h3>
                 <p className="text-sm font-medium text-royal mb-2">
-                  {t(`team.${member}.role`)}
+                  {t(`team.${key}.role`)}
                 </p>
                 <p className="text-sm text-muted">
-                  {t(`team.${member}.description`)}
+                  {t(`team.${key}.description`)}
                 </p>
               </div>
             ))}

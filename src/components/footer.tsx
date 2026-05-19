@@ -2,6 +2,7 @@
 
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
+import Image from "next/image";
 
 export function Footer() {
   const t = useTranslations("footer");
@@ -11,7 +12,10 @@ export function Footer() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
           <div className="col-span-2 md:col-span-1">
-            <div className="text-xl font-bold font-heading">custix.ai</div>
+            <div className="flex items-center gap-2">
+              <Image src="/logo.png" alt="custix.ai" width={24} height={24} className="brightness-0 invert" />
+              <span className="text-xl font-bold font-heading">custix.ai</span>
+            </div>
             <p className="mt-2 text-sm text-white/60">{t("tagline")}</p>
           </div>
 
