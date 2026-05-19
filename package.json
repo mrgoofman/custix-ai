@@ -7,7 +7,7 @@
     "build": "next build",
     "build:cf": "opennextjs-cloudflare build",
     "preview:cf": "opennextjs-cloudflare preview",
-    "deploy": "opennextjs-cloudflare build && cp public/*.jpg public/*.png .open-next/assets/ 2>/dev/null; opennextjs-cloudflare deploy",
+    "deploy": "opennextjs-cloudflare build && cp public/*.jpg public/*.png .open-next/assets/ 2>/dev/null; cp .open-next/worker.js .open-next/assets/_worker.js; opennextjs-cloudflare deploy",
     "start": "next start",
     "lint": "eslint"
   },
