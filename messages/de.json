@@ -86,7 +86,11 @@
     },
     "step3": {
       "title": "KI sicher nutzen",
-      "description": "Verwenden Sie den anonymisierten Text mit jeder KI. Antworten werden automatisch re-identifiziert."
+      "description": "Verwenden Sie den anonymisierten Text mit jeder KI — ohne Datenschutzrisiko."
+    },
+    "step4": {
+      "title": "Automatisch re-identifizieren",
+      "description": "custix setzt die Originaldaten in der KI-Antwort automatisch wieder ein. Fertig in Sekunden."
     }
   },
   "faq": {

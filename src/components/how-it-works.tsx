@@ -1,12 +1,13 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { FileText, Wand2, Bot } from "lucide-react";
+import { FileText, Wand2, Bot, RotateCcw } from "lucide-react";
 
 const steps = [
   { key: "step1" as const, Icon: FileText, number: "01" },
   { key: "step2" as const, Icon: Wand2, number: "02" },
   { key: "step3" as const, Icon: Bot, number: "03" },
+  { key: "step4" as const, Icon: RotateCcw, number: "04" },
 ];
 
 export function HowItWorks() {
@@ -19,7 +20,7 @@ export function HowItWorks() {
           {t("title")}
         </h2>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
           {steps.map(({ key, Icon, number }) => (
             <div key={key} className="relative text-center">
               <div className="text-5xl font-bold text-royal/10 mb-2 font-heading">

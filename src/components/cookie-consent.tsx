@@ -17,7 +17,16 @@ export function CookieConsent() {
   }, []);
 
   const loadGA4 = () => {
-    // GA4 will be injected here once the tracking ID is configured
+    const id = process.env.NEXT_PUBLIC_GA4_ID;
+    if (!id || document.getElementById("ga4-script")) return;
+    const script = document.createElement("script");
+    script.id = "ga4-script";
+    script.src = `https://www.googletagmanager.com/gtag/js?id=${id}`;
+    script.async = true;
+    document.head.appendChild(script);
+    const inline = document.createElement("script");
+    inline.textContent = `window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','${id}');`;
+    document.head.appendChild(inline);
   };
 
   const accept = () => {

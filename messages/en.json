@@ -86,7 +86,11 @@
     },
     "step3": {
       "title": "Use AI Safely",
-      "description": "Use the anonymized text with any AI. Responses are automatically re-identified."
+      "description": "Use the anonymized text with any AI — no data protection risk."
+    },
+    "step4": {
+      "title": "Auto Re-Identify",
+      "description": "custix automatically reinserts the original data into the AI response. Done in seconds."
     }
   },
   "faq": {
