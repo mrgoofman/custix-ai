@@ -1,5 +1,4 @@
 {
-  "$schema": "node_modules/wrangler/config-schema.json",
   "name": "custix-ai",
   "pages_build_output_dir": ".open-next/assets",
   "compatibility_date": "2025-05-01",
