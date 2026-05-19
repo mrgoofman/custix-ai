@@ -2,7 +2,11 @@ import { NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
 import { Resend } from "resend";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+function getResend() {
+  const key = process.env.RESEND_API_KEY;
+  if (!key) return null;
+  return new Resend(key);
+}
 
 function getSupabase() {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -37,7 +41,8 @@ export async function POST(request: Request) {
     }
 
     const isDE = locale === "de";
-    await resend.emails.send({
+    const resend = getResend();
+    await resend?.emails.send({
       from: "custix.ai <noreply@custix.ai>",
       to: email,
       subject: isDE
