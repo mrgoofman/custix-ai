@@ -1,0 +1,12 @@
+import { setRequestLocale } from "next-intl/server";
+import { LegalPageContent } from "@/components/legal-page-content";
+
+export default async function ImprintPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  setRequestLocale(locale);
+  return <LegalPageContent pageKey="imprint" />;
+}
