@@ -8,7 +8,7 @@
     "build:cf": "opennextjs-cloudflare build",
     "preview:cf": "opennextjs-cloudflare preview",
     "deploy": "npm run build:cf && npm run postbuild:pages",
-    "postbuild:pages": "cp public/*.jpg public/*.png .open-next/assets/ 2>/dev/null; printf 'export { default } from \"../worker.js\";\\nexport * from \"../worker.js\";\\n' > .open-next/assets/_worker.js",
+    "postbuild:pages": "cp public/*.jpg public/*.png .open-next/assets/ 2>/dev/null; cp .open-next/worker.js .open-next/assets/_worker.js; cp -r .open-next/cloudflare .open-next/.build .open-next/middleware .open-next/server-functions .open-next/cache .open-next/dynamodb-provider .open-next/cloudflare-templates .open-next/assets/ 2>/dev/null; true",
     "start": "next start",
     "lint": "eslint"
   },
