@@ -3,6 +3,56 @@
     "title": "custix.ai — Anonymize Documents for AI",
     "description": "Anonymize documents in 5 seconds. 100% local, GDPR-compliant, no cloud. For lawyers, tax advisors, and more."
   },
+  "seo": {
+    "home": {
+      "title": "custix.ai — Anonymize Documents for AI",
+      "description": "Anonymize documents in 5 seconds. 100% local, GDPR-compliant, no cloud. For lawyers, tax advisors, and more."
+    },
+    "lawyers": {
+      "title": "Anonymize Documents for Lawyers | custix.ai",
+      "description": "Protect attorney-client privilege and use AI for briefs and research. 100% local, GDPR-compliant, in under 5 seconds."
+    },
+    "taxAdvisors": {
+      "title": "Anonymize Documents for Tax Advisors | custix.ai",
+      "description": "Maintain tax secrecy and use AI for filings and opinions. 100% local, GDPR-compliant."
+    },
+    "hr": {
+      "title": "Anonymize Applicant Data for HR & Recruiting | custix.ai",
+      "description": "GDPR-compliant AI in recruiting. Automatically anonymize applications and enable objective screening."
+    },
+    "healthcare": {
+      "title": "Anonymize Patient Data for Healthcare | custix.ai",
+      "description": "Protect medical confidentiality and use AI for documentation and case analysis. 100% local, GDPR-compliant."
+    },
+    "insurance": {
+      "title": "Anonymize Claims Reports for Insurance | custix.ai",
+      "description": "AI-powered claims processing without data protection risks. Automatic anonymization in seconds, 100% local."
+    },
+    "pricing": {
+      "title": "Pricing — custix.ai | From €49/month",
+      "description": "Simple, transparent pricing for document anonymization. Start your 14-day free trial. Individual from €49/month, Team from €39/user."
+    },
+    "about": {
+      "title": "About Us | custix.ai",
+      "description": "custix.ai was founded by lawyers and developers. Our goal: make AI accessible for regulated industries — without compromising data protection."
+    },
+    "contact": {
+      "title": "Contact | custix.ai",
+      "description": "Questions about custix? Contact our team or book a free 15-minute call."
+    },
+    "imprint": {
+      "title": "Legal Notice | custix.ai",
+      "description": "Legal notice and company information for custix.ai."
+    },
+    "privacy": {
+      "title": "Privacy Policy | custix.ai",
+      "description": "Privacy policy for custix.ai pursuant to GDPR."
+    },
+    "terms": {
+      "title": "Terms of Service | custix.ai",
+      "description": "Terms of service for custix.ai."
+    }
+  },
   "nav": {
     "solutions": "Solutions",
     "pricing": "Pricing",

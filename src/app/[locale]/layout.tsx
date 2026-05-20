@@ -21,8 +21,10 @@ export async function generateMetadata({
   const { locale } = await params;
   const messages = (await import(`../../../messages/${locale}.json`)).default;
   return {
+    metadataBase: new URL("https://custix.ai"),
     title: messages.meta.title,
     description: messages.meta.description,
+    robots: { index: true, follow: true },
   };
 }
 

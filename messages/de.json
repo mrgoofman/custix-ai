@@ -3,6 +3,56 @@
     "title": "custix.ai — Dokumente anonymisieren für KI",
     "description": "Anonymisieren Sie Dokumente in 5 Sekunden. 100% lokal, DSGVO-konform, keine Cloud. Für Anwälte, Steuerberater und mehr."
   },
+  "seo": {
+    "home": {
+      "title": "custix.ai — Dokumente anonymisieren für KI",
+      "description": "Anonymisieren Sie Dokumente in 5 Sekunden. 100% lokal, DSGVO-konform, keine Cloud. Für Anwälte, Steuerberater und mehr."
+    },
+    "lawyers": {
+      "title": "Dokumente anonymisieren für Anwälte | custix.ai",
+      "description": "Schützen Sie die Verschwiegenheitspflicht und nutzen Sie KI für Schriftsätze und Recherche. 100% lokal, DSGVO-konform, in unter 5 Sekunden."
+    },
+    "taxAdvisors": {
+      "title": "Dokumente anonymisieren für Steuerberater | custix.ai",
+      "description": "Wahren Sie das Steuergeheimnis und nutzen Sie KI für Steuererklärungen und Gutachten. 100% lokal, DSGVO-konform."
+    },
+    "hr": {
+      "title": "Bewerberdaten anonymisieren für HR & Recruiting | custix.ai",
+      "description": "DSGVO-konforme KI-Nutzung im Recruiting. Bewerbungen automatisch anonymisieren und objektives Screening ermöglichen."
+    },
+    "healthcare": {
+      "title": "Patientendaten anonymisieren für das Gesundheitswesen | custix.ai",
+      "description": "Schützen Sie die ärztliche Schweigepflicht und nutzen Sie KI für Dokumentation und Fallanalyse. 100% lokal, DSGVO-konform."
+    },
+    "insurance": {
+      "title": "Schadensberichte anonymisieren für Versicherungen | custix.ai",
+      "description": "KI-gestützte Schadensbearbeitung ohne Datenschutzrisiko. Automatische Anonymisierung in Sekunden, 100% lokal."
+    },
+    "pricing": {
+      "title": "Preise — custix.ai | Ab 49€/Monat",
+      "description": "Einfache, transparente Preise für Dokumenten-Anonymisierung. 14 Tage kostenlos testen. Einzelplatz ab 49€/Monat, Team ab 39€/Nutzer."
+    },
+    "about": {
+      "title": "Über uns | custix.ai",
+      "description": "custix.ai wurde von Juristen und Entwicklern gegründet. Unser Ziel: KI für regulierte Branchen zugänglich machen — ohne Datenschutz-Kompromisse."
+    },
+    "contact": {
+      "title": "Kontakt | custix.ai",
+      "description": "Fragen zu custix? Kontaktieren Sie unser Team oder buchen Sie einen kostenlosen 15-Minuten-Call."
+    },
+    "imprint": {
+      "title": "Impressum | custix.ai",
+      "description": "Impressum und rechtliche Angaben der custix.ai."
+    },
+    "privacy": {
+      "title": "Datenschutzerklärung | custix.ai",
+      "description": "Datenschutzerklärung der custix.ai gemäß DSGVO."
+    },
+    "terms": {
+      "title": "AGB | custix.ai",
+      "description": "Allgemeine Geschäftsbedingungen der custix.ai."
+    }
+  },
   "nav": {
     "solutions": "Lösungen",
     "pricing": "Preise",
