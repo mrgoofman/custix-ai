@@ -246,7 +246,7 @@
     "lawyers": {
       "h1": "Mandantendaten anonymisieren. KI sicher nutzen als Anwalt",
       "subtitle": "KI nutzen. Mandanten schützen.",
-      "intro": "Als Anwalt unterliegen Sie der anwaltlichen Verschwiegenheitspflicht nach § 43a BRAO. Die Nutzung von Cloud-KI wie ChatGPT oder Claude mit Mandantendaten kann diese Pflicht verletzen. und berufsrechtliche Konsequenzen nach sich ziehen.",
+      "intro": "Als Anwalt unterliegen Sie der anwaltlichen Verschwiegenheitspflicht nach § 9 RAO. Die Nutzung von Cloud-KI wie ChatGPT oder Claude mit Mandantendaten kann diese Pflicht verletzen und berufsrechtliche Konsequenzen nach sich ziehen.",
       "painTitle": "Das Problem",
       "pains": [
         "KI-Tools senden Daten an US-Server. ein DSGVO-Verstoß",
@@ -283,7 +283,7 @@
     "taxAdvisors": {
       "h1": "Mandantendaten anonymisieren. KI sicher nutzen als Steuerberater",
       "subtitle": "KI nutzen. Mandanten schützen.",
-      "intro": "Als Steuerberater sind Sie an das Steuergeheimnis nach § 57 StBerG gebunden. Die Nutzung von Cloud-KI mit Mandantendaten kann diese Pflicht verletzen und steuerrechtliche Konsequenzen nach sich ziehen.",
+      "intro": "Als Steuerberater unterliegen Sie der beruflichen Verschwiegenheitspflicht nach § 80 WTBG 2017. Die Nutzung von Cloud-KI mit Mandantendaten kann diese Pflicht verletzen und berufsrechtliche Konsequenzen nach sich ziehen.",
       "painTitle": "Das Problem",
       "pains": [
         "Cloud-KI-Tools verstoßen gegen das Steuergeheimnis",
@@ -440,7 +440,7 @@
   },
   "legal": {
     "imprintTitle": "Impressum",
-    "imprintContent": "Angaben gemäß § 5 TMG. Inhalte werden in Kürze ergänzt.",
+    "imprintContent": "Angaben gemäß § 5 ECG und § 25 MedienG. Inhalte werden in Kürze ergänzt.",
     "privacyTitle": "Datenschutzerklärung",
     "privacyContent": "Datenschutzerklärung gemäß DSGVO. Inhalte werden in Kürze ergänzt.",
     "termsTitle": "Allgemeine Geschäftsbedingungen",

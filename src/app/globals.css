@@ -19,6 +19,8 @@
 
 html {
   scroll-behavior: smooth;
+  /* Navy so iOS rubber-band overscroll past the footer reveals navy, not the light body bg */
+  background: var(--color-navy);
 }
 
 body {

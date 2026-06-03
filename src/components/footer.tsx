@@ -14,7 +14,7 @@ export function Footer() {
           <div className="col-span-2 md:col-span-1">
             <div className="flex items-center gap-2">
               <Image src="/icon.png" alt="" width={22} height={22} className="brightness-0 invert" />
-              <Image src="/logo-custix.png" alt="custix" width={90} height={25} className="brightness-0 invert" />
+              <Image src="/logo-custix-white.png" alt="custix" width={90} height={25} />
             </div>
             <p className="mt-2 text-sm text-white/60">{t("tagline")}</p>
           </div>
