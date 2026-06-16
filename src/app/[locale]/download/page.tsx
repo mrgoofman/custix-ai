@@ -1,6 +1,7 @@
 import { setRequestLocale } from "next-intl/server";
 import { redirect } from "next/navigation";
-import { createClient } from "@supabase/supabase-js";
+import { getDb, nowEpoch } from "@/lib/db";
+import { newId } from "@/lib/license-key";
 import { DownloadContent } from "@/components/download-content";
 import type { Metadata } from "next";
 
@@ -19,40 +20,29 @@ interface ReleaseManifest {
   platforms: Record<string, PlatformInfo>;
 }
 
-function getSupabase() {
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
-  if (!url || !key) return null;
-  return createClient(url, key);
+// Legacy download-token flow, now backed by D1 (waitlist_entry.download_token).
+// Kept working for any in-flight tokens during the beta transition.
+async function validateToken(token: string): Promise<{ valid: boolean; waitlistId?: string }> {
+  const db = getDb();
+  const row = await db
+    .prepare("SELECT id, token_expires_at FROM waitlist_entry WHERE download_token = ?")
+    .bind(token)
+    .first<{ id: string; token_expires_at: number | null }>();
+
+  if (!row || row.token_expires_at == null) return { valid: false };
+  if (row.token_expires_at < nowEpoch()) return { valid: false };
+
+  return { valid: true, waitlistId: row.id };
 }
 
-async function validateToken(token: string): Promise<{ valid: boolean; signupId?: string }> {
-  const supabase = getSupabase();
-  if (!supabase) return { valid: false };
-
-  const { data: signup, error } = await supabase
-    .from("signups")
-    .select("id, token_expires_at")
-    .eq("download_token", token)
-    .single();
-
-  if (error || !signup) return { valid: false };
-
-  const expiresAt = new Date(signup.token_expires_at);
-  if (expiresAt < new Date()) return { valid: false };
-
-  return { valid: true, signupId: signup.id };
-}
-
-async function logLinkClicked(signupId: string) {
-  const supabase = getSupabase();
-  if (!supabase) return;
-
-  await supabase.from("download_events").insert({
-    signup_id: signupId,
-    event_type: "link_clicked",
-    metadata: {},
-  });
+async function logLinkClicked(waitlistId: string) {
+  const db = getDb();
+  await db
+    .prepare(
+      "INSERT INTO license_event (id, waitlist_id, event_type, metadata, created_at) VALUES (?, ?, 'link_clicked', '{}', ?)"
+    )
+    .bind(newId(), waitlistId, nowEpoch())
+    .run();
 }
 
 async function getLatestRelease(): Promise<ReleaseManifest | null> {
@@ -88,7 +78,7 @@ export async function generateMetadata({
       ? "Laden Sie custix kostenlos herunter. 100% lokal, keine Cloud, DSGVO-konform."
       : "Download custix for free. 100% local, no cloud, GDPR-compliant.";
 
-  return { title, description };
+  return { title, description, robots: { index: false, follow: false } };
 }
 
 export default async function DownloadPage({
@@ -107,14 +97,14 @@ export default async function DownloadPage({
     redirect(locale === "en" ? "/en" : "/");
   }
 
-  const { valid, signupId } = await validateToken(token);
+  const { valid, waitlistId } = await validateToken(token);
   if (!valid) {
     redirect(locale === "en" ? "/en" : "/");
   }
 
   // Log link_clicked event
-  if (signupId) {
-    await logLinkClicked(signupId);
+  if (waitlistId) {
+    await logLinkClicked(waitlistId);
   }
 
   const release = await getLatestRelease();

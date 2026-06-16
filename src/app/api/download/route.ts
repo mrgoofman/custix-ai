@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createClient } from "@supabase/supabase-js";
+import { getDb, nowEpoch } from "@/lib/db";
+import { newId } from "@/lib/license-key";
 
 const MANIFEST_URL =
   "https://github.com/znerol74/custix-releases/releases/latest/download/latest.json";
@@ -16,13 +17,6 @@ interface ReleaseManifest {
   platforms: Record<string, PlatformInfo>;
 }
 
-function getSupabase() {
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
-  if (!url || !key) return null;
-  return createClient(url, key);
-}
-
 async function getLatestRelease(): Promise<ReleaseManifest | null> {
   try {
     const res = await fetch(MANIFEST_URL, { cache: "no-store" });
@@ -33,6 +27,7 @@ async function getLatestRelease(): Promise<ReleaseManifest | null> {
   }
 }
 
+// Legacy tokenized binary download, now backed by D1 (waitlist_entry.download_token).
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
   const token = searchParams.get("token");
@@ -45,53 +40,31 @@ export async function GET(request: NextRequest) {
     );
   }
 
-  const supabase = getSupabase();
-  if (!supabase) {
-    return NextResponse.json(
-      { error: "Service unavailable" },
-      { status: 503 }
-    );
+  const db = getDb();
+
+  const row = await db
+    .prepare("SELECT id, token_expires_at FROM waitlist_entry WHERE download_token = ?")
+    .bind(token)
+    .first<{ id: string; token_expires_at: number | null }>();
+
+  if (!row || row.token_expires_at == null) {
+    return NextResponse.json({ error: "Invalid or expired token" }, { status: 403 });
+  }
+  if (row.token_expires_at < nowEpoch()) {
+    return NextResponse.json({ error: "Token has expired" }, { status: 403 });
   }
 
-  // Validate token and check expiry
-  const { data: signup, error } = await supabase
-    .from("signups")
-    .select("id, token_expires_at")
-    .eq("download_token", token)
-    .single();
-
-  if (error || !signup) {
-    return NextResponse.json(
-      { error: "Invalid or expired token" },
-      { status: 403 }
-    );
-  }
-
-  // Check token expiry
-  const expiresAt = new Date(signup.token_expires_at);
-  if (expiresAt < new Date()) {
-    return NextResponse.json(
-      { error: "Token has expired" },
-      { status: 403 }
-    );
-  }
-
-  // Get release manifest and find platform URL
   const release = await getLatestRelease();
   if (!release || !release.platforms[platform]) {
-    return NextResponse.json(
-      { error: "Platform not available" },
-      { status: 404 }
-    );
+    return NextResponse.json({ error: "Platform not available" }, { status: 404 });
   }
 
-  // Log downloaded event
-  await supabase.from("download_events").insert({
-    signup_id: signup.id,
-    event_type: "downloaded",
-    metadata: { platform, version: release.version },
-  });
+  await db
+    .prepare(
+      "INSERT INTO license_event (id, waitlist_id, event_type, metadata, created_at) VALUES (?, ?, 'downloaded', ?, ?)"
+    )
+    .bind(newId(), row.id, JSON.stringify({ platform, version: release.version }), nowEpoch())
+    .run();
 
-  // Redirect to actual download URL
   return NextResponse.redirect(release.platforms[platform].url);
 }

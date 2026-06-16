@@ -7,6 +7,8 @@ import { Footer } from "@/components/footer";
 import { SignupModal } from "@/components/signup-modal";
 import { CookieConsent } from "@/components/cookie-consent";
 import { MobileCta } from "@/components/mobile-cta";
+import { JsonLd } from "@/components/json-ld";
+import { BASE_URL } from "@/lib/seo";
 import type { Metadata } from "next";
 
 export function generateStaticParams() {
@@ -40,8 +42,17 @@ export default async function LocaleLayout({
   setRequestLocale(locale);
   const messages = await getMessages();
 
+  const organizationLd = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    name: "custix",
+    url: BASE_URL,
+    logo: `${BASE_URL}/icon.png`,
+  };
+
   return (
     <NextIntlClientProvider messages={messages}>
+      <JsonLd data={organizationLd} />
       <Navbar />
       <main className="flex-1">{children}</main>
       <Footer />
