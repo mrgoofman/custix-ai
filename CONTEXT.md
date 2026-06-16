@@ -144,6 +144,11 @@ email; if the email fails the admin gets a **resend** affordance (no half-approv
 admin's judgment is the gate — no second confirmation step.
 _Avoid_: grant, invite (use "approve")
 
+**Send key to email (direct):**
+An admin can also mint + email a beta key to any address with **no prior Waitlist entry** — for
+out-of-band access requests. Creates/links a `person`, mints an open-ended beta License, emails the
+key. Same key/License model as approve; just not gated on a waitlist row.
+
 **Admin visibility:**
 Admins see full waitlist/customer PII (name/email/profession) plus aggregate usage metrics, to
 triage. Mutating actions (approve/revoke/reset) are audited in `admin_event`; record *views* are
