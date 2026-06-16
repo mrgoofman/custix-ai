@@ -46,6 +46,8 @@ export function AdminDashboard({
 }) {
   const [busy, setBusy] = useState<string | null>(null);
   const [msg, setMsg] = useState<string | null>(null);
+  const [sendEmail, setSendEmail] = useState("");
+  const [sendName, setSendName] = useState("");
 
   async function run(id: string, payload: Record<string, unknown>, confirmText?: string) {
     if (confirmText && !window.confirm(confirmText)) return;
@@ -81,6 +83,48 @@ export function AdminDashboard({
         <span className="text-sm text-slate-500">{adminEmail}</span>
       </div>
       {msg && <div className="mb-6 rounded-lg bg-slate-100 px-4 py-3 text-sm">{msg}</div>}
+
+      <section className="mb-12 rounded-lg border border-slate-200 p-4">
+        <h2 className="text-lg font-semibold mb-3">Send a beta key</h2>
+        <form
+          className="flex flex-wrap items-end gap-3"
+          onSubmit={async (e) => {
+            e.preventDefault();
+            if (!sendEmail) return;
+            await run("send_key", { action: "send_key", email: sendEmail, name: sendName });
+            setSendEmail("");
+            setSendName("");
+          }}
+        >
+          <div>
+            <label className="block text-xs text-slate-500 mb-1">Email</label>
+            <input
+              type="email"
+              required
+              value={sendEmail}
+              onChange={(e) => setSendEmail(e.target.value)}
+              className="rounded border border-slate-300 px-3 py-2 text-sm"
+              placeholder="lawyer@kanzlei.at"
+            />
+          </div>
+          <div>
+            <label className="block text-xs text-slate-500 mb-1">Name (optional)</label>
+            <input
+              type="text"
+              value={sendName}
+              onChange={(e) => setSendName(e.target.value)}
+              className="rounded border border-slate-300 px-3 py-2 text-sm"
+            />
+          </div>
+          <button
+            type="submit"
+            disabled={busy === "send_key"}
+            className="rounded bg-blue-600 px-4 py-2 text-sm text-white disabled:opacity-50"
+          >
+            Mint &amp; email key
+          </button>
+        </form>
+      </section>
 
       <section className="mb-12">
         <h2 className="text-lg font-semibold mb-3">Waitlist ({waitlist.length})</h2>

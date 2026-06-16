@@ -106,6 +106,82 @@ export async function approveWaitlist(
   return { ok: true, key };
 }
 
+/**
+ * Issue a beta key directly to an email address — NO prior waitlist entry needed.
+ * For when someone asks for access out-of-band and the team just wants to fire a key.
+ * Creates/links a person (PII vault), mints an open-ended beta License, emails the key.
+ * If the email already has a person, reuses it; if that person already has an issued
+ * License via a waitlist entry, still mints a fresh standalone key (a person can be
+ * sent a key independent of the waitlist flow).
+ */
+export async function sendKeyToEmail(
+  adminUserId: string,
+  email: string,
+  name: string,
+  locale: string
+): Promise<{ ok: boolean; key?: string; error?: string }> {
+  const db = getDb();
+  const now = nowEpoch();
+  const loc = locale === "en" ? "en" : "de";
+
+  if (!email) return { ok: false, error: "email required" };
+
+  // Find or create the person (PII vault).
+  let personId: string;
+  const existing = await db
+    .prepare("SELECT id FROM person WHERE email = ?")
+    .bind(email)
+    .first<{ id: string }>();
+  if (existing) {
+    personId = existing.id;
+    if (name) {
+      await db
+        .prepare("UPDATE person SET name = COALESCE(NULLIF(?, ''), name), updated_at = ? WHERE id = ?")
+        .bind(name, now, personId)
+        .run();
+    }
+  } else {
+    personId = newId();
+    await db
+      .prepare(
+        "INSERT INTO person (id, email, name, locale, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?)"
+      )
+      .bind(personId, email, name || null, loc, now, now)
+      .run();
+  }
+
+  // Mint an open-ended beta license (collision-retry on key).
+  let licenseId = newId();
+  let key = generateLicenseKey();
+  for (let attempt = 0; attempt < 3; attempt++) {
+    try {
+      await db
+        .prepare(
+          "INSERT INTO license (id, license_key, type, status, expires_at, grace_seconds, issued_by, created_at, updated_at) VALUES (?, ?, 'beta', 'active', NULL, ?, ?, ?, ?)"
+        )
+        .bind(licenseId, key, GRACE.beta, adminUserId, now, now)
+        .run();
+      break;
+    } catch (e) {
+      const msg = String((e as Error)?.message ?? e);
+      if (/UNIQUE/i.test(msg) && /license_key/i.test(msg) && attempt < 2) {
+        licenseId = newId();
+        key = generateLicenseKey();
+        continue;
+      }
+      return { ok: false, error: msg };
+    }
+  }
+
+  await audit(adminUserId, "license_issued", { licenseId, personId, detail: { direct_send: true } });
+
+  await sendKeyEmail(email, name ?? "", key, loc).catch((e) =>
+    console.error("sendKeyToEmail: email failed (resend available):", e)
+  );
+
+  return { ok: true, key };
+}
+
 export async function resendKeyEmail(
   adminUserId: string,
   licenseId: string

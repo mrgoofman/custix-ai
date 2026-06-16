@@ -7,6 +7,7 @@ import {
   resetClaim,
   anonymizePerson,
   resendKeyEmail,
+  sendKeyToEmail,
 } from "@/lib/admin-actions";
 
 /**
@@ -26,6 +27,9 @@ export async function POST(request: Request) {
     personId?: string;
     reason?: string;
     confirmEmail?: string;
+    email?: string;
+    name?: string;
+    locale?: string;
   };
 
   try {
@@ -34,6 +38,10 @@ export async function POST(request: Request) {
         return NextResponse.json(await approveWaitlist(admin.id, must(body.waitlistId)));
       case "reject":
         return NextResponse.json(await rejectWaitlist(admin.id, must(body.waitlistId)));
+      case "send_key":
+        return NextResponse.json(
+          await sendKeyToEmail(admin.id, must(body.email), body.name ?? "", body.locale ?? "de")
+        );
       case "resend_key":
         return NextResponse.json(await resendKeyEmail(admin.id, must(body.licenseId)));
       case "revoke":

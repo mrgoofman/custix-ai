@@ -1,12 +1,12 @@
 {
   "meta": {
     "title": "custix.ai. Dokumente anonymisieren für KI",
-    "description": "Anonymisieren Sie Dokumente in 5 Sekunden. 100% lokal, DSGVO-konform, keine Cloud. Für Anwälte, Steuerberater und mehr."
+    "description": "Anonymisieren Sie Dokumente in 5 Sekunden. 100% lokal, DSGVO-konform – Ihre Dokumente verlassen nie Ihren Rechner. Für Anwälte, Steuerberater und mehr."
   },
   "pageMeta": {
     "home": {
       "title": "custix – Dokumente anonymisieren & KI sicher nutzen",
-      "description": "Anonymisieren Sie sensible Dokumente in Sekunden – 100 % lokal, DSGVO-konform, ohne Cloud. Nutzen Sie ChatGPT & Co. sicher. 14 Tage kostenlos testen."
+      "description": "Anonymisieren Sie sensible Dokumente in Sekunden – 100 % lokal, DSGVO-konform. Ihre Dokumente verlassen nie Ihren Rechner. Nutzen Sie ChatGPT & Co. sicher. 14 Tage kostenlos testen."
     },
     "lawyers": {
       "title": "Anonymisierung für Anwälte – KI DSGVO-konform nutzen | custix",
@@ -18,7 +18,7 @@
     },
     "hr": {
       "title": "Anonymisierung für HR & Recruiting | custix",
-      "description": "Bewerber- und Mitarbeiterdaten anonymisieren und KI im HR sicher nutzen. DSGVO-konform, 100 % lokal, keine Cloud. 14 Tage kostenlos testen."
+      "description": "Bewerber- und Mitarbeiterdaten anonymisieren und KI im HR sicher nutzen. DSGVO-konform, 100 % lokal – Ihre Dokumente verlassen nie Ihren Rechner. 14 Tage kostenlos testen."
     },
     "healthcare": {
       "title": "Anonymisierung für das Gesundheitswesen | custix",
@@ -26,7 +26,7 @@
     },
     "insurance": {
       "title": "Anonymisierung für Versicherungen | custix",
-      "description": "Kundendaten anonymisieren und KI bei Versicherungen sicher nutzen. DSGVO-konform, 100 % lokal, keine Cloud. 14 Tage kostenlos testen."
+      "description": "Kundendaten anonymisieren und KI bei Versicherungen sicher nutzen. DSGVO-konform, 100 % lokal – Ihre Dokumente verlassen nie Ihren Rechner. 14 Tage kostenlos testen."
     },
     "pricing": {
       "title": "Preise – custix ab 49 €/Monat | 14 Tage kostenlos testen",
@@ -76,11 +76,11 @@
   },
   "trust": {
     "local": "100% Lokal",
-    "localDesc": "Ihre Daten verlassen nie Ihren Rechner",
+    "localDesc": "Ihre Dokumente verlassen nie Ihren Rechner",
     "gdpr": "DSGVO-konform",
     "gdprDesc": "Vollständig konform mit EU-Datenschutzrecht",
-    "noCloud": "Keine Cloud",
-    "noCloudDesc": "Keine Datenübertragung an Drittanbieter",
+    "noCloud": "Dokumente bleiben lokal",
+    "noCloudDesc": "Keine Übertragung Ihrer Dokumente an Dritte",
     "fast": "< 5 Sekunden",
     "fastDesc": "Dokumente in Sekunden anonymisiert"
   },
