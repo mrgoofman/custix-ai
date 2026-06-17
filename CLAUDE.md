@@ -14,7 +14,9 @@ No CI/CD - deploy manually with:
 ```bash
 npx wrangler deploy
 ```
-Note: build needs Node ≥20; `wrangler deploy` needs Node ≥22. The custix-ai
+Note: build needs Node ≥20; `wrangler deploy` needs Node ≥22.
+⚠️ OpenNext can ship a STALE build (incremental cache). If your changes don't
+appear live, clean first: `rm -rf .open-next .next && npm run build:cf` then deploy. The custix-ai
 worker lives in the Moritz Cloudflare account (`CLOUDFLARE_ACCOUNT_ID=790369fbd60bd3d4d6e34bacbd0c854d`).
 
 Live URL: https://custix-ai.moritz-790.workers.dev

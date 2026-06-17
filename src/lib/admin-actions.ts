@@ -272,6 +272,7 @@ async function sendKeyEmail(email: string, name: string, key: string, locale: st
   const resend = getResend();
   if (!resend) return;
   const isDE = locale === "de";
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://custix.ai";
   await resend.emails.send({
     from: "custix.ai <noreply@custix.ai>",
     to: email,
@@ -286,9 +287,14 @@ async function sendKeyEmail(email: string, name: string, key: string, locale: st
 <p style="margin:0 0 24px;font-size:16px;color:#1e293b;">${isDE ? `Guten Tag ${name},` : `Hello ${name},`}</p>
 <p style="margin:0 0 24px;font-size:16px;color:#475569;">${
       isDE
-        ? "Ihr Beta-Zugang ist freigeschaltet. Melden Sie sich in der custix-App an und geben Sie Ihren Lizenzschlüssel ein:"
-        : "Your beta access is ready. Sign in to the custix app and enter your license key:"
+        ? "Ihr Beta-Zugang ist freigeschaltet. In zwei Schritten loslegen:"
+        : "Your beta access is ready. Get started in two steps:"
     }</p>
+<p style="margin:0 0 8px;font-size:14px;font-weight:700;color:#1e293b;">${isDE ? "1. App herunterladen" : "1. Download the app"}</p>
+<table role="presentation" style="width:100%;border-collapse:collapse;margin-bottom:24px;"><tr><td align="center">
+<a href="${baseUrl}/${isDE ? "" : "en/"}download" style="display:inline-block;background:#2563eb;color:#fff;text-decoration:none;font-weight:600;font-size:16px;padding:14px 32px;border-radius:8px;">${isDE ? "custix herunterladen" : "Download custix"}</a>
+</td></tr></table>
+<p style="margin:0 0 8px;font-size:14px;font-weight:700;color:#1e293b;">${isDE ? "2. Anmelden und Lizenzschlüssel eingeben" : "2. Sign in and enter your license key"}</p>
 <div style="background:#f1f5f9;border-radius:8px;padding:20px;text-align:center;margin-bottom:24px;font-family:monospace;font-size:20px;font-weight:700;letter-spacing:1px;color:#1e3a5f;">${key}</div>
 <p style="margin:0;font-size:16px;color:#1e293b;">${isDE ? "Mit freundlichen Grüßen," : "Best regards,"}<br>${isDE ? "Das custix.ai Team" : "The custix.ai Team"}</p>
 </td></tr></table></td></tr></table></body></html>`.trim(),

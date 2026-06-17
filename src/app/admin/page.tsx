@@ -2,6 +2,7 @@ import { headers } from "next/headers";
 import { getDb } from "@/lib/db";
 import { requireAdmin } from "@/lib/admin";
 import { AdminDashboard } from "./AdminDashboard";
+import { LoginForm } from "./LoginForm";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -37,14 +38,8 @@ export default async function AdminPage() {
   const admin = await requireAdmin(new Request("https://custix.ai/admin", { headers: reqHeaders }));
 
   if (!admin) {
-    return (
-      <main className="max-w-md mx-auto px-6 py-24 text-center">
-        <h1 className="text-2xl font-bold mb-4">custix admin</h1>
-        <p className="text-slate-600">
-          You must sign in as an administrator to view this page.
-        </p>
-      </main>
-    );
+    // Not authenticated (or not an admin) — show the login form.
+    return <LoginForm />;
   }
 
   const db = getDb();
