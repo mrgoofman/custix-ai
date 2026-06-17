@@ -1,5 +1,4 @@
 import { setRequestLocale } from "next-intl/server";
-import { redirect } from "next/navigation";
 import { getDb, nowEpoch } from "@/lib/db";
 import { newId } from "@/lib/license-key";
 import { DownloadContent } from "@/components/download-content";
@@ -92,22 +91,17 @@ export default async function DownloadPage({
   const { token } = await searchParams;
   setRequestLocale(locale);
 
-  // Validate token - redirect to home if missing or invalid
-  if (!token) {
-    redirect(locale === "en" ? "/en" : "/");
-  }
-
-  const { valid, waitlistId } = await validateToken(token);
-  if (!valid) {
-    redirect(locale === "en" ? "/en" : "/");
-  }
-
-  // Log link_clicked event
-  if (waitlistId) {
-    await logLinkClicked(waitlistId);
+  // Open download: the app is gated by the license key + login (ADR-0003), not the
+  // download. Anyone may fetch the installer. A legacy token, if present and valid,
+  // is still honoured for funnel tracking — but its absence no longer blocks access.
+  if (token) {
+    const { valid, waitlistId } = await validateToken(token);
+    if (valid && waitlistId) {
+      await logLinkClicked(waitlistId);
+    }
   }
 
   const release = await getLatestRelease();
 
-  return <DownloadContent release={release} token={token} />;
+  return <DownloadContent release={release} token={token ?? null} />;
 }

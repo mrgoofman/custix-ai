@@ -17,7 +17,7 @@ interface ReleaseManifest {
 
 interface DownloadContentProps {
   release: ReleaseManifest | null;
-  token: string;
+  token: string | null;
 }
 
 const PLATFORM_CONFIG: Record<
@@ -85,7 +85,13 @@ export function DownloadContent({ release, token }: DownloadContentProps) {
   const hasPlatforms = release && Object.keys(release.platforms).length > 0;
 
   const getDownloadUrl = (platformKey: string) => {
-    return `/api/download?token=${token}&platform=${platformKey}`;
+    // With a legacy token, go through the token-gated API (keeps funnel tracking).
+    // Without a token (open beta download), link straight to the installer URL —
+    // the app is gated by the license key + login, not the download.
+    if (token) {
+      return `/api/download?token=${token}&platform=${platformKey}`;
+    }
+    return release?.platforms[platformKey]?.url ?? "#";
   };
 
   return (
