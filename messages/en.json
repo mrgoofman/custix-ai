@@ -1,7 +1,57 @@
 {
   "meta": {
     "title": "custix.ai. Anonymize Documents for AI",
-    "description": "Anonymize documents in 5 seconds. 100% local, GDPR-compliant, no cloud. For lawyers, tax advisors, and more."
+    "description": "Anonymize documents in 5 seconds. 100% local, GDPR-compliant – your documents never leave your computer. For lawyers, tax advisors, and more."
+  },
+  "pageMeta": {
+    "home": {
+      "title": "custix – Anonymize Documents & Use AI Safely",
+      "description": "Anonymize sensitive documents in seconds – 100% local, GDPR-compliant. Your documents never leave your computer. Use ChatGPT & co. safely. Start your 14-day free trial."
+    },
+    "lawyers": {
+      "title": "Document Anonymization for Lawyers | custix",
+      "description": "Anonymize client data and safely use AI like ChatGPT as a lawyer. Protect professional confidentiality, 100% local, GDPR-compliant. Try free."
+    },
+    "taxAdvisors": {
+      "title": "Document Anonymization for Tax Advisors | custix",
+      "description": "Anonymize client data and use AI safely as a tax advisor. Maintain professional confidentiality, 100% local, GDPR-compliant. Start free."
+    },
+    "hr": {
+      "title": "Data Anonymization for HR & Recruiting | custix",
+      "description": "Anonymize applicant and employee data and use AI safely in HR. GDPR-compliant, 100% local – your documents never leave your computer. Start your 14-day free trial."
+    },
+    "healthcare": {
+      "title": "Data Anonymization for Healthcare | custix",
+      "description": "Anonymize patient data and use AI safely in healthcare. Protect medical confidentiality and GDPR, 100% local. Try free."
+    },
+    "insurance": {
+      "title": "Data Anonymization for Insurance | custix",
+      "description": "Anonymize customer data and use AI safely in insurance. GDPR-compliant, 100% local – your documents never leave your computer. Start your 14-day free trial."
+    },
+    "pricing": {
+      "title": "Pricing – custix from €49/month | 14-Day Free Trial",
+      "description": "Transparent custix pricing. From €49/month per seat, team plans available. 14-day free trial – no credit card required."
+    },
+    "about": {
+      "title": "About Us – The Team Behind custix",
+      "description": "Meet the team behind custix. We help lawyers, tax advisors and more use AI safely and GDPR-compliantly."
+    },
+    "contact": {
+      "title": "Contact – custix | Ask Questions & Book a Demo",
+      "description": "Get in touch with the custix team. Ask questions or book a demo for safe AI use with data anonymization."
+    },
+    "imprint": {
+      "title": "Legal Notice | custix",
+      "description": "Legal notice and company information for custix pursuant to § 5 ECG and § 25 MedienG."
+    },
+    "privacy": {
+      "title": "Privacy Policy | custix",
+      "description": "custix privacy policy. Learn how we handle your data – fully GDPR-compliant."
+    },
+    "terms": {
+      "title": "Terms & Conditions | custix",
+      "description": "Terms and conditions for using custix."
+    }
   },
   "nav": {
     "solutions": "Solutions",
@@ -26,11 +76,11 @@
   },
   "trust": {
     "local": "100% Local",
-    "localDesc": "Your data never leaves your computer",
+    "localDesc": "Your documents never leave your computer",
     "gdpr": "GDPR Compliant",
     "gdprDesc": "Fully compliant with EU data protection law",
-    "noCloud": "No Cloud",
-    "noCloudDesc": "No data transfer to third parties",
+    "noCloud": "Documents stay local",
+    "noCloudDesc": "Your documents are never sent to third parties",
     "fast": "< 5 Seconds",
     "fastDesc": "Documents anonymized in seconds"
   },
@@ -163,20 +213,17 @@
     "description": "custix.ai was founded by a team of lawyers and developers who know firsthand how hard it is to use AI in regulated industries. Our goal: make AI accessible to everyone. without compromising data protection.",
     "teamTitle": "Our Team",
     "team": {
-      "laurenz": {
-        "name": "Laurenz Lettner",
-        "role": "Legal / Co-Founder",
-        "description": "Attorney specializing in data protection law and legal tech."
+      "legal": {
+        "role": "Legal & Compliance",
+        "description": "Lawyers specializing in data protection law and legal tech."
       },
-      "lorenz": {
-        "name": "Lorenz Kutschka",
-        "role": "Tech / Co-Founder",
-        "description": "Full-stack developer with experience in NLP and data security."
+      "tech": {
+        "role": "Engineering & Security",
+        "description": "Engineers with experience in NLP and data security."
       },
-      "moritz": {
-        "name": "Moritz Lumetsberger",
-        "role": "Product / Co-Founder",
-        "description": "Product developer focused on user experience and go-to-market."
+      "product": {
+        "role": "Product",
+        "description": "Product team focused on user experience and go-to-market."
       }
     }
   },
@@ -199,8 +246,8 @@
     }
   },
   "signup": {
-    "title": "Start Your 14-Day Free Trial",
-    "subtitle": "No credit card required. Get started instantly.",
+    "title": "Request Beta Access",
+    "subtitle": "custix is in a closed beta. Leave your details and we'll be in touch.",
     "name": "Name",
     "email": "Email",
     "profession": "Profession",
@@ -212,10 +259,10 @@
       "insurance": "Insurance",
       "other": "Other"
     },
-    "submit": "Start Free Trial",
+    "submit": "Request Access",
     "success": "Thank you!",
-    "successSubtext": "Check your email for the download link.",
-    "privacy": "By signing up, you agree to our Privacy Policy."
+    "successSubtext": "We've received your request and will get in touch once we can grant you access.",
+    "privacy": "By requesting access, you agree to our Privacy Policy."
   },
   "cookie": {
     "title": "Cookie Settings",

@@ -8,6 +8,15 @@
   "compatibility_date": "2025-05-01",
   "compatibility_flags": ["nodejs_compat"],
   "vars": {
-    "NEXT_PUBLIC_BASE_URL": "https://custix.ai"
-  }
+    "NEXT_PUBLIC_BASE_URL": "https://custix.ai",
+    "BETTER_AUTH_URL": "https://custix.ai"
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "custix-db",
+      "database_id": "PLACEHOLDER_RUN_WRANGLER_D1_CREATE",
+      "migrations_dir": "migrations"
+    }
+  ]
 }

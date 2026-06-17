@@ -1,7 +1,57 @@
 {
   "meta": {
     "title": "custix.ai. Dokumente anonymisieren für KI",
-    "description": "Anonymisieren Sie Dokumente in 5 Sekunden. 100% lokal, DSGVO-konform, keine Cloud. Für Anwälte, Steuerberater und mehr."
+    "description": "Anonymisieren Sie Dokumente in 5 Sekunden. 100% lokal, DSGVO-konform – Ihre Dokumente verlassen nie Ihren Rechner. Für Anwälte, Steuerberater und mehr."
+  },
+  "pageMeta": {
+    "home": {
+      "title": "custix – Dokumente anonymisieren & KI sicher nutzen",
+      "description": "Anonymisieren Sie sensible Dokumente in Sekunden – 100 % lokal, DSGVO-konform. Ihre Dokumente verlassen nie Ihren Rechner. Nutzen Sie ChatGPT & Co. sicher. 14 Tage kostenlos testen."
+    },
+    "lawyers": {
+      "title": "Anonymisierung für Anwälte – KI DSGVO-konform nutzen | custix",
+      "description": "Mandantendaten anonymisieren und KI wie ChatGPT als Anwalt sicher nutzen. Verschwiegenheitspflicht nach § 9 RAO wahren, 100 % lokal. Jetzt testen."
+    },
+    "taxAdvisors": {
+      "title": "Anonymisierung für Steuerberater – KI sicher nutzen | custix",
+      "description": "Mandantendaten anonymisieren und KI sicher nutzen als Steuerberater. Verschwiegenheitspflicht nach § 80 WTBG 2017 wahren, 100 % lokal. Jetzt testen."
+    },
+    "hr": {
+      "title": "Anonymisierung für HR & Recruiting | custix",
+      "description": "Bewerber- und Mitarbeiterdaten anonymisieren und KI im HR sicher nutzen. DSGVO-konform, 100 % lokal – Ihre Dokumente verlassen nie Ihren Rechner. 14 Tage kostenlos testen."
+    },
+    "healthcare": {
+      "title": "Anonymisierung für das Gesundheitswesen | custix",
+      "description": "Patientendaten anonymisieren und KI im Gesundheitswesen sicher nutzen. Ärztliche Schweigepflicht und DSGVO wahren, 100 % lokal. Jetzt testen."
+    },
+    "insurance": {
+      "title": "Anonymisierung für Versicherungen | custix",
+      "description": "Kundendaten anonymisieren und KI bei Versicherungen sicher nutzen. DSGVO-konform, 100 % lokal – Ihre Dokumente verlassen nie Ihren Rechner. 14 Tage kostenlos testen."
+    },
+    "pricing": {
+      "title": "Preise – custix ab 49 €/Monat | 14 Tage kostenlos testen",
+      "description": "Transparente Preise für custix. Ab 49 €/Monat pro Platz, Team-Tarife verfügbar. 14 Tage kostenlos testen – ohne Kreditkarte."
+    },
+    "about": {
+      "title": "Über uns – das Team hinter custix",
+      "description": "Lernen Sie das Team hinter custix kennen. Wir helfen Anwälten, Steuerberatern und mehr, KI sicher und DSGVO-konform zu nutzen."
+    },
+    "contact": {
+      "title": "Kontakt – custix | Fragen stellen & Demo vereinbaren",
+      "description": "Kontaktieren Sie das custix-Team. Stellen Sie Fragen oder vereinbaren Sie eine Demo zur sicheren KI-Nutzung mit Datenanonymisierung."
+    },
+    "imprint": {
+      "title": "Impressum | custix",
+      "description": "Impressum und rechtliche Angaben zu custix gemäß § 5 ECG und § 25 MedienG."
+    },
+    "privacy": {
+      "title": "Datenschutz | custix",
+      "description": "Datenschutzerklärung von custix. Erfahren Sie, wie wir mit Ihren Daten umgehen – vollständig DSGVO-konform."
+    },
+    "terms": {
+      "title": "AGB | custix",
+      "description": "Allgemeine Geschäftsbedingungen für die Nutzung von custix."
+    }
   },
   "nav": {
     "solutions": "Lösungen",
@@ -26,11 +76,11 @@
   },
   "trust": {
     "local": "100% Lokal",
-    "localDesc": "Ihre Daten verlassen nie Ihren Rechner",
+    "localDesc": "Ihre Dokumente verlassen nie Ihren Rechner",
     "gdpr": "DSGVO-konform",
     "gdprDesc": "Vollständig konform mit EU-Datenschutzrecht",
-    "noCloud": "Keine Cloud",
-    "noCloudDesc": "Keine Datenübertragung an Drittanbieter",
+    "noCloud": "Dokumente bleiben lokal",
+    "noCloudDesc": "Keine Übertragung Ihrer Dokumente an Dritte",
     "fast": "< 5 Sekunden",
     "fastDesc": "Dokumente in Sekunden anonymisiert"
   },
@@ -163,20 +213,17 @@
     "description": "custix.ai wurde von einem Team aus Juristen und Entwicklern gegründet, die aus erster Hand wissen, wie schwierig es ist, KI in regulierten Branchen einzusetzen. Unser Ziel: KI für alle zugänglich machen. ohne Kompromisse beim Datenschutz.",
     "teamTitle": "Unser Team",
     "team": {
-      "laurenz": {
-        "name": "Laurenz Lettner",
-        "role": "Legal / Mitgründer",
-        "description": "Rechtsanwalt mit Fokus auf Datenschutzrecht und Legal Tech."
+      "legal": {
+        "role": "Legal & Compliance",
+        "description": "Juristinnen und Juristen mit Fokus auf Datenschutzrecht und Legal Tech."
       },
-      "lorenz": {
-        "name": "Lorenz Kutschka",
-        "role": "Tech / Mitgründer",
-        "description": "Full-Stack Entwickler mit Erfahrung in NLP und Datensicherheit."
+      "tech": {
+        "role": "Technik & Sicherheit",
+        "description": "Entwicklerinnen und Entwickler mit Erfahrung in NLP und Datensicherheit."
       },
-      "moritz": {
-        "name": "Moritz Lumetsberger",
-        "role": "Product / Mitgründer",
-        "description": "Produktentwickler mit Fokus auf Nutzererfahrung und Go-to-Market."
+      "product": {
+        "role": "Produkt",
+        "description": "Produktteam mit Fokus auf Nutzererfahrung und Go-to-Market."
       }
     }
   },
@@ -199,8 +246,8 @@
     }
   },
   "signup": {
-    "title": "14 Tage kostenlos testen",
-    "subtitle": "Keine Kreditkarte erforderlich. Sofort loslegen.",
+    "title": "Beta-Zugang anfragen",
+    "subtitle": "custix befindet sich in einer geschlossenen Beta. Tragen Sie sich ein – wir melden uns.",
     "name": "Name",
     "email": "E-Mail",
     "profession": "Beruf",
@@ -212,10 +259,10 @@
       "insurance": "Versicherung",
       "other": "Sonstiges"
     },
-    "submit": "Kostenlos testen",
+    "submit": "Zugang anfragen",
     "success": "Vielen Dank!",
-    "successSubtext": "Prüfen Sie Ihre E-Mail für den Download-Link.",
-    "privacy": "Mit der Anmeldung stimmen Sie unserer Datenschutzerklärung zu."
+    "successSubtext": "Wir haben Ihre Anfrage erhalten und melden uns, sobald wir Ihren Zugang freischalten können.",
+    "privacy": "Mit der Anfrage stimmen Sie unserer Datenschutzerklärung zu."
   },
   "cookie": {
     "title": "Cookie-Einstellungen",
