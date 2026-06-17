@@ -23,7 +23,8 @@ export function LegalPageContent({
           {t(titleKey)}
         </h1>
         <div className="prose prose-slate max-w-none">
-          <p className="text-slate-text/80">{t(contentKey)}</p>
+          {/* Content is authored as plain text with \n line breaks (legal i18n keys). */}
+          <p className="text-slate-text/80 whitespace-pre-line">{t(contentKey)}</p>
         </div>
       </div>
     </section>
