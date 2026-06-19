@@ -14,11 +14,16 @@ export function getAuth() {
     database: env.DB, // native D1 driver (better-auth >=1.5)
     secret: env.BETTER_AUTH_SECRET,
     baseURL: env.BETTER_AUTH_URL ?? "https://custix.ai",
-    // Long-lived session for the desktop app: the user logs in ONCE and the
-    // session token effectively never expires. Access is governed by the License
-    // (revocable server-side via /api/license/validate), not by session expiry.
-    // (TEMP: session block removed while diagnosing a sign-in 500; re-add once
-    //  confirmed safe. ~1 year is plenty if re-added.)
+    // Long-lived session for the desktop app: log in once, valid ~400 days.
+    // NOTE: do NOT exceed the browser cookie Max-Age ceiling (400 days). A larger
+    // value (we tried 10y) makes session refresh emit an over-limit Max-Age and
+    // 500s ALL sign-in/sign-up — see better-auth issue #9609. 400d-10s is the
+    // verified safe maximum; the License (revocable, checked monthly) is the real
+    // access control, not session length.
+    session: {
+      expiresIn: 400 * 86400 - 10, // ~400 days (just under the cookie ceiling)
+      updateAge: 7 * 86400, // refresh weekly — comfortably inside the window
+    },
     emailAndPassword: {
       enabled: true,
       // Password reset via Resend. The {url} is the tokenized reset link Better
