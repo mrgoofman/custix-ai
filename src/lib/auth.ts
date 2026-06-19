@@ -14,6 +14,11 @@ export function getAuth() {
     database: env.DB, // native D1 driver (better-auth >=1.5)
     secret: env.BETTER_AUTH_SECRET,
     baseURL: env.BETTER_AUTH_URL ?? "https://custix.ai",
+    // Long-lived session for the desktop app: the user logs in ONCE and the
+    // session token effectively never expires. Access is governed by the License
+    // (revocable server-side via /api/license/validate), not by session expiry.
+    // (TEMP: session block removed while diagnosing a sign-in 500; re-add once
+    //  confirmed safe. ~1 year is plenty if re-added.)
     emailAndPassword: {
       enabled: true,
       // Password reset via Resend. The {url} is the tokenized reset link Better
