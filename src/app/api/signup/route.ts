@@ -42,43 +42,42 @@ export async function POST(request: Request) {
       .bind(email)
       .first<{ id: string }>();
 
-    let personId: string;
+    // A repeat request from a known email is a NO-OP: do nothing server-side
+    // (no duplicate entry, no PII overwrite, no second email, no funnel event)
+    // and return the same neutral "thanks" so the frontend popup looks identical.
+    // This covers every existing-status case (pending = already requested;
+    // approved = already has access — must NOT get a "you're on the waitlist"
+    // mail; rejected = stays rejected) and avoids leaking status by email.
     if (existing) {
-      personId = existing.id;
-      await db
-        .prepare(
-          "UPDATE person SET name = ?, profession = ?, locale = ?, updated_at = ? WHERE id = ?"
-        )
-        .bind(name, profession, loc, now, personId)
-        .run();
-    } else {
-      personId = newId();
+      return NextResponse.json({ success: true });
+    }
+
+    // Genuinely new email -> create person + waitlist entry and send the
+    // confirmation mail. Guard the race where two simultaneous new-email
+    // requests both pass the check above: the ux_person_email UNIQUE index makes
+    // the loser's INSERT throw -> treat as "already exists" and no-op.
+    const personId = newId();
+    try {
       await db
         .prepare(
           "INSERT INTO person (id, email, name, profession, locale, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?)"
         )
         .bind(personId, email, name, profession, loc, now, now)
         .run();
+    } catch (e) {
+      if (/UNIQUE/i.test(String((e as Error)?.message ?? e))) {
+        return NextResponse.json({ success: true });
+      }
+      throw e;
     }
 
-    // Ensure a waitlist entry exists for this person (ux_waitlist_person is UNIQUE).
-    const entry = await db
-      .prepare("SELECT id FROM waitlist_entry WHERE person_id = ?")
-      .bind(personId)
-      .first<{ id: string }>();
-
-    let waitlistId: string;
-    if (entry) {
-      waitlistId = entry.id;
-    } else {
-      waitlistId = newId();
-      await db
-        .prepare(
-          "INSERT INTO waitlist_entry (id, person_id, status, created_at, updated_at) VALUES (?, ?, 'pending', ?, ?)"
-        )
-        .bind(waitlistId, personId, now, now)
-        .run();
-    }
+    const waitlistId = newId();
+    await db
+      .prepare(
+        "INSERT INTO waitlist_entry (id, person_id, status, created_at, updated_at) VALUES (?, ?, 'pending', ?, ?)"
+      )
+      .bind(waitlistId, personId, now, now)
+      .run();
 
     // Funnel event.
     await db
