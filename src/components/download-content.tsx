@@ -86,12 +86,21 @@ export function DownloadContent({ release, token }: DownloadContentProps) {
 
   const getDownloadUrl = (platformKey: string) => {
     // With a legacy token, go through the token-gated API (keeps funnel tracking).
-    // Without a token (open beta download), link straight to the installer URL —
-    // the app is gated by the license key + login, not the download.
     if (token) {
       return `/api/download?token=${token}&platform=${platformKey}`;
     }
-    return release?.platforms[platformKey]?.url ?? "#";
+    const url = release?.platforms[platformKey]?.url ?? "#";
+    // macOS: the manifest URL points at the UPDATER artifact (custix.app.tar.gz),
+    // which is for Tauri's background auto-updater — NOT a human download. For a
+    // manual download, serve the .dmg installer that lives in the same release.
+    if (platformKey.startsWith("darwin") && url.endsWith("custix.app.tar.gz")) {
+      const arch = platformKey === "darwin-aarch64" ? "aarch64" : "x64";
+      return url.replace(
+        "custix.app.tar.gz",
+        `custix_${release!.version}_${arch}.dmg`,
+      );
+    }
+    return url;
   };
 
   return (
@@ -130,7 +139,9 @@ export function DownloadContent({ release, token }: DownloadContentProps) {
                   const Icon = config.icon;
                   const label = locale === "de" ? config.label : config.labelEn;
                   const hint = locale === "de" ? config.hint : config.hintEn;
-                  const ext = getFileExtension(platformData.url);
+                  // Show the extension of the ACTUAL download link (e.g. DMG for
+                  // macOS), not the manifest's updater-artifact (.tar.gz).
+                  const ext = getFileExtension(getDownloadUrl(platformKey));
 
                   return (
                     <div
