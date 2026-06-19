@@ -294,7 +294,12 @@ async function sendKeyEmail(email: string, name: string, key: string, locale: st
 <table role="presentation" style="width:100%;border-collapse:collapse;margin-bottom:24px;"><tr><td align="center">
 <a href="${baseUrl}/${isDE ? "" : "en/"}download" style="display:inline-block;background:#2563eb;color:#fff;text-decoration:none;font-weight:600;font-size:16px;padding:14px 32px;border-radius:8px;">${isDE ? "custix herunterladen" : "Download custix"}</a>
 </td></tr></table>
-<p style="margin:0 0 8px;font-size:14px;font-weight:700;color:#1e293b;">${isDE ? "2. Anmelden und Lizenzschlüssel eingeben" : "2. Sign in and enter your license key"}</p>
+<p style="margin:0 0 8px;font-size:14px;font-weight:700;color:#1e293b;">${isDE ? "2. Konto erstellen und Lizenzschlüssel eingeben" : "2. Create an account and enter your license key"}</p>
+<p style="margin:0 0 12px;font-size:14px;color:#475569;">${
+      isDE
+        ? "Erstellen Sie beim ersten Start ein Konto (E-Mail + Passwort) und geben Sie dann diesen Schlüssel ein:"
+        : "On first launch, create an account (email + password), then enter this key:"
+    }</p>
 <div style="background:#f1f5f9;border-radius:8px;padding:20px;text-align:center;margin-bottom:24px;font-family:monospace;font-size:20px;font-weight:700;letter-spacing:1px;color:#1e3a5f;">${key}</div>
 <p style="margin:0;font-size:16px;color:#1e293b;">${isDE ? "Mit freundlichen Grüßen," : "Best regards,"}<br>${isDE ? "Das custix.ai Team" : "The custix.ai Team"}</p>
 </td></tr></table></td></tr></table></body></html>`.trim(),
