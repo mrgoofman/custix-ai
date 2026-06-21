@@ -20,58 +20,24 @@ export function ContactContent() {
       <section className="py-16 lg:py-24">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-            {/* Contact form */}
+            {/* Primary contact: email CTA (replaces the old non-functional form). */}
             <div>
-              <form className="space-y-4">
-                <div>
-                  <label
-                    htmlFor="contact-name"
-                    className="block text-sm font-medium text-slate-text mb-1"
-                  >
-                    {t("form.name")}
-                  </label>
-                  <input
-                    id="contact-name"
-                    type="text"
-                    required
-                    className="w-full px-4 py-2.5 border border-muted/30 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-royal/30 focus:border-royal"
-                  />
+              <div className="bg-surface rounded-2xl border border-muted/20 p-8 h-full flex flex-col justify-center">
+                <div className="w-12 h-12 rounded-xl bg-royal/10 flex items-center justify-center mb-4">
+                  <Mail className="w-6 h-6 text-royal" />
                 </div>
-                <div>
-                  <label
-                    htmlFor="contact-email"
-                    className="block text-sm font-medium text-slate-text mb-1"
-                  >
-                    {t("form.email")}
-                  </label>
-                  <input
-                    id="contact-email"
-                    type="email"
-                    required
-                    className="w-full px-4 py-2.5 border border-muted/30 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-royal/30 focus:border-royal"
-                  />
-                </div>
-                <div>
-                  <label
-                    htmlFor="contact-message"
-                    className="block text-sm font-medium text-slate-text mb-1"
-                  >
-                    {t("form.message")}
-                  </label>
-                  <textarea
-                    id="contact-message"
-                    rows={5}
-                    required
-                    className="w-full px-4 py-2.5 border border-muted/30 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-royal/30 focus:border-royal resize-none"
-                  />
-                </div>
-                <button
-                  type="submit"
-                  className="w-full py-3 bg-royal text-white font-semibold rounded-lg hover:bg-royal-dark transition-colors"
+                <h2 className="text-xl font-bold font-heading text-navy mb-2">
+                  {t("email.title")}
+                </h2>
+                <p className="text-sm text-muted mb-6">{t("subtitle")}</p>
+                <a
+                  href={`mailto:${t("email.address")}`}
+                  className="inline-flex items-center justify-center gap-2 w-full py-3 bg-royal text-white font-semibold rounded-lg hover:bg-royal-dark transition-colors"
                 >
-                  {t("form.send")}
-                </button>
-              </form>
+                  <Mail className="w-4 h-4" />
+                  {t("email.address")}
+                </a>
+              </div>
             </div>
 
             {/* Sidebar */}
@@ -96,23 +62,6 @@ export function ContactContent() {
                 >
                   <Calendar className="w-4 h-4" />
                   Cal.com
-                </a>
-              </div>
-
-              <div className="bg-surface rounded-2xl border border-muted/20 p-6">
-                <div className="flex items-center gap-3 mb-3">
-                  <div className="w-10 h-10 rounded-lg bg-royal/10 flex items-center justify-center">
-                    <Mail className="w-5 h-5 text-royal" />
-                  </div>
-                  <h3 className="text-lg font-bold font-heading text-navy">
-                    {t("email.title")}
-                  </h3>
-                </div>
-                <a
-                  href={`mailto:${t("email.address")}`}
-                  className="text-sm text-royal hover:underline"
-                >
-                  {t("email.address")}
                 </a>
               </div>
             </div>
