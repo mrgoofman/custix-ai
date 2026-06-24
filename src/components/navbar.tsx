@@ -86,12 +86,6 @@ export function Navbar() {
           </div>
 
           <Link
-            href="/preise"
-            className="px-3 py-2 text-sm font-medium text-slate-text hover:text-navy rounded-lg hover:bg-snow transition-colors"
-          >
-            {t("pricing")}
-          </Link>
-          <Link
             href="/ueber-uns"
             className="px-3 py-2 text-sm font-medium text-slate-text hover:text-navy rounded-lg hover:bg-snow transition-colors"
           >
@@ -143,13 +137,6 @@ export function Navbar() {
               ))}
             </div>
           ))}
-          <Link
-            href="/preise"
-            className="block px-3 py-2.5 text-sm font-medium text-slate-text hover:text-navy hover:bg-snow rounded-lg"
-            onClick={() => setMobileOpen(false)}
-          >
-            {t("pricing")}
-          </Link>
           <Link
             href="/ueber-uns"
             className="block px-3 py-2.5 text-sm font-medium text-slate-text hover:text-navy hover:bg-snow rounded-lg"

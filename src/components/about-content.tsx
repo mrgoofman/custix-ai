@@ -1,12 +1,12 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { Scale, Code2, Compass } from "lucide-react";
+import Image from "next/image";
 
 const teamMembers = [
-  { key: "legal" as const, Icon: Scale },
-  { key: "tech" as const, Icon: Code2 },
-  { key: "product" as const, Icon: Compass },
+  { key: "laurenz" as const, photo: "/team-laurenz.jpg" },
+  { key: "lorenz" as const, photo: "/team-lorenz.jpg" },
+  { key: "moritz" as const, photo: "/team-moritz.jpg" },
 ];
 
 export function AboutContent() {
@@ -33,18 +33,27 @@ export function AboutContent() {
           </h2>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {teamMembers.map(({ key, Icon }) => (
+            {teamMembers.map(({ key, photo }) => (
               <div
                 key={key}
                 className="bg-surface rounded-2xl border border-muted/20 p-6 text-center"
               >
-                <div className="w-28 h-28 rounded-full mx-auto mb-4 border-2 border-muted/20 bg-navy/[0.03] flex items-center justify-center">
-                  <Icon className="w-12 h-12 text-royal" strokeWidth={1.5} />
+                <div className="w-28 h-28 rounded-full mx-auto mb-4 overflow-hidden border-2 border-muted/20 bg-navy/[0.03]">
+                  <Image
+                    src={photo}
+                    alt={t(`team.${key}.name`)}
+                    width={112}
+                    height={112}
+                    className="w-full h-full object-cover"
+                  />
                 </div>
                 <h3 className="text-lg font-bold font-heading text-navy">
-                  {t(`team.${key}.role`)}
+                  {t(`team.${key}.name`)}
                 </h3>
-                <p className="text-sm text-muted mt-2">
+                <p className="text-sm font-medium text-royal mb-2">
+                  {t(`team.${key}.role`)}
+                </p>
+                <p className="text-sm text-muted">
                   {t(`team.${key}.description`)}
                 </p>
               </div>

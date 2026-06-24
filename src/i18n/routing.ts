@@ -50,5 +50,6 @@ export const routing = defineRouting({
       de: "/agb",
       en: "/terms",
     },
+    "/download": "/download",
   },
 });
