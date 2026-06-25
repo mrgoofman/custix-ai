@@ -15,6 +15,7 @@ interface WaitlistRow {
   status: string;
   email: string | null;
   name: string | null;
+  company: string | null;
   profession: string | null;
   locale: string;
   person_id: string;
@@ -48,7 +49,7 @@ export default async function AdminPage() {
     await db
       .prepare(
         `SELECT w.id, w.status, w.issued_license_id, w.created_at,
-                p.id AS person_id, p.email, p.name, p.profession, p.locale
+                p.id AS person_id, p.email, p.name, p.company, p.profession, p.locale
            FROM waitlist_entry w JOIN person p ON p.id = w.person_id
           ORDER BY w.created_at DESC LIMIT 200`
       )

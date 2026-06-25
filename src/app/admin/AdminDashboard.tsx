@@ -7,6 +7,7 @@ interface WaitlistRow {
   status: string;
   email: string | null;
   name: string | null;
+  company: string | null;
   profession: string | null;
   locale: string;
   person_id: string;
@@ -132,7 +133,8 @@ export function AdminDashboard({
           <table className="w-full text-sm">
             <thead className="bg-slate-50 text-left text-slate-500">
               <tr>
-                <th className="px-3 py-2">Name</th><th className="px-3 py-2">Email</th>
+                <th className="px-3 py-2">Name</th><th className="px-3 py-2">Firma</th>
+                <th className="px-3 py-2">Email</th>
                 <th className="px-3 py-2">Profession</th><th className="px-3 py-2">Status</th>
                 <th className="px-3 py-2">Actions</th>
               </tr>
@@ -141,6 +143,7 @@ export function AdminDashboard({
               {waitlist.map((w) => (
                 <tr key={w.id} className="border-t border-slate-100">
                   <td className="px-3 py-2">{w.name ?? <em className="text-slate-400">anonymized</em>}</td>
+                  <td className="px-3 py-2">{w.company ?? <em className="text-slate-400">—</em>}</td>
                   <td className="px-3 py-2">{w.email ?? "—"}</td>
                   <td className="px-3 py-2">{w.profession ?? "—"}</td>
                   <td className="px-3 py-2">{w.status}</td>

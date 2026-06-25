@@ -249,11 +249,13 @@
     "submit": "Request Access",
     "success": "Thank you!",
     "successSubtext": "We've received your request and will get in touch once we can grant you access.",
-    "businessConfirm": "I am an entrepreneur within the meaning of § 1 UGB and accept the",
     "termsLink": "Terms",
     "and": "and",
     "privacyLink": "Privacy Policy",
-    "businessConfirmSuffix": "."
+    "company": "Company name",
+    "companyPlaceholder": "e.g. Example Law Firm Ltd.",
+    "consentNote": "By submitting you accept our",
+    "consentSuffix": "."
   },
   "cookie": {
     "title": "Cookie Settings",

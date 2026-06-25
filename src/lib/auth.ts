@@ -24,6 +24,14 @@ export function getAuth() {
       expiresIn: 400 * 86400 - 10, // ~400 days (just under the cookie ceiling)
       updateAge: 7 * 86400, // refresh weekly — comfortably inside the window
     },
+    // Company name captured at in-app registration (required in the LicenseGate),
+    // stored on the user row (migration 0003). Lets the admin see the registrant's
+    // firm and confirms a business, not a private individual.
+    user: {
+      additionalFields: {
+        company: { type: "string", required: false, input: true },
+      },
+    },
     emailAndPassword: {
       enabled: true,
       // Password reset via Resend. The {url} is the tokenized reset link Better

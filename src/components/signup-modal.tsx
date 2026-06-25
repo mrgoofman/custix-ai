@@ -29,8 +29,8 @@ export function SignupModal() {
         body: JSON.stringify({
           name: form.get("name"),
           email: form.get("email"),
+          company: form.get("company"),
           profession: form.get("profession"),
-          businessConfirmed: form.get("businessConfirmed") === "on",
           locale,
         }),
       });
@@ -89,6 +89,19 @@ export function SignupModal() {
                 />
               </div>
               <div>
+                <label htmlFor="signup-company" className="block text-sm font-medium text-slate-text mb-1">
+                  {t("company")}
+                </label>
+                <input
+                  id="signup-company"
+                  name="company"
+                  type="text"
+                  required
+                  placeholder={t("companyPlaceholder")}
+                  className="w-full px-4 py-2.5 border border-muted/30 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-royal/30 focus:border-royal"
+                />
+              </div>
+              <div>
                 <label htmlFor="signup-email" className="block text-sm font-medium text-slate-text mb-1">
                   {t("email")}
                 </label>
@@ -119,25 +132,17 @@ export function SignupModal() {
                   <option value="other">{t("professionOptions.other")}</option>
                 </select>
               </div>
-              <label className="flex items-start gap-2.5 text-xs text-muted">
-                <input
-                  type="checkbox"
-                  name="businessConfirmed"
-                  required
-                  className="mt-0.5 h-4 w-4 shrink-0 rounded border-muted/40 text-royal focus:ring-royal/30"
-                />
-                <span>
-                  {t("businessConfirm")}{" "}
-                  <Link href="/agb" className="underline hover:text-navy">
-                    {t("termsLink")}
-                  </Link>{" "}
-                  {t("and")}{" "}
-                  <Link href="/datenschutz" className="underline hover:text-navy">
-                    {t("privacyLink")}
-                  </Link>
-                  {t("businessConfirmSuffix")}
-                </span>
-              </label>
+              <p className="text-xs text-muted">
+                {t("consentNote")}{" "}
+                <Link href="/agb" className="underline hover:text-navy">
+                  {t("termsLink")}
+                </Link>{" "}
+                {t("and")}{" "}
+                <Link href="/datenschutz" className="underline hover:text-navy">
+                  {t("privacyLink")}
+                </Link>
+                {t("consentSuffix")}
+              </p>
               <button
                 type="submit"
                 disabled={loading}

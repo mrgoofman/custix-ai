@@ -21,22 +21,18 @@ function getResend() {
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { name, email, profession, businessConfirmed, locale } = body as {
+    const { name, email, company, profession, locale } = body as {
       name?: string;
       email?: string;
+      company?: string;
       profession?: string;
-      businessConfirmed?: boolean;
       locale?: string;
     };
 
-    if (!name || !email || !profession) {
+    // company is required: the AGB apply to businesses only (§ 1), and the
+    // company name lets the admin see which firm a registrant belongs to.
+    if (!name || !email || !company || !profession) {
       return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
-    }
-
-    // The AGB apply to businesses only (§ 1) — require the entrepreneur + terms
-    // confirmation server-side too, not just via the form checkbox.
-    if (businessConfirmed !== true) {
-      return NextResponse.json({ error: "Business confirmation required" }, { status: 400 });
     }
 
     const db = getDb();
@@ -67,9 +63,9 @@ export async function POST(request: Request) {
     try {
       await db
         .prepare(
-          "INSERT INTO person (id, email, name, profession, locale, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?)"
+          "INSERT INTO person (id, email, name, company, profession, locale, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
         )
-        .bind(personId, email, name, profession, loc, now, now)
+        .bind(personId, email, name, company, profession, loc, now, now)
         .run();
     } catch (e) {
       if (/UNIQUE/i.test(String((e as Error)?.message ?? e))) {
@@ -91,7 +87,7 @@ export async function POST(request: Request) {
       .prepare(
         "INSERT INTO license_event (id, waitlist_id, event_type, metadata, created_at) VALUES (?, ?, 'email_sent', ?, ?)"
       )
-      .bind(newId(), waitlistId, JSON.stringify({ kind: "waitlist_confirmation", profession, businessConfirmed: true, termsAcceptedAt: now }), now)
+      .bind(newId(), waitlistId, JSON.stringify({ kind: "waitlist_confirmation", profession, company }), now)
       .run();
 
     // Confirmation email — "we'll be in touch", NOT a download link.

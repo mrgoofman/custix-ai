@@ -249,11 +249,13 @@
     "submit": "Zugang anfragen",
     "success": "Vielen Dank!",
     "successSubtext": "Wir haben Ihre Anfrage erhalten und melden uns, sobald wir Ihren Zugang freischalten können.",
-    "businessConfirm": "Ich bin Unternehmer i.S.d. § 1 UGB und akzeptiere die",
     "termsLink": "AGB",
     "and": "und",
     "privacyLink": "Datenschutzerklärung",
-    "businessConfirmSuffix": "."
+    "company": "Firmenname",
+    "companyPlaceholder": "z. B. Muster Rechtsanwalts GmbH",
+    "consentNote": "Mit dem Absenden akzeptieren Sie unsere",
+    "consentSuffix": "."
   },
   "cookie": {
     "title": "Cookie-Einstellungen",
