@@ -249,7 +249,11 @@
     "submit": "Request Access",
     "success": "Thank you!",
     "successSubtext": "We've received your request and will get in touch once we can grant you access.",
-    "privacy": "By requesting access, you agree to our Privacy Policy."
+    "businessConfirm": "I am an entrepreneur within the meaning of § 1 UGB and accept the",
+    "termsLink": "Terms",
+    "and": "and",
+    "privacyLink": "Privacy Policy",
+    "businessConfirmSuffix": "."
   },
   "cookie": {
     "title": "Cookie Settings",

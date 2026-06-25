@@ -30,6 +30,7 @@ export function SignupModal() {
           name: form.get("name"),
           email: form.get("email"),
           profession: form.get("profession"),
+          businessConfirmed: form.get("businessConfirmed") === "on",
           locale,
         }),
       });
@@ -118,6 +119,25 @@ export function SignupModal() {
                   <option value="other">{t("professionOptions.other")}</option>
                 </select>
               </div>
+              <label className="flex items-start gap-2.5 text-xs text-muted">
+                <input
+                  type="checkbox"
+                  name="businessConfirmed"
+                  required
+                  className="mt-0.5 h-4 w-4 shrink-0 rounded border-muted/40 text-royal focus:ring-royal/30"
+                />
+                <span>
+                  {t("businessConfirm")}{" "}
+                  <Link href="/agb" className="underline hover:text-navy">
+                    {t("termsLink")}
+                  </Link>{" "}
+                  {t("and")}{" "}
+                  <Link href="/datenschutz" className="underline hover:text-navy">
+                    {t("privacyLink")}
+                  </Link>
+                  {t("businessConfirmSuffix")}
+                </span>
+              </label>
               <button
                 type="submit"
                 disabled={loading}
@@ -125,12 +145,6 @@ export function SignupModal() {
               >
                 {loading ? "..." : t("submit")}
               </button>
-              <p className="text-xs text-muted text-center">
-                {t("privacy")}{" "}
-                <Link href="/datenschutz" className="underline hover:text-navy">
-                  →
-                </Link>
-              </p>
             </form>
           </>
         )}

@@ -21,15 +21,22 @@ function getResend() {
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { name, email, profession, locale } = body as {
+    const { name, email, profession, businessConfirmed, locale } = body as {
       name?: string;
       email?: string;
       profession?: string;
+      businessConfirmed?: boolean;
       locale?: string;
     };
 
     if (!name || !email || !profession) {
       return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
+    }
+
+    // The AGB apply to businesses only (§ 1) — require the entrepreneur + terms
+    // confirmation server-side too, not just via the form checkbox.
+    if (businessConfirmed !== true) {
+      return NextResponse.json({ error: "Business confirmation required" }, { status: 400 });
     }
 
     const db = getDb();
@@ -84,7 +91,7 @@ export async function POST(request: Request) {
       .prepare(
         "INSERT INTO license_event (id, waitlist_id, event_type, metadata, created_at) VALUES (?, ?, 'email_sent', ?, ?)"
       )
-      .bind(newId(), waitlistId, JSON.stringify({ kind: "waitlist_confirmation", profession }), now)
+      .bind(newId(), waitlistId, JSON.stringify({ kind: "waitlist_confirmation", profession, businessConfirmed: true, termsAcceptedAt: now }), now)
       .run();
 
     // Confirmation email — "we'll be in touch", NOT a download link.

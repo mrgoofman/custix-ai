@@ -249,7 +249,11 @@
     "submit": "Zugang anfragen",
     "success": "Vielen Dank!",
     "successSubtext": "Wir haben Ihre Anfrage erhalten und melden uns, sobald wir Ihren Zugang freischalten können.",
-    "privacy": "Mit der Anfrage stimmen Sie unserer Datenschutzerklärung zu."
+    "businessConfirm": "Ich bin Unternehmer i.S.d. § 1 UGB und akzeptiere die",
+    "termsLink": "AGB",
+    "and": "und",
+    "privacyLink": "Datenschutzerklärung",
+    "businessConfirmSuffix": "."
   },
   "cookie": {
     "title": "Cookie-Einstellungen",
