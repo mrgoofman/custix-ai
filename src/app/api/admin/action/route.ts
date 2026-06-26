@@ -29,6 +29,8 @@ export async function POST(request: Request) {
     confirmEmail?: string;
     email?: string;
     name?: string;
+    company?: string;
+    profession?: string;
     locale?: string;
   };
 
@@ -40,7 +42,14 @@ export async function POST(request: Request) {
         return NextResponse.json(await rejectWaitlist(admin.id, must(body.waitlistId)));
       case "send_key":
         return NextResponse.json(
-          await sendKeyToEmail(admin.id, must(body.email), body.name ?? "", body.locale ?? "de")
+          await sendKeyToEmail(
+            admin.id,
+            must(body.email),
+            body.name ?? "",
+            must(body.company),
+            must(body.profession),
+            body.locale ?? "de"
+          )
         );
       case "resend_key":
         return NextResponse.json(await resendKeyEmail(admin.id, must(body.licenseId)));

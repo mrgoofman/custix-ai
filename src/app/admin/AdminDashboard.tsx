@@ -49,6 +49,8 @@ export function AdminDashboard({
   const [msg, setMsg] = useState<string | null>(null);
   const [sendEmail, setSendEmail] = useState("");
   const [sendName, setSendName] = useState("");
+  const [sendCompany, setSendCompany] = useState("");
+  const [sendProfession, setSendProfession] = useState("");
 
   async function run(id: string, payload: Record<string, unknown>, confirmText?: string) {
     if (confirmText && !window.confirm(confirmText)) return;
@@ -86,19 +88,31 @@ export function AdminDashboard({
       {msg && <div className="mb-6 rounded-lg bg-slate-100 px-4 py-3 text-sm">{msg}</div>}
 
       <section className="mb-12 rounded-lg border border-slate-200 p-4">
-        <h2 className="text-lg font-semibold mb-3">Send a beta key</h2>
+        <h2 className="text-lg font-semibold mb-1">Send a beta key</h2>
+        <p className="text-xs text-slate-500 mb-3">
+          Creates the person exactly as a website request would (name, company,
+          profession), approves it and emails the key.
+        </p>
         <form
           className="flex flex-wrap items-end gap-3"
           onSubmit={async (e) => {
             e.preventDefault();
-            if (!sendEmail) return;
-            await run("send_key", { action: "send_key", email: sendEmail, name: sendName });
+            if (!sendEmail || !sendCompany || !sendProfession) return;
+            await run("send_key", {
+              action: "send_key",
+              email: sendEmail,
+              name: sendName,
+              company: sendCompany,
+              profession: sendProfession,
+            });
             setSendEmail("");
             setSendName("");
+            setSendCompany("");
+            setSendProfession("");
           }}
         >
           <div>
-            <label className="block text-xs text-slate-500 mb-1">Email</label>
+            <label className="block text-xs text-slate-500 mb-1">Email *</label>
             <input
               type="email"
               required
@@ -109,13 +123,41 @@ export function AdminDashboard({
             />
           </div>
           <div>
-            <label className="block text-xs text-slate-500 mb-1">Name (optional)</label>
+            <label className="block text-xs text-slate-500 mb-1">Name</label>
             <input
               type="text"
               value={sendName}
               onChange={(e) => setSendName(e.target.value)}
               className="rounded border border-slate-300 px-3 py-2 text-sm"
             />
+          </div>
+          <div>
+            <label className="block text-xs text-slate-500 mb-1">Firma *</label>
+            <input
+              type="text"
+              required
+              value={sendCompany}
+              onChange={(e) => setSendCompany(e.target.value)}
+              className="rounded border border-slate-300 px-3 py-2 text-sm"
+              placeholder="Muster Rechtsanwalts GmbH"
+            />
+          </div>
+          <div>
+            <label className="block text-xs text-slate-500 mb-1">Beruf *</label>
+            <select
+              required
+              value={sendProfession}
+              onChange={(e) => setSendProfession(e.target.value)}
+              className="rounded border border-slate-300 px-3 py-2 text-sm bg-white"
+            >
+              <option value="">— wählen —</option>
+              <option value="lawyer">Anwalt / Anwältin</option>
+              <option value="taxAdvisor">Steuerberater:in</option>
+              <option value="hr">HR / Personal</option>
+              <option value="healthcare">Gesundheitswesen</option>
+              <option value="insurance">Versicherung</option>
+              <option value="other">Sonstiges</option>
+            </select>
           </div>
           <button
             type="submit"
