@@ -9,7 +9,8 @@
   "compatibility_flags": ["nodejs_compat"],
   "vars": {
     "NEXT_PUBLIC_BASE_URL": "https://custix.ai",
-    "BETTER_AUTH_URL": "https://custix.ai"
+    "BETTER_AUTH_URL": "https://custix.ai",
+    "NEXT_PUBLIC_GA4_ID": "G-ZLDD4PRB4L"
   },
   "d1_databases": [
     {
