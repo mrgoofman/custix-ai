@@ -6,7 +6,7 @@
   "pageMeta": {
     "home": {
       "title": "custix – Anonymize Documents & Use AI Safely",
-      "description": "Anonymize sensitive documents in seconds – 100% local, GDPR-compliant. Your documents never leave your computer. Use ChatGPT & co. safely. Start your 14-day free trial."
+      "description": "Anonymize sensitive documents in seconds – 100% local, GDPR-compliant. Your documents never leave your computer. Use ChatGPT & co. safely. Request beta access now."
     },
     "lawyers": {
       "title": "Document Anonymization for Lawyers | custix",
@@ -18,7 +18,7 @@
     },
     "hr": {
       "title": "Data Anonymization for HR & Recruiting | custix",
-      "description": "Anonymize applicant and employee data and use AI safely in HR. GDPR-compliant, 100% local – your documents never leave your computer. Start your 14-day free trial."
+      "description": "Anonymize applicant and employee data and use AI safely in HR. GDPR-compliant, 100% local – your documents never leave your computer. Request beta access now."
     },
     "healthcare": {
       "title": "Data Anonymization for Healthcare | custix",
@@ -26,11 +26,11 @@
     },
     "insurance": {
       "title": "Data Anonymization for Insurance | custix",
-      "description": "Anonymize customer data and use AI safely in insurance. GDPR-compliant, 100% local – your documents never leave your computer. Start your 14-day free trial."
+      "description": "Anonymize customer data and use AI safely in insurance. GDPR-compliant, 100% local – your documents never leave your computer. Request beta access now."
     },
     "pricing": {
-      "title": "Pricing – custix from €49/month | 14-Day Free Trial",
-      "description": "Transparent custix pricing. From €49/month per seat, team plans available. 14-day free trial – no credit card required."
+      "title": "custix – Closed Beta | Request Access Now",
+      "description": "custix is currently in a closed beta and free of charge. Request your personal beta access."
     },
     "about": {
       "title": "About Us – The Team Behind custix",
@@ -58,7 +58,7 @@
     "pricing": "Pricing",
     "about": "About",
     "download": "Download",
-    "cta": "Start Free Trial",
+    "cta": "Beta Access",
     "forYourIndustry": "For Your Industry",
     "moreIndustries": "More Industries",
     "lawyers": "Lawyers",
@@ -71,7 +71,7 @@
     "headline": "Anonymize Documents in 5 Seconds",
     "subheadline": "Use AI Safely with custix",
     "description": "Use ChatGPT, Claude & more. without risking client data. custix anonymizes your documents locally in seconds and re-identifies AI responses automatically.",
-    "cta": "Start 14-Day Free Trial",
+    "cta": "Get Beta Access",
     "secondaryCta": "See How It Works"
   },
   "trust": {
@@ -165,7 +165,7 @@
       },
       {
         "q": "How much does custix cost?",
-        "a": "Start with a free 14-day trial. Plans start at €49/month for individual users."
+        "a": "During the beta phase custix is free. Access is granted via a personal license key that we send you after your request."
       },
       {
         "q": "How does re-identification work?",
@@ -318,7 +318,7 @@
           }
         ]
       },
-      "cta": "Start 14-Day Free Trial"
+      "cta": "Get Beta Access"
     },
     "taxAdvisors": {
       "h1": "Anonymize Client Data. Use AI Safely as a Tax Advisor",
@@ -355,7 +355,7 @@
           }
         ]
       },
-      "cta": "Start 14-Day Free Trial"
+      "cta": "Get Beta Access"
     },
     "hr": {
       "h1": "Anonymize Applicant Data. Use AI in Recruiting, GDPR-Compliant",
@@ -392,7 +392,7 @@
           }
         ]
       },
-      "cta": "Start 14-Day Free Trial"
+      "cta": "Get Beta Access"
     },
     "healthcare": {
       "h1": "Anonymize Patient Data. Use AI Safely in Healthcare",
@@ -429,7 +429,7 @@
           }
         ]
       },
-      "cta": "Start 14-Day Free Trial"
+      "cta": "Get Beta Access"
     },
     "insurance": {
       "h1": "Anonymize Claims Reports. Use AI Safely in Insurance",
@@ -466,7 +466,7 @@
           }
         ]
       },
-      "cta": "Start 14-Day Free Trial"
+      "cta": "Get Beta Access"
     }
   },
   "download": {

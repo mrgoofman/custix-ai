@@ -6,31 +6,31 @@
   "pageMeta": {
     "home": {
       "title": "custix – Dokumente anonymisieren & KI sicher nutzen",
-      "description": "Anonymisieren Sie sensible Dokumente in Sekunden – 100 % lokal, DSGVO-konform. Ihre Dokumente verlassen nie Ihren Rechner. Nutzen Sie ChatGPT & Co. sicher. 14 Tage kostenlos testen."
+      "description": "Anonymisieren Sie sensible Dokumente in Sekunden – 100 % lokal, DSGVO-konform. Ihre Dokumente verlassen nie Ihren Rechner. Nutzen Sie ChatGPT & Co. sicher. Jetzt Beta-Zugang anfragen."
     },
     "lawyers": {
       "title": "Anonymisierung für Anwälte – KI DSGVO-konform nutzen | custix",
-      "description": "Mandantendaten anonymisieren und KI wie ChatGPT als Anwalt sicher nutzen. Verschwiegenheitspflicht nach § 9 RAO wahren, 100 % lokal. Jetzt testen."
+      "description": "Mandantendaten anonymisieren und KI wie ChatGPT als Anwalt sicher nutzen. Verschwiegenheitspflicht nach § 9 RAO wahren, 100 % lokal. Jetzt Beta-Zugang anfragen."
     },
     "taxAdvisors": {
       "title": "Anonymisierung für Steuerberater – KI sicher nutzen | custix",
-      "description": "Mandantendaten anonymisieren und KI sicher nutzen als Steuerberater. Verschwiegenheitspflicht nach § 80 WTBG 2017 wahren, 100 % lokal. Jetzt testen."
+      "description": "Mandantendaten anonymisieren und KI sicher nutzen als Steuerberater. Verschwiegenheitspflicht nach § 80 WTBG 2017 wahren, 100 % lokal. Jetzt Beta-Zugang anfragen."
     },
     "hr": {
       "title": "Anonymisierung für HR & Recruiting | custix",
-      "description": "Bewerber- und Mitarbeiterdaten anonymisieren und KI im HR sicher nutzen. DSGVO-konform, 100 % lokal – Ihre Dokumente verlassen nie Ihren Rechner. 14 Tage kostenlos testen."
+      "description": "Bewerber- und Mitarbeiterdaten anonymisieren und KI im HR sicher nutzen. DSGVO-konform, 100 % lokal – Ihre Dokumente verlassen nie Ihren Rechner. Jetzt Beta-Zugang anfragen."
     },
     "healthcare": {
       "title": "Anonymisierung für das Gesundheitswesen | custix",
-      "description": "Patientendaten anonymisieren und KI im Gesundheitswesen sicher nutzen. Ärztliche Schweigepflicht und DSGVO wahren, 100 % lokal. Jetzt testen."
+      "description": "Patientendaten anonymisieren und KI im Gesundheitswesen sicher nutzen. Ärztliche Schweigepflicht und DSGVO wahren, 100 % lokal. Jetzt Beta-Zugang anfragen."
     },
     "insurance": {
       "title": "Anonymisierung für Versicherungen | custix",
-      "description": "Kundendaten anonymisieren und KI bei Versicherungen sicher nutzen. DSGVO-konform, 100 % lokal – Ihre Dokumente verlassen nie Ihren Rechner. 14 Tage kostenlos testen."
+      "description": "Kundendaten anonymisieren und KI bei Versicherungen sicher nutzen. DSGVO-konform, 100 % lokal – Ihre Dokumente verlassen nie Ihren Rechner. Jetzt Beta-Zugang anfragen."
     },
     "pricing": {
-      "title": "Preise – custix ab 49 €/Monat | 14 Tage kostenlos testen",
-      "description": "Transparente Preise für custix. Ab 49 €/Monat pro Platz, Team-Tarife verfügbar. 14 Tage kostenlos testen – ohne Kreditkarte."
+      "title": "custix – Geschlossene Beta | Jetzt Zugang anfragen",
+      "description": "custix befindet sich in einer geschlossenen Beta-Phase und ist derzeit kostenlos. Fragen Sie Ihren persönlichen Beta-Zugang an."
     },
     "about": {
       "title": "Über uns – das Team hinter custix",
@@ -58,7 +58,7 @@
     "pricing": "Preise",
     "about": "Über uns",
     "download": "Download",
-    "cta": "Kostenlos testen",
+    "cta": "Beta-Zugang",
     "forYourIndustry": "Für Ihre Branche",
     "moreIndustries": "Weitere Branchen",
     "lawyers": "Anwälte",
@@ -71,7 +71,7 @@
     "headline": "Dokumente anonymisieren in 5 Sekunden",
     "subheadline": "KI sicher nutzen mit custix",
     "description": "Nutzen Sie ChatGPT, Claude & Co.. ohne Mandantendaten zu gefährden. custix anonymisiert Ihre Dokumente lokal in Sekunden und re-identifiziert KI-Antworten automatisch.",
-    "cta": "14 Tage kostenlos testen",
+    "cta": "Jetzt Beta-Zugang erhalten",
     "secondaryCta": "So funktioniert's"
   },
   "trust": {
@@ -165,7 +165,7 @@
       },
       {
         "q": "Was kostet custix?",
-        "a": "Starten Sie mit einer kostenlosen 14-Tage-Testversion. Danach ab 49€/Monat für Einzelplätze."
+        "a": "Während der Beta-Phase ist custix kostenlos. Der Zugang erfolgt über einen persönlichen Lizenzschlüssel, den wir Ihnen nach Ihrer Anfrage zusenden."
       },
       {
         "q": "Wie funktioniert die Re-Identifizierung?",
@@ -318,7 +318,7 @@
           }
         ]
       },
-      "cta": "14 Tage kostenlos testen"
+      "cta": "Jetzt Beta-Zugang erhalten"
     },
     "taxAdvisors": {
       "h1": "Mandantendaten anonymisieren. KI sicher nutzen als Steuerberater",
@@ -355,7 +355,7 @@
           }
         ]
       },
-      "cta": "14 Tage kostenlos testen"
+      "cta": "Jetzt Beta-Zugang erhalten"
     },
     "hr": {
       "h1": "Bewerberdaten anonymisieren. KI datenschutzkonform im Recruiting nutzen",
@@ -392,7 +392,7 @@
           }
         ]
       },
-      "cta": "14 Tage kostenlos testen"
+      "cta": "Jetzt Beta-Zugang erhalten"
     },
     "healthcare": {
       "h1": "Patientendaten anonymisieren. KI sicher nutzen im Gesundheitswesen",
@@ -429,7 +429,7 @@
           }
         ]
       },
-      "cta": "14 Tage kostenlos testen"
+      "cta": "Jetzt Beta-Zugang erhalten"
     },
     "insurance": {
       "h1": "Schadensberichte anonymisieren. KI sicher nutzen in der Versicherung",
@@ -466,12 +466,12 @@
           }
         ]
       },
-      "cta": "14 Tage kostenlos testen"
+      "cta": "Jetzt Beta-Zugang erhalten"
     }
   },
   "download": {
     "title": "custix für Anwälte",
-    "subtitle": "Kostenfrei testen",
+    "subtitle": "Beta-Zugang erhalten",
     "version": "Version",
     "published": "veröffentlicht am",
     "downloadButton": "Download",
