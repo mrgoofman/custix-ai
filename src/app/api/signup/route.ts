@@ -9,6 +9,10 @@ function getResend() {
   return new Resend(key);
 }
 
+// Internal address that gets a heads-up for every new beta request so an admin
+// knows to issue a license key. Kept here (not env) for now — change in one spot.
+const ADMIN_NOTIFY_TO = "lorenz.kutschka74@gmail.com";
+
 /**
  * Beta WAITLIST capture (Phase 1). Replaces the legacy self-serve download flow:
  * no download link is emitted — access is granted only when an admin approves the
@@ -100,11 +104,53 @@ export async function POST(request: Request) {
       html: buildWaitlistEmailHtml(name, loc),
     });
 
+    // Internal heads-up so an admin knows to issue a key. Best-effort: a failure
+    // here must NOT fail the user's request, so it is caught and only logged.
+    try {
+      await resend?.emails.send({
+        from: "custix.ai <noreply@custix.ai>",
+        to: ADMIN_NOTIFY_TO,
+        replyTo: email,
+        subject: `Neue Beta-Anfrage: ${company} (${name})`,
+        html: buildAdminNotifyHtml({ name, email, company, profession }),
+      });
+    } catch (e) {
+      console.error("Admin notify email failed (non-fatal):", e);
+    }
+
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error("Waitlist signup error:", error);
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }
+}
+
+/** Internal notification (German, to the admin) for a new beta request. */
+function buildAdminNotifyHtml(d: { name: string; email: string; company: string; profession: string }): string {
+  const row = (label: string, value: string) =>
+    `<tr><td style="padding:6px 12px 6px 0;font-size:14px;color:#64748b;">${label}</td><td style="padding:6px 0;font-size:14px;color:#1e293b;font-weight:600;">${value}</td></tr>`;
+  return `
+<!DOCTYPE html>
+<html lang="de">
+<head><meta charset="UTF-8"></head>
+<body style="margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;background-color:#f8fafc;">
+  <table role="presentation" style="width:100%;border-collapse:collapse;"><tr><td align="center" style="padding:40px 20px;">
+    <table role="presentation" style="max-width:520px;width:100%;border-collapse:collapse;">
+      <tr><td style="background-color:#ffffff;border-radius:12px;padding:32px;box-shadow:0 1px 3px rgba(0,0,0,0.1);">
+        <p style="margin:0 0 8px;font-size:18px;font-weight:700;color:#1e293b;">Neue Beta-Anfrage</p>
+        <p style="margin:0 0 24px;font-size:14px;color:#475569;">Bitte im Admin-Panel einen Lizenzschlüssel freigeben.</p>
+        <table role="presentation" style="border-collapse:collapse;margin-bottom:24px;">
+          ${row("Name", d.name)}
+          ${row("Firma", d.company)}
+          ${row("E-Mail", d.email)}
+          ${row("Beruf", d.profession)}
+        </table>
+        <a href="https://custix.ai/admin" style="display:inline-block;background:#2563eb;color:#fff;text-decoration:none;font-weight:600;font-size:14px;padding:12px 24px;border-radius:8px;">Zum Admin-Panel</a>
+      </td></tr>
+    </table>
+  </td></tr></table>
+</body>
+</html>`.trim();
 }
 
 function buildWaitlistEmailHtml(name: string, locale: string): string {
