@@ -22,6 +22,14 @@ interface LicenseRow {
   expires_at: number | null;
   last_validated_at: number | null;
 }
+interface FeedbackRow {
+  id: string;
+  user_email: string | null;
+  rating: number;
+  comment: string | null;
+  app_version: string | null;
+  created_at: number;
+}
 
 async function callAction(payload: Record<string, unknown>) {
   const res = await fetch("/api/admin/action", {
@@ -40,10 +48,12 @@ export function AdminDashboard({
   adminEmail,
   waitlist,
   licenses,
+  feedback,
 }: {
   adminEmail: string;
   waitlist: WaitlistRow[];
   licenses: LicenseRow[];
+  feedback: FeedbackRow[];
 }) {
   const [busy, setBusy] = useState<string | null>(null);
   const [msg, setMsg] = useState<string | null>(null);
@@ -167,6 +177,39 @@ export function AdminDashboard({
             Mint &amp; email key
           </button>
         </form>
+      </section>
+
+      <section className="mb-12">
+        <h2 className="text-lg font-semibold mb-3">Feedback ({feedback.length})</h2>
+        {feedback.length === 0 ? (
+          <p className="text-sm text-slate-400">Noch kein Feedback eingegangen.</p>
+        ) : (
+          <div className="overflow-x-auto rounded-lg border border-slate-200">
+            <table className="w-full text-sm">
+              <thead className="bg-slate-50 text-left text-slate-500">
+                <tr>
+                  <th className="px-3 py-2">Datum</th><th className="px-3 py-2">Bewertung</th>
+                  <th className="px-3 py-2">Kommentar</th><th className="px-3 py-2">Nutzer</th>
+                  <th className="px-3 py-2">Version</th>
+                </tr>
+              </thead>
+              <tbody>
+                {feedback.map((f) => (
+                  <tr key={f.id} className="border-t border-slate-100 align-top">
+                    <td className="px-3 py-2 whitespace-nowrap">{fmt(f.created_at)}</td>
+                    <td className="px-3 py-2 whitespace-nowrap" title={`${f.rating}/5`}>
+                      <span className="text-amber-500">{"★".repeat(f.rating)}</span>
+                      <span className="text-slate-300">{"★".repeat(5 - f.rating)}</span>
+                    </td>
+                    <td className="px-3 py-2 max-w-md whitespace-pre-wrap">{f.comment ?? <em className="text-slate-400">—</em>}</td>
+                    <td className="px-3 py-2 whitespace-nowrap">{f.user_email ?? "—"}</td>
+                    <td className="px-3 py-2 whitespace-nowrap text-slate-500">{f.app_version ?? "—"}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
       </section>
 
       <section className="mb-12">

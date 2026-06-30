@@ -33,6 +33,15 @@ interface LicenseRow {
   last_validated_at: number | null;
 }
 
+interface FeedbackRow {
+  id: string;
+  user_email: string | null;
+  rating: number;
+  comment: string | null;
+  app_version: string | null;
+  created_at: number;
+}
+
 export default async function AdminPage() {
   // requireAdmin needs the request headers (Better Auth session).
   const reqHeaders = await headers();
@@ -65,5 +74,21 @@ export default async function AdminPage() {
       .all<LicenseRow>()
   ).results;
 
-  return <AdminDashboard adminEmail={admin.email} waitlist={waitlist} licenses={licenses} />;
+  const feedback = (
+    await db
+      .prepare(
+        `SELECT id, user_email, rating, comment, app_version, created_at
+           FROM feedback ORDER BY created_at DESC LIMIT 200`
+      )
+      .all<FeedbackRow>()
+  ).results;
+
+  return (
+    <AdminDashboard
+      adminEmail={admin.email}
+      waitlist={waitlist}
+      licenses={licenses}
+      feedback={feedback}
+    />
+  );
 }
