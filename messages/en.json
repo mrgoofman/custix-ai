@@ -234,7 +234,7 @@
   },
   "signup": {
     "title": "Request Beta Access",
-    "subtitle": "custix is in a closed beta. Leave your details and we'll be in touch.",
+    "subtitle": "custix is in a closed beta. Sign up and you'll receive your access by email right away.",
     "name": "Name",
     "email": "Email",
     "profession": "Profession",
@@ -247,8 +247,8 @@
       "other": "Other"
     },
     "submit": "Request Access",
-    "success": "Thank you!",
-    "successSubtext": "We've received your request and will get in touch once we can grant you access.",
+    "success": "Access sent!",
+    "successSubtext": "We've just emailed you your license key. Please also check your spam folder.",
     "termsLink": "Terms",
     "and": "and",
     "privacyLink": "Privacy Policy",
