@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { Resend } from "resend";
 import { getDb, nowEpoch } from "@/lib/db";
 import { newId } from "@/lib/license-key";
+import { autoApproveWaitlist } from "@/lib/admin-actions";
 
 function getResend() {
   const key = process.env.RESEND_API_KEY;
@@ -91,27 +92,25 @@ export async function POST(request: Request) {
       .prepare(
         "INSERT INTO license_event (id, waitlist_id, event_type, metadata, created_at) VALUES (?, ?, 'email_sent', ?, ?)"
       )
-      .bind(newId(), waitlistId, JSON.stringify({ kind: "waitlist_confirmation", profession, company }), now)
+      .bind(newId(), waitlistId, JSON.stringify({ kind: "auto_approved", profession, company }), now)
       .run();
 
-    // Confirmation email — "we'll be in touch", NOT a download link.
-    const resend = getResend();
-    const isDE = loc === "de";
-    await resend?.emails.send({
-      from: "custix.ai <noreply@custix.ai>",
-      to: email,
-      subject: isDE ? "Ihre Anfrage für den custix Beta-Zugang" : "Your custix beta access request",
-      html: buildWaitlistEmailHtml(name, loc),
-    });
+    // Auto-approve: mint a license + email the access key immediately, instead
+    // of the old "we'll be in touch" flow. The requester gets their key right
+    // away; no manual admin approval needed.
+    await autoApproveWaitlist(waitlistId).catch((e) =>
+      console.error("signup: auto-approve failed (admin can approve manually):", e)
+    );
 
-    // Internal heads-up so an admin knows to issue a key. Best-effort: a failure
-    // here must NOT fail the user's request, so it is caught and only logged.
+    // Internal heads-up so an admin sees the new (already-approved) request.
+    // Best-effort: a failure here must NOT fail the user's request.
+    const resend = getResend();
     try {
       await resend?.emails.send({
         from: "custix.ai <noreply@custix.ai>",
         to: ADMIN_NOTIFY_TO,
         replyTo: email,
-        subject: `Neue Beta-Anfrage: ${company} (${name})`,
+        subject: `Beta-Zugang automatisch freigegeben: ${company} (${name})`,
         html: buildAdminNotifyHtml({ name, email, company, profession }),
       });
     } catch (e) {
@@ -137,8 +136,8 @@ function buildAdminNotifyHtml(d: { name: string; email: string; company: string;
   <table role="presentation" style="width:100%;border-collapse:collapse;"><tr><td align="center" style="padding:40px 20px;">
     <table role="presentation" style="max-width:520px;width:100%;border-collapse:collapse;">
       <tr><td style="background-color:#ffffff;border-radius:12px;padding:32px;box-shadow:0 1px 3px rgba(0,0,0,0.1);">
-        <p style="margin:0 0 8px;font-size:18px;font-weight:700;color:#1e293b;">Neue Beta-Anfrage</p>
-        <p style="margin:0 0 24px;font-size:14px;color:#475569;">Bitte im Admin-Panel einen Lizenzschlüssel freigeben.</p>
+        <p style="margin:0 0 8px;font-size:18px;font-weight:700;color:#1e293b;">Neue Beta-Anfrage – automatisch freigegeben</p>
+        <p style="margin:0 0 24px;font-size:14px;color:#475569;">Diese Person hat den Lizenzschlüssel bereits automatisch per E-Mail erhalten. Im Admin-Panel könnt ihr den Zugang bei Bedarf widerrufen.</p>
         <table role="presentation" style="border-collapse:collapse;margin-bottom:24px;">
           ${row("Name", d.name)}
           ${row("Firma", d.company)}
@@ -149,47 +148,6 @@ function buildAdminNotifyHtml(d: { name: string; email: string; company: string;
       </td></tr>
     </table>
   </td></tr></table>
-</body>
-</html>`.trim();
-}
-
-function buildWaitlistEmailHtml(name: string, locale: string): string {
-  const isDE = locale === "de";
-  return `
-<!DOCTYPE html>
-<html lang="${locale}">
-<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"></head>
-<body style="margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;background-color:#f8fafc;">
-  <table role="presentation" style="width:100%;border-collapse:collapse;">
-    <tr><td align="center" style="padding:40px 20px;">
-      <table role="presentation" style="max-width:560px;width:100%;border-collapse:collapse;">
-        <tr><td align="center" style="padding-bottom:32px;">
-          <img src="https://custix.ai/logo-custix.png" alt="custix.ai" width="120" style="display:block;">
-        </td></tr>
-        <tr><td style="background-color:#ffffff;border-radius:12px;padding:40px;box-shadow:0 1px 3px rgba(0,0,0,0.1);">
-          <p style="margin:0 0 24px;font-size:16px;line-height:1.6;color:#1e293b;">
-            ${isDE ? `Guten Tag ${name},` : `Hello ${name},`}
-          </p>
-          <p style="margin:0 0 24px;font-size:16px;line-height:1.6;color:#475569;">
-            ${
-              isDE
-                ? "vielen Dank für Ihr Interesse an custix. Wir befinden uns aktuell in einer geschlossenen Beta-Phase. Wir haben Ihre Anfrage erhalten und melden uns bei Ihnen, sobald wir Ihnen einen Zugang freischalten können."
-                : "thank you for your interest in custix. We are currently in a closed beta phase. We have received your request and will get in touch as soon as we can grant you access."
-            }
-          </p>
-          <p style="margin:0;font-size:16px;line-height:1.6;color:#1e293b;">
-            ${isDE ? "Mit freundlichen Grüßen," : "Best regards,"}<br>
-            ${isDE ? "Das custix.ai Team" : "The custix.ai Team"}
-          </p>
-        </td></tr>
-        <tr><td align="center" style="padding-top:32px;">
-          <p style="margin:0;font-size:13px;color:#94a3b8;">
-            custix.ai – ${isDE ? "Dokumente anonymisieren. KI sicher nutzen." : "Anonymize documents. Use AI safely."}
-          </p>
-        </td></tr>
-      </table>
-    </td></tr>
-  </table>
 </body>
 </html>`.trim();
 }

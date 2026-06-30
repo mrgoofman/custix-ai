@@ -227,6 +227,77 @@ export async function sendKeyToEmail(
   return { ok: true, key };
 }
 
+/**
+ * Auto-approve a freshly-created waitlist entry (no admin in the loop): mint an
+ * open-ended beta license, mark the entry approved, audit with a SYSTEM actor,
+ * then email the key. Used by the public signup route so a requester gets their
+ * access key immediately. Mirrors approveWaitlist but needs no adminUserId.
+ * Best-effort email (caught) — a mail failure still leaves a valid, resendable
+ * license so the request is never lost.
+ */
+export async function autoApproveWaitlist(
+  waitlistId: string
+): Promise<{ ok: boolean; key?: string; error?: string }> {
+  const db = getDb();
+  const now = nowEpoch();
+
+  const entry = await db
+    .prepare(
+      `SELECT w.id, w.person_id, w.issued_license_id, p.email, p.name, p.locale
+         FROM waitlist_entry w JOIN person p ON p.id = w.person_id WHERE w.id = ?`
+    )
+    .bind(waitlistId)
+    .first<{
+      id: string;
+      person_id: string;
+      issued_license_id: string | null;
+      email: string | null;
+      name: string | null;
+      locale: string;
+    }>();
+  if (!entry) return { ok: false, error: "waitlist entry not found" };
+  if (entry.issued_license_id) return { ok: false, error: "already approved" };
+  if (!entry.email) return { ok: false, error: "person has no email" };
+
+  let licenseId = newId();
+  let key = generateLicenseKey();
+  for (let attempt = 0; attempt < 3; attempt++) {
+    try {
+      await db.batch([
+        db
+          .prepare(
+            "INSERT INTO license (id, license_key, type, status, expires_at, grace_seconds, issued_by, source_waitlist_id, created_at, updated_at) VALUES (?, ?, 'beta', 'active', NULL, ?, NULL, ?, ?, ?)"
+          )
+          .bind(licenseId, key, GRACE.beta, waitlistId, now, now),
+        db
+          .prepare(
+            "UPDATE waitlist_entry SET status = 'approved', decided_at = ?, issued_license_id = ?, updated_at = ? WHERE id = ?"
+          )
+          .bind(now, licenseId, now, waitlistId),
+      ]);
+      break;
+    } catch (e) {
+      const msg = String((e as Error)?.message ?? e);
+      if (/UNIQUE/i.test(msg) && /license_key/i.test(msg) && attempt < 2) {
+        licenseId = newId();
+        key = generateLicenseKey();
+        continue;
+      }
+      return { ok: false, error: msg };
+    }
+  }
+
+  // SYSTEM actor (no admin user) — distinguishes auto-approvals in the audit log.
+  await audit("system", "waitlist_approved", { waitlistId, personId: entry.person_id, licenseId, detail: { auto: true } });
+  await audit("system", "license_issued", { licenseId, waitlistId, personId: entry.person_id, detail: { auto: true } });
+
+  await sendKeyEmail(entry.email, entry.name ?? "", key, entry.locale).catch((e) =>
+    console.error("autoApprove: key email failed (resend available):", e)
+  );
+
+  return { ok: true, key };
+}
+
 export async function resendKeyEmail(
   adminUserId: string,
   licenseId: string
