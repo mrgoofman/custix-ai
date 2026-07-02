@@ -42,6 +42,9 @@ const allowed = (key: string) => ALLOWED_PREFIXES.some((p) => key.startsWith(p))
 function contentTypeFor(key: string): string {
   if (key.endsWith(".json")) return "application/json";
   if (key.endsWith(".txt")) return "text/plain; charset=utf-8";
+  // module loaders (ort's .mjs) — dynamic import() enforces a JS MIME type
+  if (key.endsWith(".mjs") || key.endsWith(".js")) return "text/javascript; charset=utf-8";
+  if (key.endsWith(".wasm")) return "application/wasm";
   return "application/octet-stream";
 }
 
