@@ -44,7 +44,7 @@ export function getAuth() {
         }
         const resend = new Resend(apiKey);
         await resend.emails.send({
-          from: "custix.ai <noreply@custix.ai>",
+          from: "custix.ai <info@custix.ai>",
           to: user.email,
           subject: "custix — Passwort zurücksetzen / Reset your password",
           html: `

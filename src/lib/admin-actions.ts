@@ -390,7 +390,7 @@ async function sendKeyEmail(email: string, name: string, key: string, locale: st
   const isDE = locale === "de";
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://custix.ai";
   await resend.emails.send({
-    from: "custix.ai <noreply@custix.ai>",
+    from: "custix.ai <info@custix.ai>",
     to: email,
     subject: isDE ? "Ihr custix Beta-Zugang" : "Your custix beta access",
     html: `

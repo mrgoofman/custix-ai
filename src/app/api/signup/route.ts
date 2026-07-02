@@ -107,7 +107,7 @@ export async function POST(request: Request) {
     const resend = getResend();
     try {
       await resend?.emails.send({
-        from: "custix.ai <noreply@custix.ai>",
+        from: "custix.ai <info@custix.ai>",
         to: ADMIN_NOTIFY_TO,
         replyTo: email,
         subject: `Beta-Zugang automatisch freigegeben: ${company} (${name})`,
