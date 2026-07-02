@@ -12,6 +12,8 @@ interface WaitlistRow {
   locale: string;
   person_id: string;
   issued_license_id: string | null;
+  claimed: number;
+  last_seen: number | null;
 }
 interface LicenseRow {
   id: string;
@@ -221,6 +223,7 @@ export function AdminDashboard({
                 <th className="px-3 py-2">Name</th><th className="px-3 py-2">Firma</th>
                 <th className="px-3 py-2">Email</th>
                 <th className="px-3 py-2">Profession</th><th className="px-3 py-2">Status</th>
+                <th className="px-3 py-2">Eingelöst</th>
                 <th className="px-3 py-2">Actions</th>
               </tr>
             </thead>
@@ -232,6 +235,17 @@ export function AdminDashboard({
                   <td className="px-3 py-2">{w.email ?? "—"}</td>
                   <td className="px-3 py-2">{w.profession ?? "—"}</td>
                   <td className="px-3 py-2">{w.status}</td>
+                  <td className="px-3 py-2 whitespace-nowrap">
+                    {w.claimed ? (
+                      <span className="text-green-600" title={w.last_seen ? `zuletzt gesehen: ${fmt(w.last_seen)}` : "Konto verknüpft"}>
+                        ✓ {w.last_seen ? fmt(w.last_seen) : ""}
+                      </span>
+                    ) : w.issued_license_id ? (
+                      <span className="text-amber-600" title="Key verschickt, noch nicht aktiviert">offen</span>
+                    ) : (
+                      <span className="text-slate-400">—</span>
+                    )}
+                  </td>
                   <td className="px-3 py-2 space-x-2 whitespace-nowrap">
                     {w.status === "pending" && (
                       <>

@@ -21,6 +21,8 @@ interface WaitlistRow {
   person_id: string;
   issued_license_id: string | null;
   created_at: number;
+  claimed: number;
+  last_seen: number | null;
 }
 
 interface LicenseRow {
@@ -58,8 +60,11 @@ export default async function AdminPage() {
     await db
       .prepare(
         `SELECT w.id, w.status, w.issued_license_id, w.created_at,
-                p.id AS person_id, p.email, p.name, p.company, p.profession, p.locale
-           FROM waitlist_entry w JOIN person p ON p.id = w.person_id
+                p.id AS person_id, p.email, p.name, p.company, p.profession, p.locale,
+                (l.account_id IS NOT NULL) AS claimed, l.last_validated_at AS last_seen
+           FROM waitlist_entry w
+           JOIN person p ON p.id = w.person_id
+           LEFT JOIN license l ON l.id = w.issued_license_id
           ORDER BY w.created_at DESC LIMIT 200`
       )
       .all<WaitlistRow>()
