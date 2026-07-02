@@ -35,6 +35,9 @@ interface R2Bucket {
 }
 
 const ALLOWED_PREFIX = "bert-german-ler/";
+// ort runtime wasm binaries also live in the bucket (Workers asset size cap).
+const ALLOWED_PREFIXES = [ALLOWED_PREFIX, "ort/"];
+const allowed = (key: string) => ALLOWED_PREFIXES.some((p) => key.startsWith(p)) && !key.includes("..");
 
 function contentTypeFor(key: string): string {
   if (key.endsWith(".json")) return "application/json";
@@ -79,7 +82,7 @@ export async function GET(
   { params }: { params: Promise<{ path: string[] }> }
 ) {
   const key = (await params).path.join("/");
-  if (!key.startsWith(ALLOWED_PREFIX) || key.includes("..")) {
+  if (!allowed(key)) {
     return new Response("not found", { status: 404 });
   }
   const { env } = getCloudflareContext();
@@ -102,7 +105,7 @@ export async function HEAD(
   ctx: { params: Promise<{ path: string[] }> }
 ) {
   const key = (await ctx.params).path.join("/");
-  if (!key.startsWith(ALLOWED_PREFIX) || key.includes("..")) {
+  if (!allowed(key)) {
     return new Response(null, { status: 404 });
   }
   const { env } = getCloudflareContext();
