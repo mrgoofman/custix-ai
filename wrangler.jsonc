@@ -19,5 +19,11 @@
       "database_id": "e605d463-7fcf-43ca-b027-3f99322e5a48",
       "migrations_dir": "migrations"
     }
+  ],
+  "r2_buckets": [
+    {
+      "binding": "MODELS",
+      "bucket_name": "custix-models"
+    }
   ]
 }

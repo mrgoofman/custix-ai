@@ -3,9 +3,21 @@
   "configurations": [
     {
       "name": "custix-dev",
-      "runtimeExecutable": "npm",
-      "runtimeArgs": ["run", "dev"],
+      "runtimeExecutable": "/Users/lorenzkutschka/.nvm/versions/node/v22.22.3/bin/node",
+      "runtimeArgs": ["node_modules/next/dist/bin/next", "dev"],
       "port": 3000
+    },
+    {
+      "name": "spike-web",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": [
+        "-m",
+        "http.server",
+        "8123",
+        "--directory",
+        "/private/tmp/claude-501/-Users-lorenzkutschka-Documents-repos-custix-ai/25b4e0ff-9889-4ada-b93b-4a5c6c9c58f9/scratchpad/custix-core-spike/web"
+      ],
+      "port": 8123
     }
   ]
 }
