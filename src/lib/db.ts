@@ -21,3 +21,32 @@ export function getDb(): D1Database {
 export function nowEpoch(): number {
   return Math.floor(Date.now() / 1000);
 }
+
+export interface AccountLicense {
+  id: string;
+  license_key: string;
+  type: string;
+  status: string;
+  expires_at: number | null;
+  stripe_customer_id: string | null;
+  stripe_subscription_id: string | null;
+}
+
+/**
+ * Die aktuelle Lizenz eines Kontos. Stand vorher wortgleich in vier Routen –
+ * jede Änderung an der Auswahlregel hätte sonst vier Stellen gebraucht.
+ */
+export async function findLicenseForAccount(
+  accountId: string
+): Promise<AccountLicense | null> {
+  return await getDb()
+    .prepare(
+      `SELECT id, license_key, type, status, expires_at,
+              stripe_customer_id, stripe_subscription_id
+         FROM license
+        WHERE account_id = ? AND status != 'revoked'
+        ORDER BY created_at DESC LIMIT 1`
+    )
+    .bind(accountId)
+    .first<AccountLicense>();
+}

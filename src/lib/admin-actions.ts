@@ -1,6 +1,7 @@
 import { Resend } from "resend";
 import { getDb, nowEpoch } from "@/lib/db";
 import { generateLicenseKey, newId } from "@/lib/license-key";
+import { GRACE } from "@/lib/license-policy";
 
 function getResend() {
   const key = process.env.RESEND_API_KEY;
@@ -9,7 +10,6 @@ function getResend() {
 }
 
 /** Grace seconds by license type/method (CONTEXT policy values). */
-const GRACE = { beta: 0, card: 7 * 86400, invoice: 30 * 86400 };
 
 async function audit(
   actorUserId: string,
@@ -384,7 +384,7 @@ export async function anonymizePerson(adminUserId: string, personId: string) {
   return { ok: true };
 }
 
-async function sendKeyEmail(email: string, name: string, key: string, locale: string) {
+export async function sendKeyEmail(email: string, name: string, key: string, locale: string) {
   const resend = getResend();
   if (!resend) return;
   const isDE = locale === "de";
@@ -392,7 +392,7 @@ async function sendKeyEmail(email: string, name: string, key: string, locale: st
   await resend.emails.send({
     from: "custix.ai <info@custix.ai>",
     to: email,
-    subject: isDE ? "Ihr custix Beta-Zugang" : "Your custix beta access",
+    subject: isDE ? "Ihr custix Lizenzschlüssel" : "Your custix licence key",
     html: `
 <!DOCTYPE html><html lang="${locale}"><head><meta charset="UTF-8"></head>
 <body style="margin:0;padding:0;font-family:-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:#f8fafc;">

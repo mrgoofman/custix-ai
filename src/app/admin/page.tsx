@@ -33,6 +33,11 @@ interface LicenseRow {
   account_id: string | null;
   expires_at: number | null;
   last_validated_at: number | null;
+  email: string | null;
+  name: string | null;
+  company: string | null;
+  billing_interval: string | null;
+  subscription_status: string | null;
 }
 
 interface FeedbackRow {
@@ -73,8 +78,22 @@ export default async function AdminPage() {
   const licenses = (
     await db
       .prepare(
-        `SELECT id, license_key, type, status, account_id, expires_at, last_validated_at
-           FROM license ORDER BY created_at DESC LIMIT 200`
+        // Ohne den Join zeigt die Tabelle nur eine anonyme account_id –
+        // Selbstregistrierte tauchen dann nirgends mit Namen auf, weil sie
+        // (anders als Beta-Anfragen) keinen waitlist_entry haben.
+        `SELECT l.id, l.license_key, l.type, l.status, l.account_id,
+                l.expires_at, l.last_validated_at, l.billing_interval, l.subscription_status,
+                COALESCE(u.email, p.email, wp.email)     AS email,
+                COALESCE(u.name,  p.name,  wp.name)      AS name,
+                COALESCE(u.company, p.company, wp.company) AS company
+           FROM license l
+           LEFT JOIN "user"  u ON u.id = l.account_id
+           LEFT JOIN person  p ON p.user_id = l.account_id
+           -- Beta-Lizenzen, die verschickt, aber nie beansprucht wurden: die
+           -- Person hängt dort nur am Wartelisteneintrag.
+           LEFT JOIN waitlist_entry w2 ON w2.issued_license_id = l.id
+           LEFT JOIN person wp ON wp.id = w2.person_id
+          ORDER BY l.created_at DESC LIMIT 200`
       )
       .all<LicenseRow>()
   ).results;

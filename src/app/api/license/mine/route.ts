@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getDb } from "@/lib/db";
+import { findLicenseForAccount } from "@/lib/db";
 import { getSessionUser } from "@/lib/auth";
 
 /**
@@ -13,16 +13,7 @@ export async function GET(request: Request) {
   const user = await getSessionUser(request);
   if (!user) return NextResponse.json({ error: "unauthenticated" }, { status: 401 });
 
-  const db = getDb();
-  const lic = await db
-    .prepare(
-      `SELECT license_key, type, status, expires_at
-         FROM license
-        WHERE account_id = ? AND status != 'revoked'
-        ORDER BY created_at DESC LIMIT 1`
-    )
-    .bind(user.id)
-    .first<{ license_key: string; type: string; status: string; expires_at: number | null }>();
+  const lic = await findLicenseForAccount(user.id);
 
   if (!lic) return NextResponse.json({ key: null });
   return NextResponse.json({

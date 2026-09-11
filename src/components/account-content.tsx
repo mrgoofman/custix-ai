@@ -240,6 +240,10 @@ export function AccountContent() {
         </>
       )}
 
+      {/* Beta-Schlüssel aus der Zeit vor der Registrierung einlösen. Ohne das
+          kämen die noch nicht beanspruchten Beta-Lizenzen nie an ihr Konto. */}
+      <ClaimKey onDone={load} />
+
       {license?.key ? (
         <button
           onClick={() => signOut().then(load)}
@@ -267,6 +271,58 @@ function fmt(epoch: number, locale: string) {
       month: "2-digit",
       year: "numeric",
     },
+  );
+}
+
+function ClaimKey({ onDone }: { onDone: () => void }) {
+  const t = useTranslations("account");
+  const [key, setKey] = useState("");
+  const [busy, setBusy] = useState(false);
+  const [msg, setMsg] = useState<string | null>(null);
+
+  const submit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setBusy(true);
+    setMsg(null);
+    try {
+      const r = await fetch("/api/license/claim", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ key }),
+      });
+      const d = (await r.json()) as { ok?: boolean; message_key?: string };
+      if (d.ok) onDone();
+      else setMsg(d.message_key ?? "failed");
+    } catch {
+      setMsg("failed");
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  return (
+    <details className="mt-8">
+      <summary className="text-sm text-muted cursor-pointer hover:text-navy transition-colors list-none">
+        {t("claim.link")}
+      </summary>
+      <form onSubmit={submit} className="mt-3 flex flex-col sm:flex-row gap-3">
+        <input
+          value={key}
+          onChange={(e) => setKey(e.target.value)}
+          placeholder="CUSTIX-XXXX-XXXX-XXXX-XXXX"
+          className="flex-1 px-4 py-3 rounded-lg border border-muted/30 font-mono text-sm focus:border-royal focus:outline-none"
+          required
+        />
+        <button
+          type="submit"
+          disabled={busy}
+          className="px-6 py-3 border-2 border-navy/10 text-navy font-semibold rounded-lg hover:bg-navy/5 transition-colors disabled:opacity-60"
+        >
+          {t("claim.cta")}
+        </button>
+      </form>
+      {msg ? <p className="mt-2 text-sm text-muted">{t("claim.failed")}</p> : null}
+    </details>
   );
 }
 

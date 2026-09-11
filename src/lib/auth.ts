@@ -72,9 +72,17 @@ export function getAuth() {
  */
 export async function getSessionUser(
   request: Request
-): Promise<{ id: string; email: string } | null> {
+): Promise<{ id: string; email: string; name: string | null; company: string | null } | null> {
   const auth = getAuth();
   const session = await auth.api.getSession({ headers: request.headers });
   if (!session?.user) return null;
-  return { id: session.user.id, email: session.user.email };
+  const u = session.user as { id: string; email: string; name?: string; company?: string };
+  return {
+    id: u.id,
+    email: u.email,
+    // Name und Firma werden bei der Registrierung erfasst; ohne sie landet die
+    // E-Mail-Anrede bei der Adresse und der PII-Eintrag bliebe unvollständig.
+    name: u.name ?? null,
+    company: u.company ?? null,
+  };
 }

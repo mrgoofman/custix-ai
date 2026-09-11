@@ -23,6 +23,11 @@ interface LicenseRow {
   account_id: string | null;
   expires_at: number | null;
   last_validated_at: number | null;
+  email: string | null;
+  name: string | null;
+  company: string | null;
+  billing_interval: string | null;
+  subscription_status: string | null;
 }
 interface FeedbackRow {
   id: string;
@@ -215,6 +220,64 @@ export function AdminDashboard({
       </section>
 
       <section className="mb-12">
+        <h2 className="text-lg font-semibold mb-3">Licenses ({licenses.length})</h2>
+        <div className="overflow-x-auto rounded-lg border border-slate-200">
+          <table className="w-full text-sm">
+            <thead className="bg-slate-50 text-left text-slate-500">
+              <tr>
+                <th className="px-3 py-2">Account</th>
+                <th className="px-3 py-2">Key</th><th className="px-3 py-2">Type</th>
+                <th className="px-3 py-2">Status</th><th className="px-3 py-2">Claimed</th>
+                <th className="px-3 py-2">Expires</th><th className="px-3 py-2">Last seen</th>
+                <th className="px-3 py-2">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {licenses.map((l) => (
+                <tr key={l.id} className="border-t border-slate-100">
+                  <td className="px-3 py-2">
+                    {l.email ? (
+                      <>
+                        <div className="font-medium text-slate-800">{l.email}</div>
+                        <div className="text-xs text-slate-500">
+                          {[l.name, l.company].filter(Boolean).join(" · ") || "—"}
+                        </div>
+                      </>
+                    ) : (
+                      <span className="text-slate-400">nicht beansprucht</span>
+                    )}
+                  </td>
+                  <td className="px-3 py-2 font-mono text-xs">{l.license_key}</td>
+                  <td className="px-3 py-2">
+                    {l.type}
+                    {l.billing_interval ? (
+                      <span className="ml-1 text-xs text-slate-500">({l.billing_interval})</span>
+                    ) : null}
+                  </td>
+                  <td className="px-3 py-2">{l.status}</td>
+                  <td className="px-3 py-2">{l.account_id ? "yes" : "no"}</td>
+                  <td className="px-3 py-2">{fmt(l.expires_at)}</td>
+                  <td className="px-3 py-2">{fmt(l.last_validated_at)}</td>
+                  <td className="px-3 py-2 space-x-2 whitespace-nowrap">
+                    <button onClick={() => run(l.id, { action: "resend_key", licenseId: l.id })}
+                      className="rounded border px-2 py-1">Resend</button>
+                    {l.status !== "revoked" && (
+                      <button onClick={() => run(l.id, { action: "revoke", licenseId: l.id }, "Revoke this license?")}
+                        className="rounded border border-red-300 px-2 py-1 text-red-600">Revoke</button>
+                    )}
+                    {l.account_id && (
+                      <button onClick={() => run(l.id, { action: "reset_claim", licenseId: l.id }, "Reset the device/account claim?")}
+                        className="rounded border px-2 py-1">Reset claim</button>
+                    )}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section>
         <h2 className="text-lg font-semibold mb-3">Waitlist ({waitlist.length})</h2>
         <div className="overflow-x-auto rounded-lg border border-slate-200">
           <table className="w-full text-sm">
@@ -258,46 +321,6 @@ export function AdminDashboard({
                     {w.email && (
                       <button onClick={() => anonymize(w.person_id, w.email)}
                         className="rounded border border-red-300 px-2 py-1 text-red-600">Anonymize</button>
-                    )}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </section>
-
-      <section>
-        <h2 className="text-lg font-semibold mb-3">Licenses ({licenses.length})</h2>
-        <div className="overflow-x-auto rounded-lg border border-slate-200">
-          <table className="w-full text-sm">
-            <thead className="bg-slate-50 text-left text-slate-500">
-              <tr>
-                <th className="px-3 py-2">Key</th><th className="px-3 py-2">Type</th>
-                <th className="px-3 py-2">Status</th><th className="px-3 py-2">Claimed</th>
-                <th className="px-3 py-2">Expires</th><th className="px-3 py-2">Last seen</th>
-                <th className="px-3 py-2">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {licenses.map((l) => (
-                <tr key={l.id} className="border-t border-slate-100">
-                  <td className="px-3 py-2 font-mono text-xs">{l.license_key}</td>
-                  <td className="px-3 py-2">{l.type}</td>
-                  <td className="px-3 py-2">{l.status}</td>
-                  <td className="px-3 py-2">{l.account_id ? "yes" : "no"}</td>
-                  <td className="px-3 py-2">{fmt(l.expires_at)}</td>
-                  <td className="px-3 py-2">{fmt(l.last_validated_at)}</td>
-                  <td className="px-3 py-2 space-x-2 whitespace-nowrap">
-                    <button onClick={() => run(l.id, { action: "resend_key", licenseId: l.id })}
-                      className="rounded border px-2 py-1">Resend</button>
-                    {l.status !== "revoked" && (
-                      <button onClick={() => run(l.id, { action: "revoke", licenseId: l.id }, "Revoke this license?")}
-                        className="rounded border border-red-300 px-2 py-1 text-red-600">Revoke</button>
-                    )}
-                    {l.account_id && (
-                      <button onClick={() => run(l.id, { action: "reset_claim", licenseId: l.id }, "Reset the device/account claim?")}
-                        className="rounded border px-2 py-1">Reset claim</button>
                     )}
                   </td>
                 </tr>

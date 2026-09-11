@@ -26,6 +26,51 @@ export async function POST(request: Request) {
     const caller = user.id;
     const now = nowEpoch();
 
+    /**
+     * STEP 0: Eine laufende Testphase darf einen echten Schlüssel nicht
+     * blockieren. Seit die Registrierung automatisch eine Trial-Lizenz anlegt,
+     * hätte sonst jeder Beta-Nutzer, der sich neu anmeldet, seinen unbefristeten
+     * Schlüssel dauerhaft verloren: ux_license_account lässt nur eine Lizenz je
+     * Konto zu, und der Claim wäre an already_have_license gescheitert.
+     * Bezahlte Abos werden NICHT angefasst.
+     */
+    const own = await db
+      .prepare(
+        "SELECT id, type FROM license WHERE account_id = ? AND status != 'revoked' LIMIT 1"
+      )
+      .bind(caller)
+      .first<{ id: string; type: string }>();
+
+    if (own && own.type === "trial") {
+      const target = await db
+        .prepare(
+          "SELECT id FROM license WHERE license_key = ? AND account_id IS NULL AND status <> 'revoked'"
+        )
+        .bind(key)
+        .first<{ id: string }>();
+      // Nur freigeben, wenn der eingegebene Schlüssel wirklich einlösbar ist.
+      if (target) {
+        await db.batch([
+          db
+            .prepare(
+              "UPDATE license SET status = 'revoked', account_id = NULL, updated_at = ? WHERE id = ?"
+            )
+            .bind(now, own.id),
+          db
+            .prepare(
+              "INSERT INTO license_event (id, license_id, actor_user_id, event_type, metadata, created_at) VALUES (?, ?, ?, 'revoked', ?, ?)"
+            )
+            .bind(
+              newId(),
+              own.id,
+              caller,
+              JSON.stringify({ reason: "superseded_by_claim" }),
+              now
+            ),
+        ]);
+      }
+    }
+
     // STEP 1: atomic compare-and-swap — only an unbound, non-revoked key binds.
     let changes = 0;
     try {
