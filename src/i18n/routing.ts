@@ -51,5 +51,9 @@ export const routing = defineRouting({
       en: "/terms",
     },
     "/download": "/download",
+    "/konto": {
+      de: "/konto",
+      en: "/account",
+    },
   },
 });

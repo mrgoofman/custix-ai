@@ -26,15 +26,44 @@ until the steps below are done.
    npx wrangler secret put STRIPE_WEBHOOK_SECRET
    ```
 
-## Still to BUILD (code, after the above — not done yet)
-- **Checkout**: wire the pricing-page CTAs to Stripe Checkout (interval-first; invoice option only on annual). On completion, create/stamp the License with `stripe_customer_id`/`stripe_subscription_id` so the webhook can resolve it.
-- **Beta→subscription flip** at first `invoice.paid` for an existing beta user (same key; MAX-expiry).
-- **New-buyer mint**: fresh `type=subscription` license + key, emailed, claimed via the normal flow.
-- **User self-service** (the requested features):
-  - Login as end user (Better Auth — already supported).
-  - **Cancel subscription**: call `stripe.subscriptions.update(id, { cancel_at_period_end: true })`; webhook flips status.
-  - **Download invoices**: list the customer's invoices via Stripe API and link to each `hosted_invoice_url` / `invoice_pdf` (Stripe hosts them — no PDF generation needed).
-- A `/account` page surfacing license status + cancel + invoice list.
+## BUILT (2026-09)
+
+- **Checkout** — `src/app/api/stripe/checkout/route.ts`. Card only; interval
+  chosen by the caller. Stamps `stripe_customer_id` and `billing_interval`
+  BEFORE creating the session so the webhook can always resolve the license.
+- **Trial** — `src/app/api/trial/start/route.ts`. 14 days, `grace_seconds = 0`,
+  key emailed, `person` row written (ADR-0008).
+- **Webhook** — resolves the license by client_reference_id → stamped
+  subscription id → subscription `metadata.license_id` → customer id, so event
+  ORDER DOES NOT MATTER. Writes `subscription_status`, `grace_seconds` (card:
+  7d), `billing_interval`, `payment_method`, and applies the MAX rule to
+  `expires_at`.
+- **Self-service** — `/konto` (`src/components/account-content.tsx`) with status,
+  key, checkout buttons and the **Stripe Billing Portal** for cancel + invoices.
+
+  Deviation from the plan below: the portal replaces a hand-built cancel button
+  and invoice list. Stripe already renders invoices with correct VAT, reverse
+  charge and company details; rebuilding that means rendering a legal document
+  ourselves.
+
+### Additional Stripe-account steps this created
+6. Create both Prices with **`tax_behavior: inclusive`** — prices are advertised
+   including VAT. With Stripe's default (`exclusive`) plus `automatic_tax`, a
+   customer would be charged 180 € instead of 150 €.
+7. Enable **Stripe Tax**.
+8. Configure the **Customer Portal** once (Settings → Billing → Customer Portal),
+   otherwise "Abo verwalten" errors.
+9. Subscribe the webhook to **four** events: `checkout.session.completed`
+   (without it nothing else resolves), `invoice.paid`,
+   `customer.subscription.updated`, `customer.subscription.deleted`.
+10. Set `STRIPE_PRICE_MONTHLY` / `STRIPE_PRICE_ANNUAL` in `wrangler.jsonc`.
+
+## Still to BUILD
+- **Invoice / bank-transfer payment (annual only)** — `collection_method=send_invoice`
+  + `customer_balance`. Not built; checkout is card-only. ADR-0007's
+  auto-reconciliation is therefore not in effect yet.
+- **Beta→subscription flip for existing beta users**: works through the same
+  webhook path, but has not been exercised against a real beta license.
 
 ## Note
 The webhook handler verifies signatures with `constructEventAsync` (Web Crypto — required on

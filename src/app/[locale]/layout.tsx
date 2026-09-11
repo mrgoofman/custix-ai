@@ -4,7 +4,6 @@ import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
 import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
-import { SignupModal } from "@/components/signup-modal";
 import { CookieConsent } from "@/components/cookie-consent";
 import { MobileCta } from "@/components/mobile-cta";
 import { JsonLd } from "@/components/json-ld";
@@ -56,7 +55,6 @@ export default async function LocaleLayout({
       <Navbar />
       <main className="flex-1">{children}</main>
       <Footer />
-      <SignupModal />
       <CookieConsent />
       <MobileCta />
     </NextIntlClientProvider>

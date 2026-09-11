@@ -31,6 +31,13 @@ Defined in `wrangler.jsonc` under `vars`:
 Secrets (set via `wrangler secret put`):
 - `RESEND_API_KEY`
 - `BETTER_AUTH_SECRET`
+- `STRIPE_SECRET_KEY`
+- `STRIPE_WEBHOOK_SECRET`
+
+Non-secret Stripe config in `wrangler.jsonc` → `vars`:
+- `STRIPE_PRICE_MONTHLY`, `STRIPE_PRICE_ANNUAL` — the `price_…` IDs. Both Prices
+  must be created with `tax_behavior: inclusive`, otherwise Stripe Tax adds VAT
+  on top and the customer is charged 180 € instead of 150 €.
 
 Bindings (`wrangler.jsonc` → `d1_databases`):
 - `DB` - the Cloudflare D1 database (`custix-db`)
@@ -48,11 +55,26 @@ Migrations in `migrations/`. Schema designed in `docs/schema/d1-licensing-schema
 
 See `docs/SETUP-PHASE1.md` for D1 create / migrate / secret steps (cloud resources you set up).
 
-## Key Features (Phase 1 — beta access)
+## Key Features (Phase 2 — paid, live)
 
-- Beta waitlist capture (signup modal → `/api/signup`, no auto-download during beta)
+- Self-serve registration on the website (`/konto`, Better Auth email+password);
+  registering mints a 14-day `type='trial'` license and emails the key.
+  The beta waitlist and `/api/signup` are removed — existing beta licenses keep working.
+- Stripe subscriptions: 15 €/month or 150 €/year per seat, **prices include VAT**
+  (the Stripe Prices must carry `tax_behavior: inclusive`). Checkout, Billing Portal
+  (cancel + invoices) and the webhook are wired.
 - Admin panel (`/admin`) — approve→mint+email key, revoke, reset claim, anonymize
 - License validate (`/api/license/validate`) + claim (`/api/license/claim`) — desktop app contract
-- Phase 2 (deferred): Stripe subscriptions (card monthly/annual; invoice annual-only)
+- Deferred: invoice/bank-transfer payment (annual-only) — see ADR-0007, not built.
 
 Design decisions: `CONTEXT.md`, `CONTEXT-MAP.md`, `docs/adr/`.
+
+## Agent skills
+
+### Issue tracker
+
+Issues live as GitHub issues in `mrgoofman/custix-ai` (via the `gh` CLI). See `docs/agents/issue-tracker.md`.
+
+### Domain docs
+
+Single-context: `CONTEXT.md` + `docs/adr/` at the repo root (with a cross-repo `CONTEXT-MAP.md`). See `docs/agents/domain.md`.

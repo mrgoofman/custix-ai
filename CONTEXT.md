@@ -82,7 +82,7 @@ check never changes as the type flips beta → subscription. Stripe webhooks kee
 current. The app never talks to Stripe directly.
 _Avoid_: license code, token, access code, entitlement
 
-> `type=trial` is **reserved but not used during beta** — there is no self-serve trial.
+> `type=trial` is in use: website registration mints a 14-day trial (grace 0); the first paid `checkout.session.completed` flips it to `type=subscription`, same key.
 > Beta access = a team-issued Beta key; otherwise a paid subscription. Real trial mechanics
 > (and length) are decided at public launch.
 > **Copy conflict to fix:** the site/emails say "14 Tage kostenlos testen" (and the legacy

@@ -2,12 +2,15 @@
 
 import { useState } from "react";
 import { useTranslations, useLocale } from "next-intl";
+import { useSession } from "@/lib/auth-client";
 import { Link, usePathname, useRouter } from "@/i18n/navigation";
 import { Menu, X, ChevronDown, Globe } from "lucide-react";
 import Image from "next/image";
 
 export function Navbar() {
   const t = useTranslations("nav");
+  // Eingeloggte sehen „Konto" statt eines Testphasen-Angebots.
+  const { data: session } = useSession();
   const locale = useLocale();
   const pathname = usePathname();
   const router = useRouter();
@@ -17,11 +20,6 @@ export function Navbar() {
   const switchLocale = () => {
     const next = locale === "de" ? "en" : "de";
     router.replace(pathname, { locale: next });
-  };
-
-  const openSignup = () => {
-    window.dispatchEvent(new CustomEvent("open-signup"));
-    setMobileOpen(false);
   };
 
   const primaryLinks = [
@@ -47,7 +45,13 @@ export function Navbar() {
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
         <Link href="/" className="flex items-center gap-1">
           <Image src="/icon.png" alt="" width={24} height={24} />
-          <Image src="/logo-custix.png" alt="custix" width={100} height={28} className="hidden sm:block" />
+          <Image
+            src="/logo-custix.png"
+            alt="custix"
+            width={100}
+            height={28}
+            className="hidden sm:block"
+          />
         </Link>
 
         {/* Desktop nav */}
@@ -100,12 +104,12 @@ export function Navbar() {
             {locale === "de" ? "EN" : "DE"}
           </button>
 
-          <button
-            onClick={openSignup}
+          <Link
+            href="/konto"
             className="ml-2 px-5 py-2.5 bg-royal text-white text-sm font-semibold rounded-lg hover:bg-royal-dark transition-colors"
           >
-            {t("cta")}
-          </button>
+            {session ? t("account") : t("cta")}
+          </Link>
         </div>
 
         {/* Mobile toggle */}
@@ -113,7 +117,11 @@ export function Navbar() {
           className="md:hidden p-2 text-navy"
           onClick={() => setMobileOpen(!mobileOpen)}
         >
-          {mobileOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+          {mobileOpen ? (
+            <X className="w-6 h-6" />
+          ) : (
+            <Menu className="w-6 h-6" />
+          )}
         </button>
       </nav>
 

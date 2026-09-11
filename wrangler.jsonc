@@ -10,7 +10,11 @@
   "vars": {
     "NEXT_PUBLIC_BASE_URL": "https://custix.ai",
     "BETTER_AUTH_URL": "https://custix.ai",
-    "NEXT_PUBLIC_GA4_ID": "G-ZLDD4PRB4L"
+    // NEXT_PUBLIC_GA4_ID gehört NICHT hierher: als Laufzeitvariable erreicht
+    // sie das Client-Bundle nicht. Sie steht in next.config.ts unter `env`.
+    // Stripe-Preis-IDs (keine Geheimnisse). Aus dem Stripe-Dashboard eintragen.
+    "STRIPE_PRICE_MONTHLY": "",
+    "STRIPE_PRICE_ANNUAL": ""
   },
   "d1_databases": [
     {

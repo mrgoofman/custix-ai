@@ -1,6 +1,7 @@
 "use client";
 
 import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/navigation";
 import { Check, X, ArrowRight } from "lucide-react";
 
 type FunnelKey = "lawyers" | "taxAdvisors" | "hr" | "healthcare" | "insurance";
@@ -13,10 +14,6 @@ export function FunnelPageContent({ audienceKey }: { audienceKey: FunnelKey }) {
     title: string;
     description: string;
   }[];
-
-  const openSignup = () => {
-    window.dispatchEvent(new CustomEvent("open-signup"));
-  };
 
   return (
     <>
@@ -32,12 +29,12 @@ export function FunnelPageContent({ audienceKey }: { audienceKey: FunnelKey }) {
           <p className="text-lg text-slate-text/80 max-w-2xl mx-auto mb-8">
             {t("intro")}
           </p>
-          <button
-            onClick={openSignup}
+          <Link
+            href="/konto"
             className="px-8 py-4 bg-royal text-white font-semibold rounded-xl hover:bg-royal-dark transition-colors text-lg shadow-lg shadow-royal/20"
           >
             {t("cta")}
-          </button>
+          </Link>
         </div>
       </section>
 
@@ -114,12 +111,12 @@ export function FunnelPageContent({ audienceKey }: { audienceKey: FunnelKey }) {
             {t("h1")}
           </h2>
           <p className="text-lg text-white/70 mb-8">{t("intro")}</p>
-          <button
-            onClick={openSignup}
+          <Link
+            href="/konto"
             className="px-8 py-4 bg-royal text-white font-semibold rounded-xl hover:bg-royal-dark transition-colors text-lg shadow-lg shadow-royal/30"
           >
             {t("cta")}
-          </button>
+          </Link>
         </div>
       </section>
     </>
