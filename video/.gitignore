@@ -1,0 +1,4 @@
+node_modules/
+out/
+# Aus scripts/make-sfx.py reproduzierbar: npm run sfx
+public/sfx/

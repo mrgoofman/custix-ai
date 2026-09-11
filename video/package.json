@@ -1,0 +1,32 @@
+{
+  "name": "custix-video",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Remotion-Prototyp f\u00fcr das custix Demo-Video (Hero-Loop)",
+  "scripts": {
+    "dev": "remotion studio",
+    "render": "remotion render HeroLoop out/hero-loop.mp4",
+    "render:web": "remotion render HeroLoop out/hero-loop-web.mp4 --crf=26",
+    "render:webm": "remotion render HeroLoop out/hero-loop.webm --codec=vp9 --crf=32",
+    "render:linkedin": "remotion render LinkedInCut out/linkedin-9x16.mp4 --crf=24",
+    "still": "remotion still HeroLoop out/still.png --frame=250",
+    "typecheck": "tsc --noEmit",
+    "render:square": "remotion render SquareCut out/square-1x1.mp4 --crf=24",
+    "sfx": "python3 scripts/make-sfx.py",
+    "render:linkedin-stumm": "remotion render LinkedInCut out/linkedin-9x16-stumm.mp4 --crf=24 --props='{\"withSound\":false}'",
+    "render:landscape": "remotion render LandscapeCut out/explainer-16x9.mp4 --crf=24"
+  },
+  "dependencies": {
+    "@remotion/cli": "^4.0.519",
+    "@remotion/google-fonts": "^4.0.519",
+    "@remotion/layout-utils": "^4.0.519",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "remotion": "^4.0.519"
+  },
+  "devDependencies": {
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.5",
+    "typescript": "^5.9.3"
+  }
+}
