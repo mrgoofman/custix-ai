@@ -89,6 +89,13 @@ export async function POST(request: Request) {
     // B2B: UID erfassen, damit Reverse Charge und Rechnungsangaben stimmen.
     tax_id_collection: { enabled: true },
     automatic_tax: { enabled: true },
+    /**
+     * Gutscheinfeld an der Kasse. Der Coupon selbst lebt in Stripe, nicht hier –
+     * insbesondere seine Laufzeit: `duration: once` rabattiert nur die erste
+     * Abrechnungsperiode. Bei `forever` wäre ein 100-%-Coupon ein dauerhaft
+     * kostenloses Abo, nicht ein Freimonat.
+     */
+    allow_promotion_codes: true,
     customer_update: { name: "auto", address: "auto" },
     billing_address_collection: "required",
     success_url: `${baseUrl(env)}/konto?checkout=ok`,

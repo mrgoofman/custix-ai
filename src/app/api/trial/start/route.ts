@@ -85,7 +85,10 @@ export async function POST(request: Request) {
   // beim Versand darf die schon angelegte Lizenz nicht entwerten: der Schlüssel
   // steht auch in der Antwort und dauerhaft auf /konto.
   try {
-    await sendKeyEmail(user.email, user.name ?? user.email, key, locale);
+    await sendKeyEmail(user.email, user.name ?? user.email, key, locale, {
+      variant: "trial",
+      expiresAt,
+    });
   } catch (e) {
     console.error("trial key email failed:", e);
   }
