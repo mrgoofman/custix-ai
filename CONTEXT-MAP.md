@@ -11,6 +11,10 @@ decisions are **cross-context** and bind both.
 - **Desktop App** (`../custix`, GitHub `znerol74/custix`) — has its own `CONTEXT.md` and
   `docs/adr/`. Tauri (Rust) + React + Python NER sidecar. AT-lawyer anonymization tool;
   architected local-first. Must add login, key-claim, and monthly online License validation.
+  The same repo also builds the **Web App** (same React app, wasm instead of Rust/sidecar),
+  which this repo serves as static files at `custix.ai/app` (`public/app/`, copied in on
+  each web redeploy). Documents are processed only in the browser; the Web App uses the same
+  Account and License as the desktop app.
 
 ## Relationships
 
