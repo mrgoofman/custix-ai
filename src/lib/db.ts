@@ -28,6 +28,8 @@ export interface AccountLicense {
   type: string;
   status: string;
   expires_at: number | null;
+  /** Kulanzfrist nach expires_at in Sekunden (CONTEXT.md, „Grace window"). */
+  grace_seconds: number;
   stripe_customer_id: string | null;
   stripe_subscription_id: string | null;
 }
@@ -41,7 +43,7 @@ export async function findLicenseForAccount(
 ): Promise<AccountLicense | null> {
   return await getDb()
     .prepare(
-      `SELECT id, license_key, type, status, expires_at,
+      `SELECT id, license_key, type, status, expires_at, grace_seconds,
               stripe_customer_id, stripe_subscription_id
          FROM license
         WHERE account_id = ? AND status != 'revoked'

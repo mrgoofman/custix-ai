@@ -511,6 +511,8 @@
       "generic": "That didn't work. Please try again or write to contact@custix.ai."
     },
     "download": "Download custix",
+    "startWeb": "Start in your browser",
+    "startWebHint": "In the browser, custix runs without installing anything – your documents still stay on your device.",
     "signOut": "Sign out",
     "showKey": "Show licence key",
     "keyHint": "You normally don't need it – custix signs in with your credentials and fetches the licence automatically.",

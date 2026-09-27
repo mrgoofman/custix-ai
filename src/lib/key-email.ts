@@ -65,6 +65,19 @@ export function renderKeyEmail(input: KeyEmailInput): {
       : "Your access is ready. Get started in two steps:";
 
   const downloadUrl = `${baseUrl}/${isDE ? "" : "en/"}download`;
+  const webAppUrl = `${baseUrl}/app/`;
+
+  /**
+   * Die Web-App (custix.ai/app) läuft ohne Installation – für Praxis- und
+   * Kanzleirechner, auf denen niemand etwas installieren darf. Nur in der
+   * Testphasen-Mail: Wer sich auf der Website registriert hat, hat ein Konto
+   * und kann sich dort sofort anmelden (mrgoofman/custix-ai#7).
+   */
+  const webAppLine = trial
+    ? isDE
+      ? `Lieber ohne Installation? <a href="${webAppUrl}" style="color:#2563eb;font-weight:600;">Starten Sie custix direkt im Browser</a> – unter custix.ai/app, mit denselben Zugangsdaten.`
+      : `Prefer not to install anything? <a href="${webAppUrl}" style="color:#2563eb;font-weight:600;">Start custix directly in your browser</a> – at custix.ai/app, with the same credentials.`
+    : "";
 
   const step2Title = trial
     ? isDE
@@ -100,9 +113,10 @@ export function renderKeyEmail(input: KeyEmailInput): {
 <p style="margin:0 0 24px;font-size:16px;color:#1e293b;">${isDE ? `Guten Tag ${name},` : `Hello ${name},`}</p>
 <p style="margin:0 0 24px;font-size:16px;color:#475569;">${intro}</p>
 <p style="margin:0 0 8px;font-size:14px;font-weight:700;color:#1e293b;">${isDE ? "1. App herunterladen" : "1. Download the app"}</p>
-<table role="presentation" style="width:100%;border-collapse:collapse;margin-bottom:24px;"><tr><td align="center">
+<table role="presentation" style="width:100%;border-collapse:collapse;margin-bottom:${webAppLine ? "12" : "24"}px;"><tr><td align="center">
 <a href="${downloadUrl}" style="display:inline-block;background:#2563eb;color:#fff;text-decoration:none;font-weight:600;font-size:16px;padding:14px 32px;border-radius:8px;">${isDE ? "custix herunterladen" : "Download custix"}</a>
 </td></tr></table>
+${webAppLine ? `<p style="margin:0 0 24px;font-size:14px;color:#475569;text-align:center;">${webAppLine}</p>` : ""}
 <p style="margin:0 0 8px;font-size:14px;font-weight:700;color:#1e293b;">${step2Title}</p>
 <p style="margin:0 0 12px;font-size:14px;color:#475569;">${step2Body}</p>
 <div style="background:#f1f5f9;border-radius:8px;padding:20px;text-align:center;margin-bottom:24px;font-family:monospace;font-size:20px;font-weight:700;letter-spacing:1px;color:#1e3a5f;">${key}</div>

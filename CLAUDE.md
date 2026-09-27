@@ -75,6 +75,11 @@ See `docs/SETUP-PHASE1.md` for D1 create / migrate / secret steps (cloud resourc
 - Stripe subscriptions: 15 €/month or 150 €/year per seat, **prices include VAT**
   (the Stripe Prices must carry `tax_behavior: inclusive`). Checkout, Billing Portal
   (cancel + invoices) and the webhook are wired.
+- Account (`/konto`) offers both ways into the app for an active License: download
+  and „Im Browser starten" → `/app`. `/konto?from=doctors` (or
+  `rememberVisitSource("doctors")` from the doctors landing page, issue #9) makes the
+  web app the primary action for that browser session (`src/lib/visit-source.ts`).
+  The trial welcome email links to the web app as well.
 - Admin panel (`/admin`) — approve→mint+email key, revoke, reset claim, anonymize
 - License validate (`/api/license/validate`) + claim (`/api/license/claim`) — desktop app contract
 - Deferred: invoice/bank-transfer payment (annual-only) — see ADR-0007, not built.

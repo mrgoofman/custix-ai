@@ -21,5 +21,8 @@ export async function GET(request: Request) {
     type: lic.type,
     status: lic.status,
     expires_at: lic.expires_at,
+    // Damit das Konto „aktiv" so rechnet wie /api/license/validate:
+    // innerhalb von expires_at + Kulanzfrist (CONTEXT.md, „Active").
+    grace_seconds: lic.grace_seconds,
   });
 }

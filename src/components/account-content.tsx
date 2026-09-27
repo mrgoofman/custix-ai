@@ -1,21 +1,32 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useSyncExternalStore } from "react";
 import { useLocale, useTranslations } from "next-intl";
-import { Download, ExternalLink, Loader2 } from "lucide-react";
+import { Download, ExternalLink, Loader2, Play } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { AuthForm } from "./auth-form";
 import { ResetPasswordForm } from "./reset-password-form";
 import { signOut } from "@/lib/auth-client";
+import {
+  currentVisitSource,
+  rememberVisitSource,
+  visitSourceFromSearch,
+  type VisitSource,
+} from "@/lib/visit-source";
 
 type License = {
   key: string | null;
   type?: string;
   status?: string;
   expires_at?: number | null;
+  grace_seconds?: number;
 };
 
 const DAY = 86400;
+
+/** sessionStorage meldet keine Änderungen; gelesen wird einmal pro Aufruf. */
+const subscribeToNothing = () => () => {};
+const noVisitSource = () => null;
 
 export function AccountContent() {
   const t = useTranslations("account");
@@ -27,10 +38,23 @@ export function AccountContent() {
   const [error, setError] = useState<string | null>(null);
   /** Aus der Zurücksetzen-E-Mail: /konto?token=… zeigt das Passwortformular. */
   const [resetToken, setResetToken] = useState<string | null>(null);
+  /**
+   * Woher der Besuch kam – entscheidet, ob Web-App oder Download vorne steht.
+   * Serverseitig unbekannt (null); im Browser aus URL oder sessionStorage.
+   */
+  const visitSource = useSyncExternalStore<VisitSource | null>(
+    subscribeToNothing,
+    currentVisitSource,
+    noVisitSource,
+  );
 
   useEffect(() => {
     const t = new URLSearchParams(window.location.search).get("token");
     if (t) setResetToken(t);
+    // `?from=doctors` für die Sitzung merken, damit die Herkunft auch nach
+    // Registrierung und Stripe-Rücksprung (beide ohne Parameter) noch gilt.
+    const fromUrl = visitSourceFromSearch(window.location.search);
+    if (fromUrl) rememberVisitSource(fromUrl);
   }, []);
 
   const load = () => {
@@ -117,7 +141,15 @@ export function AccountContent() {
   const isSubscription = license?.type === "subscription";
   const expiresAt = license?.expires_at ?? null;
   const daysLeft = expiresAt ? Math.ceil((expiresAt - now) / DAY) : null;
-  const expired = expiresAt != null && now >= expiresAt;
+  // „Aktiv" wie in CONTEXT.md und /api/license/validate: status=active und
+  // noch innerhalb von expires_at + Kulanzfrist. Ein Abo mit offener
+  // Zahlung ist in der Kulanzfrist also noch aktiv, ein per Webhook auf
+  // status=expired gesetztes nicht – auch wenn expires_at in der Zukunft liegt.
+  const graceUntil =
+    expiresAt == null ? null : expiresAt + (license?.grace_seconds ?? 0);
+  const expired =
+    (license?.status ?? "active") !== "active" ||
+    (graceUntil != null && now >= graceUntil);
 
   return (
     <Shell>
@@ -193,16 +225,7 @@ export function AccountContent() {
               <p className="mt-2 text-xs text-muted">{t("keyHint")}</p>
             </details>
 
-            {isSubscription ? (
-              <button
-                onClick={() => postAndFollow("/api/stripe/portal")}
-                disabled={pendingPath !== null}
-                className="inline-flex items-center gap-2 px-6 py-3 border-2 border-navy/10 text-navy font-semibold rounded-lg hover:bg-navy/5 transition-colors disabled:opacity-60"
-              >
-                {t("manage")}
-                <ExternalLink className="w-4 h-4" />
-              </button>
-            ) : expired ? (
+            {expired && !isSubscription ? (
               // Erst nach Ablauf der Testphase geht es ums Bezahlen.
               <div className="flex flex-col sm:flex-row gap-3">
                 <button
@@ -225,16 +248,23 @@ export function AccountContent() {
                 </button>
               </div>
             ) : (
-              // Laufende Testphase: der nächste Schritt ist installieren, nicht kaufen.
-              // /api/download verlangt token+platform (Waitlist-Strecke) — Konto-
-              // Nutzer wählen ihre Plattform auf der Download-Seite.
-              <Link
-                href="/download"
-                className="inline-flex items-center gap-2 px-6 py-3 bg-royal text-white font-semibold rounded-lg hover:bg-royal-dark transition-colors"
-              >
-                <Download className="w-4 h-4" />
-                {t("download")}
-              </Link>
+              <>
+                {/* Aktive Lizenz (Testphase, Beta oder laufende Subscription):
+                    der nächste Schritt ist starten, nicht kaufen. */}
+                {!expired ? <StartActions source={visitSource} /> : null}
+                {isSubscription ? (
+                  <button
+                    onClick={() => postAndFollow("/api/stripe/portal")}
+                    disabled={pendingPath !== null}
+                    className={`inline-flex items-center gap-2 px-6 py-3 border-2 border-navy/10 text-navy font-semibold rounded-lg hover:bg-navy/5 transition-colors disabled:opacity-60 ${
+                      expired ? "" : "mt-4"
+                    }`}
+                  >
+                    {t("manage")}
+                    <ExternalLink className="w-4 h-4" />
+                  </button>
+                ) : null}
+              </>
             )}
           </Card>
         </>
@@ -259,6 +289,52 @@ export function AccountContent() {
         </p>
       ) : null}
     </Shell>
+  );
+}
+
+/**
+ * Die beiden Wege in die App für eine aktive Lizenz. Standard: Download zuerst,
+ * Web-App als Alternative. Wer über die Ärzte-Seite kam, sieht es umgekehrt –
+ * dort ist „nichts installieren" das Argument (siehe lib/visit-source.ts).
+ */
+function StartActions({ source }: { source: VisitSource | null }) {
+  const t = useTranslations("account");
+  const webFirst = source === "doctors";
+  const primary =
+    "inline-flex items-center justify-center gap-2 px-6 py-3 bg-royal text-white font-semibold rounded-lg hover:bg-royal-dark transition-colors";
+  const secondary =
+    "inline-flex items-center justify-center gap-2 px-6 py-3 border-2 border-navy/10 text-navy font-semibold rounded-lg hover:bg-navy/5 transition-colors";
+
+  // /app liegt außerhalb der lokalisierten Routen (statische Web-App, siehe
+  // next.config.ts). Deshalb ein gewöhnliches <a> statt des next-intl-Links,
+  // der daraus auf Englisch /en/app machen würde.
+  const web = (
+    // eslint-disable-next-line @next/next/no-html-link-for-pages -- /app ist keine Next-Seite; die Regel hält es für die dynamische [locale]-Route.
+    <a key="web" href="/app/" className={webFirst ? primary : secondary}>
+      <Play className="w-4 h-4" />
+      {t("startWeb")}
+    </a>
+  );
+  // /api/download verlangt token+platform (Waitlist-Strecke) — Konto-Nutzer
+  // wählen ihre Plattform auf der Download-Seite.
+  const download = (
+    <Link
+      key="download"
+      href="/download"
+      className={webFirst ? secondary : primary}
+    >
+      <Download className="w-4 h-4" />
+      {t("download")}
+    </Link>
+  );
+
+  return (
+    <div>
+      <div className="flex flex-col sm:flex-row gap-3">
+        {webFirst ? [web, download] : [download, web]}
+      </div>
+      <p className="mt-3 text-sm text-muted">{t("startWebHint")}</p>
+    </div>
   );
 }
 
