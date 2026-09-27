@@ -12,6 +12,17 @@
       "autoPort": true
     },
     {
+      "name": "custix-wrangler",
+      "runtimeExecutable": "/Users/lorenzkutschka/.nvm/versions/node/v22.22.3/bin/node",
+      "runtimeArgs": [
+        "node_modules/wrangler/bin/wrangler.js",
+        "dev",
+        "--port",
+        "8787"
+      ],
+      "port": 8787
+    },
+    {
       "name": "spike-web",
       "runtimeExecutable": "python3",
       "runtimeArgs": [

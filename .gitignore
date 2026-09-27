@@ -43,3 +43,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# E-Mail-Vorschau (scripts/preview-key-email.mts)
+.preview
+
+# lokale Werte für `wrangler dev` (Secrets, URL-Overrides)
+.dev.vars

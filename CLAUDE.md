@@ -22,6 +22,18 @@ worker lives in the Moritz Cloudflare account (`CLOUDFLARE_ACCOUNT_ID=790369fbd6
 Live URL: https://custix-ai.moritz-790.workers.dev
 Production: https://custix.ai
 
+### Local preview with D1 (account, licence, auth)
+
+`next dev` (launch config `custix-dev`) has no D1 binding, so `/konto` and every
+`/api/*` route fail there. For anything that needs login or a licence:
+`npm run build:cf`, then launch config `custix-wrangler` (`wrangler dev`, port 8787,
+local D1 from `.wrangler/state`). One-time setup:
+`npx wrangler d1 migrations apply custix-db --local` and a `.dev.vars` file
+(gitignored) with `BETTER_AUTH_SECRET=<anything>`,
+`BETTER_AUTH_URL=http://localhost:8787`, `NEXT_PUBLIC_BASE_URL=http://localhost:8787`.
+Without `RESEND_API_KEY` emails are skipped silently; render the key email as HTML with
+`node scripts/preview-key-email.mts` (or send a test with `--to`).
+
 ## Environment Variables
 
 Defined in `wrangler.jsonc` under `vars`:
