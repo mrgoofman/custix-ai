@@ -1,10 +1,12 @@
 /**
  * Herkunft eines Besuchs, für die Dauer der Browser-Sitzung gemerkt.
  *
- * Bisher ändert genau eine Herkunft etwas: Wer über die Ärzte-Seite kommt, sieht
- * im Konto „Im Browser starten" als Hauptaktion und den Download nur als
- * Alternative – Praxis-Rechner erlauben oft keine Installation. Alle anderen
- * behalten die bisherige Gewichtung (Download zuerst).
+ * Bisher ändert genau eine Herkunft etwas: Wer über die Ärzte-Seite kommt, wird
+ * im Konto nach der Praxis statt nach der Kanzlei gefragt, kommt nach
+ * Registrierung oder Anmeldung direkt in die Web-App und sieht sonst
+ * „Im Browser starten" als Hauptaktion und den Download nur als Alternative –
+ * Praxis-Rechner erlauben oft keine Installation (mrgoofman/custix-ai#12).
+ * Alle anderen behalten die bisherige Gewichtung (Download zuerst).
  *
  * Gesetzt wird die Herkunft von der Ärzte-Seite selbst (mrgoofman/custix-ai#9,
  * `rememberVisitSource("doctors")`) oder über `/konto?from=doctors`, damit auch

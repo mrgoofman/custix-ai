@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { Loader2, MailCheck } from "lucide-react";
 import { authClient, signIn, signUp } from "@/lib/auth-client";
+import type { VisitSource } from "@/lib/visit-source";
 
 type Mode = "signup" | "signin" | "forgot";
 
@@ -11,8 +12,18 @@ type Mode = "signup" | "signin" | "forgot";
  * Registrierung, Anmeldung und Passwort-Zurücksetzen in einem Formular.
  * Bewusst auf /konto statt auf eigenen Seiten: die Preisseite schickt hierher,
  * und nach dem Anlegen steht der Nutzer direkt dort, wo die Testphase läuft.
+ *
+ * `source`: Wer über die Ärzte-Seite kommt, wird nach seiner Praxis oder
+ * Einrichtung gefragt, nicht nach „Firma oder Kanzlei“ (mrgoofman/custix-ai#12).
+ * Gespeichert wird in beiden Fällen dasselbe Feld `company`.
  */
-export function AuthForm({ onDone }: { onDone: () => void }) {
+export function AuthForm({
+  onDone,
+  source = null,
+}: {
+  onDone: () => void;
+  source?: VisitSource | null;
+}) {
   const t = useTranslations("auth");
   const locale = useLocale();
   const [mode, setMode] = useState<Mode>("signup");
@@ -117,7 +128,7 @@ export function AuthForm({ onDone }: { onDone: () => void }) {
             />
             <input
               className={field}
-              placeholder={t("fields.company")}
+              placeholder={t(source === "doctors" ? "fields.companyDoctors" : "fields.company")}
               value={company}
               onChange={(e) => setCompany(e.target.value)}
               autoComplete="organization"

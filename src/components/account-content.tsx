@@ -133,7 +133,17 @@ export function AccountContent() {
           {t("title")}
         </h1>
         <p className="text-slate-text/80 mb-8">{t("signedOut")}</p>
-        <AuthForm onDone={load} />
+        <AuthForm
+          source={visitSource}
+          onDone={() => {
+            // Wer über die Ärzte-Seite kam, will in den Browser, nicht zum
+            // Download: nach Registrierung oder Anmeldung direkt in die
+            // Web-App (ADR-0010). Sie übernimmt die Website-Sitzung
+            // (znerol74/custix#41), also kein zweites Login.
+            if (visitSource === "doctors") window.location.href = "/app/";
+            else load();
+          }}
+        />
       </Shell>
     );
   }

@@ -545,6 +545,7 @@
     "fields": {
       "name": "Name",
       "company": "Firma oder Kanzlei",
+      "companyDoctors": "Praxis, Ordination oder Einrichtung",
       "email": "E-Mail",
       "password": "Passwort (mind. 8 Zeichen)",
       "passwordRepeat": "Passwort wiederholen"

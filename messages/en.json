@@ -545,6 +545,7 @@
     "fields": {
       "name": "Name",
       "company": "Company or firm",
+      "companyDoctors": "Practice or facility",
       "email": "Email",
       "password": "Password (at least 8 characters)",
       "passwordRepeat": "Repeat password"
