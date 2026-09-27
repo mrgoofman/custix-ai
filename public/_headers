@@ -1,0 +1,8 @@
+# Cross-origin isolation for the web app only (custix.ai/app, issue
+# znerol74/custix#27): lets the NER worker's ONNX runtime use several threads
+# (SharedArrayBuffer). Applies to asset requests the static router serves
+# directly; the SPA fallback route gets the same headers from next.config.ts.
+# Every subresource under /app is same-origin, so require-corp blocks nothing.
+/app/*
+  Cross-Origin-Opener-Policy: same-origin
+  Cross-Origin-Embedder-Policy: require-corp

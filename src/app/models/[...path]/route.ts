@@ -55,6 +55,12 @@ function baseHeaders(key: string, size: number, etag: string): Headers {
     ETag: etag,
     // Model files are versioned by their key/prefix — cache hard.
     "Cache-Control": "public, max-age=31536000, immutable",
+    // The web app runs cross-origin isolated (COOP/COEP on /app, see
+    // next.config.ts). The ONNX runtime spawns its threads as dedicated
+    // workers from ort/ort-wasm-simd-threaded.mjs, and a worker script must
+    // itself carry a COEP compatible with its isolated owner, or the worker
+    // fails to start. Harmless on the wasm and model blobs.
+    "Cross-Origin-Embedder-Policy": "require-corp",
   });
 }
 

@@ -25,6 +25,22 @@ const nextConfig: NextConfig = {
   async redirects() {
     return [{ source: "/app", destination: "/app/", permanent: false }];
   },
+  // Cross-origin isolation for the web app ONLY (znerol74/custix#27): its
+  // NER worker may then run the ONNX runtime on several threads. Set here
+  // for the SPA fallback below (Worker-generated response) and in
+  // public/_headers for assets the static router serves directly; the rest
+  // of the site is untouched.
+  async headers() {
+    return [
+      {
+        source: "/app/:path*",
+        headers: [
+          { key: "Cross-Origin-Opener-Policy", value: "same-origin" },
+          { key: "Cross-Origin-Embedder-Policy", value: "require-corp" },
+        ],
+      },
+    ];
+  },
   async rewrites() {
     return {
       beforeFiles: [],
