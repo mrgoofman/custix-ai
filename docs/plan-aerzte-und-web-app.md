@@ -6,6 +6,12 @@ bestätigen.
 **Betrifft zwei Repos:** `custix` (Desktop + Web-App, GitHub `znerol74/custix`)
 und `custix-ai` (Website, liefert die Web-App unter `/app` aus).
 
+> **Grundregel (27.09.2026): nur Web — die Desktop-App bleibt unverändert.**
+> Alles in diesem Plan betrifft die Web-App und die Website. Web-Arbeit läuft
+> über die Web-Module und Web-Aliase; geteilter Code ändert sich nur, wo das
+> Verhalten der Desktop-App nachweislich gleich bleibt. Ausgeliefert wird per
+> Web-Redeploy; ein Desktop-Release ist dafür nicht nötig.
+
 ---
 
 ## Ausgangslage
@@ -30,13 +36,13 @@ und `custix-ai` (Website, liefert die Web-App unter `/app` aus).
    Zuordnung; nacheinander verarbeitet; Export sofort; Download einzeln oder als
    ZIP (nur anonymisierte Dateien); neutrale Dateinamen; kein Pflicht-Review,
    aber Kennzeichnung *ungeprüft*. Details: `custix/docs/adr/0013-stapelverarbeitung.md`.
-3. Stapel gilt für **alle** Nutzer; zuerst Web, dann Desktop, gleiche
-   Oberfläche.
-4. Erkennung: **ein** Regelwerk für alle Berufe. Eponyme (Morbus Crohn) werden
-   nicht geschwärzt, die deutsche Krankenversichertennummer kommt dazu,
-   Datumsangaben bleiben geschwärzt.
-5. Bild-Eingabe JPG/PNG über den bestehenden Scan-Weg; heraus kommt dasselbe
-   Format.
+3. Stapel gilt für **alle** Web-Nutzer (nicht nur Ärzte) — **nur in der
+   Web-App**, nicht am Desktop.
+4. Erkennung im Web: **ein** Regelwerk für alle Berufe. Eponyme (Morbus Crohn)
+   werden nicht geschwärzt, die deutsche Krankenversichertennummer kommt dazu,
+   Datumsangaben bleiben geschwärzt. Nur im Web-Build aktiv.
+5. Bild-Eingabe JPG/PNG in der Web-App über den bestehenden Scan-Weg; heraus
+   kommt dasselbe Format.
 6. Landingpage `/fuer-aerzte` (EN `/for-doctors`); `/fuer-gesundheitswesen`
    leitet dorthin weiter.
 7. **Go-live** der Ärzte-Seite erst nach Phase 1, 3 und 5.
@@ -53,10 +59,9 @@ Dateiname, Eponym).
 | Erstwarnung falsch herum abgefragt | Neue Web-Nutzer sehen den Datenverlust-Hinweis (ADR-0004) nie | `frontend/src/web/webBackend.ts:749` |
 | Lizenzprüfung liest `expires_at`/`license_type` statt `expires`/`type` | Ablauf und Tarif immer leer; Server-500 sperrt Nutzer aus; keine Version gesendet | `frontend/src/web/webBackend.ts:834` |
 | Löschen lässt die Zuordnung stehen | Personendaten bleiben gespeichert | `frontend/src/web/webBackend.ts:530` |
-| Namenserkennung endet nach ~512 Wortstücken (Web **und** Windows) | Danach greifen nur noch die festen Muster; der Arztname am Ende eines Befunds geht durch | `frontend/src/web/ner/runner.ts:112`, `python-sidecar/src/custix_sidecar/pipeline_onnx.py` |
+| Namenserkennung endet nach ~512 Wortstücken | Danach greifen nur noch die festen Muster; der Arztname am Ende eines Befunds geht durch | `frontend/src/web/ner/runner.ts:112` (nur Web; der Windows-Sidecar hat dieselbe Grenze, bleibt aber unverändert) |
 
-Weil Kern und Oberfläche geteilt sind, heißt das: Release auf allen drei
-Plattformen (Web-Deploy, Windows-CI-Tag, macOS-Build).
+Ausgeliefert per Web-Redeploy.
 
 ## Phase 2 — Qualitätslücken im Web (custix) · [znerol74/custix#21](https://github.com/znerol74/custix/issues/21)
 
@@ -65,7 +70,7 @@ Plattformen (Web-Deploy, Windows-CI-Tag, macOS-Build).
   Stapel.
 - Neu gesetzte PDFs mit Unicode-Schrift („Dvořák" wird heute zu „D?o?ák").
 - Eingefügter Text: Formatwahl im Web (heute immer `.docx`).
-- Veralteter Hinweis „Scans nicht unterstützt" in beiden DropZones.
+- Veralteter Hinweis „Scans nicht unterstützt" in der Web-DropZone.
 - Kleinere: Tabellen-Anhang beim PDF-Import, Silbentrennung bei der
   Glyphen-Schwärzung, 150 dpi für die Seiten-Ansicht, 25-MB-Grenze für
   gespeicherte Originale, Fortschritt beim Import, Hinweis „neue Version, bitte
@@ -73,24 +78,23 @@ Plattformen (Web-Deploy, Windows-CI-Tag, macOS-Build).
 
 ## Phase 3 — Erkennung für Befunde (custix core) · [znerol74/custix#22](https://github.com/znerol74/custix/issues/22)
 
-- Eponym-Filter im Rust-Kern (`core/src/recognizers/orchestrator.rs`); wirkt auf
-  beiden Plattformen.
+- Eponym-Filter im Rust-Kern (`core/src/recognizers/orchestrator.rs`), nur im
+  Web-Build aktiv (z. B. Feature, das nur der WASM-Build einschaltet).
 - Muster für die deutsche Krankenversichertennummer (Buchstabe + 9 Ziffern).
 - 20 synthetische Befunde (AT/DE) als Testkorpus im bestehenden Eval-Harness,
-  gleiche Schwelle wie bisher; auf Web-ONNX **und** macOS-spaCy messen.
+  gleiche Schwelle wie bisher; gemessen wird das Web-Modell (ONNX).
 
-## Phase 4 — Bild-Eingabe (custix, beide Plattformen) · [znerol74/custix#23](https://github.com/znerol74/custix/issues/23)
+## Phase 4 — Bild-Eingabe (custix, nur Web) · [znerol74/custix#23](https://github.com/znerol74/custix/issues/23)
 
 JPG/PNG intern als einseitiger Scan, Ausgabe im Eingangsformat. HEIC/TIFF
 später.
 
-## Phase 5 — Stapel (custix, Web zuerst) · [znerol74/custix#24](https://github.com/znerol74/custix/issues/24)
+## Phase 5 — Stapel (custix, nur Web) · [znerol74/custix#24](https://github.com/znerol74/custix/issues/24)
 
 Nach ADR-0013: Mehrfach-Auswahl und Drop, Warteschlange, Status pro Datei
 (wartet, wird gelesen, wird erkannt, wird geprüft, fertig, Fehler),
 Gesamtfortschritt, ZIP und Einzel-Download, *ungeprüft*-Kennzeichnung,
-höchstens 20 Dateien pro Stapel. Danach Desktop (alle Drop-Pfade, Dialog mit
-Mehrfachauswahl, ZIP über Speichern-Dialog).
+höchstens 20 Dateien pro Stapel. Kein Stapel am Desktop.
 
 ## Phase 6 — Landingpage Ärzte (custix-ai, ab sofort baubar) · [mrgoofman/custix-ai#5](https://github.com/mrgoofman/custix-ai/issues/5)
 
@@ -157,7 +161,7 @@ nicht; siehe Keyword-Datei, Abschnitt 6).
 
 ## Reihenfolge
 
-1. Phase 1 → Release auf allen drei Plattformen.
+1. Phase 1 → Web-Redeploy.
 2. Phase 3 (Go-live-Bedingung für Ärzte).
 3. Phase 5 (Stapel, Web).
 4. Phase 6 und 7 parallel ab sofort bauen. 7.2 und 7.3 können vorher live
@@ -172,7 +176,7 @@ nicht; siehe Keyword-Datei, Abschnitt 6).
   Medizinprodukts; „Vollständig konform mit EU-Datenschutzrecht" nicht für Ärzte
   übernehmen.
 - **Annahme prüfen:** Praxis-Rechner erlauben oft keine Installation (Grund
-  für „Web zuerst").
+  dafür, dass Ärzte über die Web-App einsteigen).
 - **ADR-0013** bestätigen (steht auf „Proposed").
 - **Kostenlose Tool-Seite** für „pdf schwärzen" (6.600 Suchen pro Monat) ja
   oder nein? Das braucht eine Nutzung ohne Konto und damit eine Ausnahme vom
