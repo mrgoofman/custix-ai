@@ -51,6 +51,10 @@
     "terms": {
       "title": "Terms & Conditions | custix",
       "description": "Terms and conditions for using custix."
+    },
+    "guides": {
+      "title": "Guides: pseudonymisation, data protection and AI | custix",
+      "description": "Plain-language guides on pseudonymisation, anonymisation, professional secrecy and AI at work. Currently in German only."
     }
   },
   "nav": {
@@ -269,6 +273,7 @@
     "healthcare": "For Healthcare",
     "insurance": "For Insurance",
     "about": "About Us",
+    "guides": "Guides (German)",
     "pricing": "Pricing",
     "contact": "Contact",
     "imprint": "Legal Notice",
@@ -561,5 +566,26 @@
       "cta": "Save password"
     },
     "spamHint": "Nothing arrived? Please check your spam folder too."
+  },
+  "guides": {
+    "title": "Guides",
+    "indexIntro": "Plain-language answers on data protection, pseudonymisation and AI at work. Our guides are currently available in German only.",
+    "breadcrumbHome": "Home",
+    "byline": "By the custix team",
+    "updated": "Updated {date}",
+    "readingTime": "{minutes} min read",
+    "toc": "Contents",
+    "before": "Before",
+    "after": "After",
+    "faqTitle": "Frequently asked questions",
+    "moreGuides": "More guides",
+    "readGuide": "Read more",
+    "germanOnly": "This guide is available in German only.",
+    "disclaimer": "This guide is general information and no substitute for legal advice in an individual case.",
+    "cta": {
+      "heading": "Use AI without giving away names",
+      "text": "custix replaces names, addresses, dates of birth and case numbers with placeholders before a document goes to ChatGPT, Claude & Co. The mapping stays on your device. 14 days free, no credit card.",
+      "button": "Start 14-day free trial"
+    }
   }
 }

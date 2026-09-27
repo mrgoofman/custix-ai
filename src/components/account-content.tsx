@@ -7,6 +7,7 @@ import { Link } from "@/i18n/navigation";
 import { AuthForm } from "./auth-form";
 import { ResetPasswordForm } from "./reset-password-form";
 import { signOut } from "@/lib/auth-client";
+import { formatDate } from "@/lib/format-date";
 import {
   currentVisitSource,
   rememberVisitSource,
@@ -199,12 +200,12 @@ export function AccountContent() {
             {expiresAt ? (
               <p className="text-slate-text/80 mb-6">
                 {expired
-                  ? t("status.expiredOn", { date: fmt(expiresAt, locale) })
+                  ? t("status.expiredOn", { date: formatDate(new Date(expiresAt * 1000), locale) })
                   : isSubscription
-                    ? t("status.renewsOn", { date: fmt(expiresAt, locale) })
+                    ? t("status.renewsOn", { date: formatDate(new Date(expiresAt * 1000), locale) })
                     : t("status.daysLeft", {
                         days: daysLeft ?? 0,
-                        date: fmt(expiresAt, locale),
+                        date: formatDate(new Date(expiresAt * 1000), locale),
                       })}
               </p>
             ) : null}
@@ -335,18 +336,6 @@ function StartActions({ source }: { source: VisitSource | null }) {
       </div>
       <p className="mt-3 text-sm text-muted">{t("startWebHint")}</p>
     </div>
-  );
-}
-
-/** Datum in der aktiven Sprache, nicht fest österreichisch. */
-function fmt(epoch: number, locale: string) {
-  return new Date(epoch * 1000).toLocaleDateString(
-    locale === "en" ? "en-GB" : "de-AT",
-    {
-      day: "2-digit",
-      month: "2-digit",
-      year: "numeric",
-    },
   );
 }
 

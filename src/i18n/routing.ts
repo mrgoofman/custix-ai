@@ -55,5 +55,11 @@ export const routing = defineRouting({
       de: "/konto",
       en: "/account",
     },
+    // Ratgeber gibt es nur auf Deutsch (keine EN-Recherche, siehe
+    // mrgoofman/custix-ai#6). Der Pfad ist in beiden Sprachen gleich; die
+    // EN-Ausgabe zeigt den deutschen Text mit noindex, siehe lib/seo.ts.
+    "/ratgeber": "/ratgeber",
+    "/ratgeber/pseudonymisierung-vs-anonymisierung":
+      "/ratgeber/pseudonymisierung-vs-anonymisierung",
   },
 });

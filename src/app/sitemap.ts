@@ -1,5 +1,5 @@
 import type { MetadataRoute } from "next";
-import { INDEXABLE_ROUTE_KEYS, localizedUrl } from "@/lib/seo";
+import { INDEXABLE_ROUTE_KEYS, isGermanOnlyRoute, localizedUrl } from "@/lib/seo";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const lastModified = new Date();
@@ -9,11 +9,15 @@ export default function sitemap(): MetadataRoute.Sitemap {
     lastModified,
     changeFrequency: "monthly" as const,
     priority: routeKey === "/" ? 1 : 0.8,
-    alternates: {
-      languages: {
-        de: localizedUrl(routeKey, "de"),
-        en: localizedUrl(routeKey, "en"),
-      },
-    },
+    // Deutsche Seiten ohne englische Fassung (Ratgeber) haben keine
+    // Sprachalternativen; die EN-URL wäre nur ein noindex-Duplikat.
+    alternates: isGermanOnlyRoute(routeKey)
+      ? undefined
+      : {
+          languages: {
+            de: localizedUrl(routeKey, "de"),
+            en: localizedUrl(routeKey, "en"),
+          },
+        },
   }));
 }

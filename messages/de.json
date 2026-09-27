@@ -51,6 +51,10 @@
     "terms": {
       "title": "AGB | custix",
       "description": "Allgemeine Geschäftsbedingungen für die Nutzung von custix."
+    },
+    "guides": {
+      "title": "Ratgeber: Pseudonymisierung, Datenschutz und KI | custix",
+      "description": "Verständliche Ratgeber zu Pseudonymisierung, Anonymisierung, Schweigepflicht und KI im Berufsalltag – vom custix-Team."
     }
   },
   "nav": {
@@ -269,6 +273,7 @@
     "healthcare": "Für Gesundheitswesen",
     "insurance": "Für Versicherungen",
     "about": "Über uns",
+    "guides": "Ratgeber",
     "pricing": "Preise",
     "contact": "Kontakt",
     "imprint": "Impressum",
@@ -561,5 +566,26 @@
       "cta": "Passwort speichern"
     },
     "spamHint": "Nichts angekommen? Bitte prüfen Sie auch den Spam-Ordner."
+  },
+  "guides": {
+    "title": "Ratgeber",
+    "indexIntro": "Verständliche Antworten zu Datenschutz, Pseudonymisierung und KI im Berufsalltag – vom custix-Team, ohne Fachchinesisch.",
+    "breadcrumbHome": "Start",
+    "byline": "Vom custix-Team",
+    "updated": "Stand {date}",
+    "readingTime": "{minutes} Min. Lesezeit",
+    "toc": "Inhalt",
+    "before": "Vorher",
+    "after": "Nachher",
+    "faqTitle": "Häufige Fragen",
+    "moreGuides": "Weitere Ratgeber",
+    "readGuide": "Weiterlesen",
+    "germanOnly": "Dieser Ratgeber ist auf Deutsch verfasst.",
+    "disclaimer": "Dieser Ratgeber informiert allgemein und ersetzt keine Rechtsberatung im Einzelfall.",
+    "cta": {
+      "heading": "KI nutzen, ohne Namen preiszugeben",
+      "text": "custix ersetzt Namen, Adressen, Geburtsdaten und Aktenzeichen durch Platzhalter, bevor ein Dokument zu ChatGPT, Claude & Co. geht. Die Zuordnung bleibt auf Ihrem Gerät. 14 Tage kostenlos, ohne Kreditkarte.",
+      "button": "14 Tage kostenlos testen"
+    }
   }
 }

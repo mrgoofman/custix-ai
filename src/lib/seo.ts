@@ -29,6 +29,16 @@ export function localizedUrl(routeKey: string, locale: string): string {
 /** Every indexable internal route key (download is excluded — it's token-gated). */
 export const INDEXABLE_ROUTE_KEYS = Object.keys(pathnames);
 
+/**
+ * Routen, die es nur auf Deutsch gibt (der Ratgeber-Bereich, siehe
+ * mrgoofman/custix-ai#6). Sie haben eine kanonische DE-URL, keine hreflang-
+ * Alternativen und stehen nur mit der DE-URL in der Sitemap; ein Aufruf unter
+ * /en/… liefert den deutschen Text mit noindex.
+ */
+export function isGermanOnlyRoute(routeKey: string): boolean {
+  return routeKey === "/ratgeber" || routeKey.startsWith("/ratgeber/");
+}
+
 export function buildMetadata({
   locale,
   routeKey,
@@ -42,8 +52,12 @@ export function buildMetadata({
   description: string;
   index?: boolean;
 }): Metadata {
-  const canonical = localizedUrl(routeKey, locale);
+  const germanOnly = isGermanOnlyRoute(routeKey);
+  const canonical = localizedUrl(routeKey, germanOnly ? "de" : locale);
   const ogImage = `${BASE_URL}/og-image.png`;
+  // Die EN-Ausgabe einer deutschen Seite ist ein Duplikat: nicht indexieren,
+  // Links aber verfolgen lassen.
+  const indexable = index && !(germanOnly && locale !== "de");
 
   return {
     title,
@@ -51,11 +65,13 @@ export function buildMetadata({
     metadataBase: new URL(BASE_URL),
     alternates: {
       canonical,
-      languages: {
-        de: localizedUrl(routeKey, "de"),
-        en: localizedUrl(routeKey, "en"),
-        "x-default": localizedUrl(routeKey, "de"),
-      },
+      languages: germanOnly
+        ? undefined
+        : {
+            de: localizedUrl(routeKey, "de"),
+            en: localizedUrl(routeKey, "en"),
+            "x-default": localizedUrl(routeKey, "de"),
+          },
     },
     openGraph: {
       type: "website",
@@ -63,7 +79,7 @@ export function buildMetadata({
       title,
       description,
       url: canonical,
-      locale: locale === "de" ? "de_AT" : "en_US",
+      locale: germanOnly || locale === "de" ? "de_AT" : "en_US",
       images: [{ url: ogImage, width: 1200, height: 630, alt: "custix" }],
     },
     twitter: {
@@ -72,7 +88,9 @@ export function buildMetadata({
       description,
       images: [ogImage],
     },
-    robots: index ? undefined : { index: false, follow: false },
+    robots: indexable
+      ? undefined
+      : { index: false, follow: germanOnly && index },
   };
 }
 
