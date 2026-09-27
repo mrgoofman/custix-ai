@@ -24,6 +24,10 @@
       "title": "Anonymisierung für das Gesundheitswesen | custix",
       "description": "Patientendaten anonymisieren und KI im Gesundheitswesen sicher nutzen. Ärztliche Schweigepflicht und DSGVO wahren, 100 % lokal. 14 Tage kostenlos testen."
     },
+    "doctors": {
+      "title": "Arztbrief schreiben mit KI, Befunde anonymisieren | custix für Ärzte",
+      "description": "Befunde im Browser anonymisieren, Arztbrief mit KI schreiben: Nur Platzhalter gehen an die KI, Patientendaten bleiben in der Praxis. Für Ärztinnen und Ärzte. Derzeit kostenlos."
+    },
     "insurance": {
       "title": "Anonymisierung für Versicherungen | custix",
       "description": "Kundendaten anonymisieren und KI bei Versicherungen sicher nutzen. DSGVO-konform, 100 % lokal – Kundendaten verlassen nie Ihren Rechner. 14 Tage kostenlos testen."
@@ -586,6 +590,139 @@
       "heading": "KI nutzen, ohne Namen preiszugeben",
       "text": "custix ersetzt Namen, Adressen, Geburtsdaten und Aktenzeichen durch Platzhalter, bevor ein Dokument zu ChatGPT, Claude & Co. geht. Die Zuordnung bleibt auf Ihrem Gerät. 14 Tage kostenlos, ohne Kreditkarte.",
       "button": "14 Tage kostenlos testen"
+    }
+  },
+  "doctors": {
+    "eyebrow": "Für Ärztinnen, Ärzte und Praxen",
+    "h1": "Befunde anonymisieren, Arztbrief mit KI schreiben – Patientendaten bleiben in der Praxis",
+    "intro": "custix ersetzt Namen, Geburtsdaten, Versicherungsnummern und Adressen in Befunden durch Platzhalter – direkt im Browser, ohne Installation. Der medizinische Inhalt bleibt. An ChatGPT, Claude & Co. geht nur der Text mit Platzhaltern, für Arztbrief und Fallbesprechung. Das entlastet Sie bei der ärztlichen Schweigepflicht, ersetzt aber nicht Ihre eigene Prüfung.",
+    "cta": "Kostenlos im Browser starten",
+    "ctaNote": "Konto anlegen und loslegen. Derzeit kostenlos, keine Kreditkarte.",
+    "secondaryCta": "So funktioniert's",
+    "preview": {
+      "title": "Mehrere Befunde, ein Durchgang",
+      "subtitle": "Legen Sie mehrere Befunde ab. custix arbeitet sie nacheinander ab und packt die anonymisierten Fassungen in eine ZIP-Datei.",
+      "sample": "Beispieldaten – erfunden, nichts wird hochgeladen",
+      "status": {
+        "waiting": "wartet",
+        "reading": "wird gelesen",
+        "detecting": "wird erkannt",
+        "checking": "wird geprüft",
+        "done": "fertig"
+      },
+      "files": [
+        "Befund_Labor_2026-03.pdf",
+        "Entlassungsbrief_Klinik.pdf",
+        "MRT_Befund_Knie.pdf",
+        "Ueberweisung_Foto.jpg"
+      ],
+      "zip": "ZIP herunterladen ({count} Dateien)",
+      "progress": "{done} von {total} fertig",
+      "reducedMotion": "Animation aus, weil Ihr System reduzierte Bewegung bevorzugt. So sieht der fertige Stapel aus."
+    },
+    "redaction": {
+      "title": "Was geschwärzt wird – und was stehen bleibt",
+      "removedTitle": "Wird durch Platzhalter ersetzt",
+      "removed": [
+        "Namen von Patientinnen, Patienten und Angehörigen",
+        "Geburtsdaten und andere Datumsangaben",
+        "Sozialversicherungs- und Krankenversichertennummern",
+        "Adressen und Telefonnummern",
+        "Behandelnde Ärztinnen und Ärzte, Kliniken und Praxen"
+      ],
+      "keptTitle": "Bleibt erhalten",
+      "kept": [
+        "Diagnosen und Krankheitsbezeichnungen",
+        "Laborwerte und Messwerte",
+        "Medikamente und Dosierungen",
+        "Befundtext, Anamnese und Verlauf",
+        "Aufbau und Formatierung des Dokuments"
+      ],
+      "dateNote": "Datumsangaben werden standardmäßig mit ersetzt, weil sie zusammen mit anderen Angaben Rückschlüsse erlauben. In der Prüfansicht können Sie das für einzelne Stellen ändern."
+    },
+    "flow": {
+      "title": "Vom Befund zum Arztbrief",
+      "steps": [
+        {
+          "title": "Befunde ablegen",
+          "description": "Ein Dokument oder mehrere auf einmal: PDF, Word, Scan oder Foto."
+        },
+        {
+          "title": "Anonymisiert, nacheinander",
+          "description": "custix erkennt den Personenbezug, ersetzt ihn durch Platzhalter und liefert die Dateien einzeln oder als ZIP."
+        },
+        {
+          "title": "KI entwirft den Arztbrief",
+          "description": "Sie geben den anonymisierten Text an die KI Ihrer Wahl. Sie sieht nur Platzhalter."
+        },
+        {
+          "title": "Namen kommen zurück",
+          "description": "Den Entwurf fügen Sie in custix ein. Die Platzhalter werden lokal wieder durch die echten Angaben ersetzt."
+        }
+      ]
+    },
+    "trust": {
+      "title": "Was Sie wissen sollten",
+      "items": [
+        {
+          "title": "Läuft im Browser",
+          "description": "Keine Installation, keine Admin-Rechte – auch am Praxis-Rechner."
+        },
+        {
+          "title": "Dokumente bleiben auf Ihrem Gerät",
+          "description": "Lesen, Erkennen und Zuordnen laufen lokal im Browser. Nichts davon geht an uns."
+        },
+        {
+          "title": "Nur Platzhalter gehen an die KI",
+          "description": "Die KI Ihrer Wahl bekommt den Text ohne Namen, Daten und Nummern."
+        },
+        {
+          "title": "Einmaliger Modell-Download",
+          "description": "Beim ersten Start lädt custix das Erkennungsmodell (rund 430 MB) auf Ihr Gerät. Danach bleibt es dort gespeichert."
+        }
+      ]
+    },
+    "scans": {
+      "title": "Auch Scans und Fotos",
+      "text": "Gescannte Befunde und Handyfotos werden per Texterkennung gelesen und direkt im Bild geschwärzt. Unterschriften, Stempel oder Logos markieren Sie mit einem Rechteck; custix schwärzt die Fläche selbst, nicht nur den Text darüber."
+    },
+    "free": {
+      "title": "Derzeit kostenlos",
+      "text": "Derzeit ist custix im Browser kostenlos. Sie legen ein Konto an und starten sofort – ohne Kreditkarte, ohne Laufzeit. Wenn ein Preis kommt, sagen wir rechtzeitig Bescheid."
+    },
+    "faq": {
+      "title": "Häufige Fragen von Ärztinnen und Ärzten",
+      "items": [
+        {
+          "q": "Ist das dann anonym?",
+          "a": "Genau genommen pseudonymisiert: custix ersetzt identifizierende Angaben durch Platzhalter, die Zuordnung bleibt auf Ihrem Gerät. Für die KI ist der Text ohne Schlüssel. Seltene Diagnosen oder ungewöhnliche Verläufe können trotzdem Rückschlüsse erlauben. Prüfen Sie solche Stellen in der Prüfansicht und schwärzen Sie sie bei Bedarf zusätzlich."
+        },
+        {
+          "q": "Muss ich etwas installieren?",
+          "a": "Nein. custix läuft in einem aktuellen Browser. Beim ersten Start wird einmalig das Erkennungsmodell mit rund 430 MB geladen; das dauert je nach Verbindung einige Minuten. Danach ist es auf Ihrem Gerät gespeichert."
+        },
+        {
+          "q": "Verlassen Befunde mein Gerät?",
+          "a": "Nein. Lesen, Erkennen und Ersetzen laufen im Browser auf Ihrem Gerät. An unsere Server gehen nur Anmeldedaten. Was Sie danach an eine KI geben, ist der Text mit Platzhaltern – das entscheiden Sie."
+        },
+        {
+          "q": "Welche KI kann ich verwenden?",
+          "a": "Jede. custix ist unabhängig vom KI-Anbieter. Den anonymisierten Text kopieren Sie in ChatGPT, Claude, Gemini oder ein anderes Werkzeug und fügen die Antwort zur Re-Identifizierung wieder in custix ein."
+        },
+        {
+          "q": "Was ist mit der ärztlichen Schweigepflicht?",
+          "a": "Die Schweigepflicht (in Österreich § 54 ÄrzteG, in Deutschland § 203 StGB) und der besondere Schutz von Gesundheitsdaten nach Art. 9 DSGVO gelten unabhängig vom Werkzeug. custix hilft, indem identifizierende Angaben durch Platzhalter ersetzt werden, bevor Text an einen KI-Dienst geht. Ob und wie Sie KI in Ihrer Praxis einsetzen, bleibt Ihre Entscheidung; dieser Hinweis ist keine Rechtsberatung."
+        },
+        {
+          "q": "Was kostet custix?",
+          "a": "Derzeit nichts. Die Web-App ist kostenlos. Wenn ein Preis kommt, informieren wir rechtzeitig."
+        }
+      ]
+    },
+    "guideLink": "Mehr dazu im Ratgeber: Pseudonymisierung vs. Anonymisierung",
+    "bottom": {
+      "title": "KI für den Arztbrief – Patientennamen bleiben bei Ihnen",
+      "text": "Konto anlegen und im Browser starten. Derzeit kostenlos."
     }
   }
 }

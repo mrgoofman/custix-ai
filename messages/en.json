@@ -24,6 +24,10 @@
       "title": "Data Anonymization for Healthcare | custix",
       "description": "Anonymize patient data and use AI safely in healthcare. Protect medical confidentiality and GDPR, 100% local. Try free."
     },
+    "doctors": {
+      "title": "Write medical reports with AI, anonymise findings | custix for doctors",
+      "description": "Anonymise findings in your browser and write medical reports with AI: only placeholders reach the AI, patient data stays in your practice. For doctors. Currently free."
+    },
     "insurance": {
       "title": "Data Anonymization for Insurance | custix",
       "description": "Anonymize customer data and use AI safely in insurance. GDPR-compliant, 100% local – personal data never leaves your computer. 14-day free trial."
@@ -586,6 +590,139 @@
       "heading": "Use AI without giving away names",
       "text": "custix replaces names, addresses, dates of birth and case numbers with placeholders before a document goes to ChatGPT, Claude & Co. The mapping stays on your device. 14 days free, no credit card.",
       "button": "Start 14-day free trial"
+    }
+  },
+  "doctors": {
+    "eyebrow": "For doctors and medical practices",
+    "h1": "Anonymise findings, write medical reports with AI – patient data stays in your practice",
+    "intro": "custix replaces names, dates of birth, insurance numbers and addresses in medical findings with placeholders – right in your browser, no installation. The medical content stays. Only the text with placeholders reaches ChatGPT, Claude & Co., for medical reports and case discussions. That supports your duty of medical confidentiality but does not replace your own review.",
+    "cta": "Start free in your browser",
+    "ctaNote": "Create an account and get going. Currently free, no credit card.",
+    "secondaryCta": "How it works",
+    "preview": {
+      "title": "Several findings, one run",
+      "subtitle": "Drop several findings at once. custix works through them one after another and bundles the anonymised versions into a ZIP file.",
+      "sample": "Sample data – fictional, nothing is uploaded",
+      "status": {
+        "waiting": "waiting",
+        "reading": "reading",
+        "detecting": "detecting",
+        "checking": "verifying",
+        "done": "done"
+      },
+      "files": [
+        "Lab_results_2026-03.pdf",
+        "Discharge_letter_clinic.pdf",
+        "MRI_report_knee.pdf",
+        "Referral_photo.jpg"
+      ],
+      "zip": "Download ZIP ({count} files)",
+      "progress": "{done} of {total} done",
+      "reducedMotion": "Animation off because your system prefers reduced motion. This is what the finished batch looks like."
+    },
+    "redaction": {
+      "title": "What gets redacted – and what stays",
+      "removedTitle": "Replaced with placeholders",
+      "removed": [
+        "Names of patients and relatives",
+        "Dates of birth and other dates",
+        "Social security and health insurance numbers",
+        "Addresses and phone numbers",
+        "Treating doctors, clinics and practices"
+      ],
+      "keptTitle": "Kept",
+      "kept": [
+        "Diagnoses and names of conditions",
+        "Lab values and measurements",
+        "Medication and dosages",
+        "Findings, history and course",
+        "Structure and formatting of the document"
+      ],
+      "dateNote": "Dates are replaced by default because, combined with other details, they allow re-identification. You can change this for individual passages in the review."
+    },
+    "flow": {
+      "title": "From findings to medical report",
+      "steps": [
+        {
+          "title": "Drop your findings",
+          "description": "One document or several at once: PDF, Word, scan or photo."
+        },
+        {
+          "title": "Anonymised, one after another",
+          "description": "custix detects personal data, replaces it with placeholders and delivers the files individually or as a ZIP."
+        },
+        {
+          "title": "AI drafts the report",
+          "description": "You hand the anonymised text to the AI of your choice. It only sees placeholders."
+        },
+        {
+          "title": "Names come back",
+          "description": "Paste the draft into custix. The placeholders are replaced locally with the real details again."
+        }
+      ]
+    },
+    "trust": {
+      "title": "What you should know",
+      "items": [
+        {
+          "title": "Runs in the browser",
+          "description": "No installation, no admin rights – even on the practice computer."
+        },
+        {
+          "title": "Documents stay on your device",
+          "description": "Reading, detection and mapping run locally in the browser. None of it reaches us."
+        },
+        {
+          "title": "Only placeholders go to the AI",
+          "description": "The AI of your choice gets the text without names, dates and numbers."
+        },
+        {
+          "title": "One-time model download",
+          "description": "On first start custix downloads the detection model (about 430 MB) to your device. After that it stays stored there."
+        }
+      ]
+    },
+    "scans": {
+      "title": "Scans and photos too",
+      "text": "Scanned findings and phone photos are read with text recognition and redacted directly in the image. Mark signatures, stamps or logos with a rectangle; custix blacks out the area itself, not just the text on top."
+    },
+    "free": {
+      "title": "Currently free",
+      "text": "Right now custix in the browser is free. Create an account and start immediately – no credit card, no fixed term. If pricing is introduced, we will let you know in good time."
+    },
+    "faq": {
+      "title": "Questions doctors ask us",
+      "items": [
+        {
+          "q": "Is it truly anonymous?",
+          "a": "Strictly speaking it is pseudonymised: custix replaces identifying details with placeholders, and the mapping stays on your device. For the AI the text comes without the key. Rare diagnoses or unusual histories may still allow inferences. Check such passages in the review and redact them additionally if needed."
+        },
+        {
+          "q": "Do I need to install anything?",
+          "a": "No. custix runs in a current browser. On first start the detection model of about 430 MB is downloaded once; depending on your connection this takes a few minutes. After that it is stored on your device."
+        },
+        {
+          "q": "Do my findings leave my device?",
+          "a": "No. Reading, detection and replacement run in the browser on your device. Only sign-in data reaches our servers. What you hand to an AI afterwards is the text with placeholders – that is your decision."
+        },
+        {
+          "q": "Which AI can I use?",
+          "a": "Any. custix is independent of the AI provider. Copy the anonymised text into ChatGPT, Claude, Gemini or another tool and paste the answer back into custix for re-identification."
+        },
+        {
+          "q": "What about medical confidentiality?",
+          "a": "Medical confidentiality (Section 54 of the Austrian Physicians Act, Section 203 of the German Criminal Code) and the special protection of health data under Article 9 GDPR apply regardless of the tool. custix helps by replacing identifying details with placeholders before text goes to an AI service. Whether and how you use AI in your practice remains your decision; this note is not legal advice."
+        },
+        {
+          "q": "What does custix cost?",
+          "a": "Currently nothing. The web app is free. If pricing is introduced, we will let you know in good time."
+        }
+      ]
+    },
+    "guideLink": "Read more in our guide: pseudonymisation vs. anonymisation (German)",
+    "bottom": {
+      "title": "AI for medical reports – patient names stay with you",
+      "text": "Create an account and start in your browser. Currently free."
     }
   }
 }

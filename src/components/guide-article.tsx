@@ -1,9 +1,10 @@
 import { getTranslations } from "next-intl/server";
-import { ChevronDown, Clock } from "lucide-react";
+import { Clock } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { formatDate } from "@/lib/format-date";
 import { RichText } from "./rich-text";
 import { Breadcrumb } from "./breadcrumb";
+import { FaqAccordion } from "./faq-accordion";
 import { GUIDE_CTA_ROUTE, relatedGuides } from "@/content/ratgeber";
 import type { Guide, GuideBlock } from "@/content/ratgeber/types";
 
@@ -123,25 +124,9 @@ export async function GuideArticle({
               >
                 {t("faqTitle")}
               </h2>
-              <div className="space-y-3">
-                {guide.faq.map((item) => (
-                  <details
-                    key={item.q}
-                    className="group bg-surface rounded-xl border border-muted/20"
-                  >
-                    <summary className="flex items-center justify-between gap-4 px-6 py-4 cursor-pointer list-none [&::-webkit-details-marker]:hidden text-sm font-semibold text-navy">
-                      {item.q}
-                      <ChevronDown
-                        className="w-5 h-5 text-muted shrink-0 transition-transform duration-200 group-open:rotate-180"
-                        aria-hidden
-                      />
-                    </summary>
-                    <div className="px-6 pb-5 text-sm text-slate-text/80 leading-relaxed">
-                      <RichText text={item.a} />
-                    </div>
-                  </details>
-                ))}
-              </div>
+              <FaqAccordion
+                items={guide.faq.map((item) => ({ q: item.q, a: <RichText text={item.a} /> }))}
+              />
             </section>
           ) : null}
 

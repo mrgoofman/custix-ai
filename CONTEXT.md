@@ -76,7 +76,9 @@ Friction: **type-the-email to confirm**; audited.
 
 **License**:
 The single entitlement the desktop app and the Web App (`custix.ai/app`) validate for an
-Account's entire lifetime. One License covers both; there is no separate web plan. Has a
+Account's entire lifetime. One License covers both; there is no separate web plan. **Interim (ADR-0010,
+since 2026-09-27): the Web App checks no License at all — a login is enough and use is free until
+billing for the web is decided; the desktop app is unchanged.** Has a
 `type` (`beta` | `trial` | `subscription`) and a `status` (`active` | `expired` | `revoked`),
 plus an expiry. The app always asks the backend "is this license valid right now?" — the
 check never changes as the type flips beta → subscription. Stripe webhooks keep status/expiry

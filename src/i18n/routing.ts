@@ -22,6 +22,13 @@ export const routing = defineRouting({
       de: "/fuer-gesundheitswesen",
       en: "/for-healthcare",
     },
+    // Ärzte-Landingpage (mrgoofman/custix-ai#9). Bis zum Go-live (#11)
+    // verborgen: noindex, nicht in Sitemap und Navigation – siehe
+    // HIDDEN_ROUTE_KEYS in lib/seo.ts.
+    "/fuer-aerzte": {
+      de: "/fuer-aerzte",
+      en: "/for-doctors",
+    },
     "/fuer-versicherungen": {
       de: "/fuer-versicherungen",
       en: "/for-insurance",

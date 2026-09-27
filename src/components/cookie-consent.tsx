@@ -2,16 +2,17 @@
 
 import { useState, useEffect } from "react";
 import { useTranslations } from "next-intl";
+import { CONSENT_ACCEPTED, CONSENT_STORAGE_KEY } from "@/lib/analytics";
 
 export function CookieConsent() {
   const t = useTranslations("cookie");
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    const consent = localStorage.getItem("cookie-consent");
+    const consent = localStorage.getItem(CONSENT_STORAGE_KEY);
     if (!consent) {
       setVisible(true);
-    } else if (consent === "accepted") {
+    } else if (consent === CONSENT_ACCEPTED) {
       loadGA4();
     }
   }, []);
@@ -30,13 +31,13 @@ export function CookieConsent() {
   };
 
   const accept = () => {
-    localStorage.setItem("cookie-consent", "accepted");
+    localStorage.setItem(CONSENT_STORAGE_KEY, CONSENT_ACCEPTED);
     setVisible(false);
     loadGA4();
   };
 
   const reject = () => {
-    localStorage.setItem("cookie-consent", "rejected");
+    localStorage.setItem(CONSENT_STORAGE_KEY, "rejected");
     setVisible(false);
   };
 

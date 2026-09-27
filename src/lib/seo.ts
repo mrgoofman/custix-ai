@@ -26,8 +26,27 @@ export function localizedUrl(routeKey: string, locale: string): string {
   return BASE_URL + `/${locale}` + (path === "/" ? "" : path);
 }
 
-/** Every indexable internal route key (download is excluded — it's token-gated). */
-export const INDEXABLE_ROUTE_KEYS = Object.keys(pathnames);
+/**
+ * Fertig gebaute, aber noch nicht freigeschaltete Seiten. Dieser Satz steuert
+ * noindex (buildMetadata) und den Ausschluss aus der Sitemap; Navigation und
+ * Footer sind von Hand verdrahtet und verlinken solche Seiten schlicht noch
+ * nicht. Der Go-live (mrgoofman/custix-ai#11) nimmt den Schlüssel hier heraus
+ * und ergänzt die Links in navbar.tsx, footer.tsx und audience-cards.tsx.
+ */
+export const HIDDEN_ROUTE_KEYS: ReadonlySet<string> = new Set(["/fuer-aerzte"]);
+
+export function isHiddenRoute(routeKey: string): boolean {
+  return HIDDEN_ROUTE_KEYS.has(routeKey);
+}
+
+/**
+ * Alle Routenschlüssel für die Sitemap außer den verborgenen. (/download und
+ * /konto stehen mit drin; /download sperrt robots.ts, /konto ist per eigener
+ * Metadata noindex – so war es schon vor den verborgenen Seiten.)
+ */
+export const INDEXABLE_ROUTE_KEYS = Object.keys(pathnames).filter(
+  (key) => !isHiddenRoute(key),
+);
 
 /**
  * Routen, die es nur auf Deutsch gibt (der Ratgeber-Bereich, siehe
@@ -56,8 +75,10 @@ export function buildMetadata({
   const canonical = localizedUrl(routeKey, germanOnly ? "de" : locale);
   const ogImage = `${BASE_URL}/og-image.png`;
   // Die EN-Ausgabe einer deutschen Seite ist ein Duplikat: nicht indexieren,
-  // Links aber verfolgen lassen.
-  const indexable = index && !(germanOnly && locale !== "de");
+  // Links aber verfolgen lassen. Verborgene Seiten sind bis zum Go-live
+  // grundsätzlich noindex.
+  const indexable =
+    index && !isHiddenRoute(routeKey) && !(germanOnly && locale !== "de");
 
   return {
     title,
@@ -88,9 +109,10 @@ export function buildMetadata({
       description,
       images: [ogImage],
     },
-    robots: indexable
-      ? undefined
-      : { index: false, follow: germanOnly && index },
+    // Nicht indexieren, aber Links folgen lassen, solange die Seite an sich
+    // öffentlich gedacht ist (verborgen bis Go-live, EN-Duplikat). Nur wer
+    // ausdrücklich index=false verlangt, bekommt auch nofollow.
+    robots: indexable ? undefined : { index: false, follow: index },
   };
 }
 
