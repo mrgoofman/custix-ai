@@ -1,0 +1,1 @@
+const f=4.166666666666667,c="\0";function i(o,r){const t=Array.from(o);for(const s of r)for(const[a,e]of s.spans)for(let n=a;n<Math.min(e,t.length);n++)t[n]=c;return t.join("")}export{c as B,f as O,i as r};
