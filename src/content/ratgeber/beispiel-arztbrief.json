@@ -1,0 +1,55 @@
+{
+  "title": "Beispiel-Arztbrief (Entlassungsbrief, Innere Medizin)",
+  "notice": "Beispieldaten: Alle Personen, Einrichtungen, Daten und Befunde sind erfunden. Kein Behandlungsstandard, kein medizinischer Rat. Vorlage von custix.ai – frei verwendbar.",
+  "blocks": [
+    { "kind": "header", "lines": [
+      "{{ORG:Landeskrankenhaus Musterstadt}}",
+      "Abteilung für Innere Medizin",
+      "{{ADRESSE:Spitalgasse 12, 8010 Musterstadt}}",
+      "{{EMAIL:innere@lkh-musterstadt.example}}"
+    ]},
+    { "kind": "recipient", "lines": [
+      "{{PERSON:Dr. Peter Gruber}}",
+      "Facharzt für Allgemeinmedizin",
+      "{{ADRESSE:Hauptplatz 3, 8010 Musterstadt}}"
+    ]},
+    { "kind": "date", "text": "Musterstadt, {{DATUM:14.03.2026}}" },
+    { "kind": "subject", "text": "Arztbrief: {{PERSON:Maria Huber}}, geb. {{DATUM:12.03.1968}}, SV-Nr. {{SVNR:1234 120368}} – stationärer Aufenthalt {{DATUM:08.03.2026}} bis {{DATUM:14.03.2026}}" },
+    { "kind": "salutation", "text": "Sehr geehrte Frau Kollegin, sehr geehrter Herr Kollege," },
+    { "kind": "paragraph", "text": "wir berichten über die oben genannte Patientin, die sich vom {{DATUM:08.03.2026}} bis {{DATUM:14.03.2026}} in unserer stationären Behandlung befand." },
+    { "kind": "section", "heading": "Diagnosen", "lines": [
+      "1. Ambulant erworbene Pneumonie, rechter Unterlappen",
+      "2. Arterielle Hypertonie, medikamentös eingestellt"
+    ]},
+    { "kind": "section", "heading": "Anamnese", "lines": [
+      "Die Patientin stellte sich am {{DATUM:08.03.2026}} mit seit vier Tagen bestehendem Fieber bis 39,2 °C, produktivem Husten und Belastungsdyspnoe vor. Zuweisung durch {{PERSON:Dr. Peter Gruber}}. Vorerkrankungen: arterielle Hypertonie. Nikotin: nie. Allergien: keine bekannt. Wohnhaft {{ADRESSE:Lindenweg 7, 8010 Musterstadt}}."
+    ]},
+    { "kind": "section", "heading": "Befunde bei Aufnahme", "lines": [
+      "Klinisch: Blutdruck 135/85 mmHg, Herzfrequenz 96/min, Sauerstoffsättigung 92 % bei Raumluft, Temperatur 38,9 °C. Auskultatorisch feinblasige Rasselgeräusche rechts basal.",
+      "Labor: CRP 148 mg/l, Leukozyten 14,2 G/l, Kreatinin 0,9 mg/dl, übrige Routineparameter unauffällig.",
+      "Röntgen-Thorax vom {{DATUM:08.03.2026}}: Infiltrat im rechten Unterlappen, kein Pleuraerguss."
+    ]},
+    { "kind": "section", "heading": "Therapie und Verlauf", "lines": [
+      "Kalkulierte antibiotische Therapie nach hausinternem Standard, zunächst intravenös, ab dem dritten Tag oral; Gesamtdauer sieben Tage. Sauerstoffgabe über Nasenbrille am ersten Tag.",
+      "Unter Therapie rasche Entfieberung ab dem zweiten Tag. Kontrolle am {{DATUM:13.03.2026}}: CRP 31 mg/l, Sauerstoffsättigung 97 % bei Raumluft. Die Patientin war zum Entlassungszeitpunkt beschwerdefrei und mobil."
+    ]},
+    { "kind": "section", "heading": "Epikrise", "lines": [
+      "Bei {{PERSON:Maria Huber}} bestand eine ambulant erworbene Pneumonie des rechten Unterlappens ohne Komplikationen. Unter antibiotischer Therapie kam es zu einem raschen klinischen und laborchemischen Ansprechen. Die bekannte arterielle Hypertonie war während des Aufenthalts stabil eingestellt."
+    ]},
+    { "kind": "section", "heading": "Medikation bei Entlassung", "lines": [
+      "Bisherige antihypertensive Medikation unverändert weiter.",
+      "Orale antibiotische Therapie bis einschließlich {{DATUM:15.03.2026}}."
+    ]},
+    { "kind": "section", "heading": "Procedere und Empfehlungen", "lines": [
+      "Klinische Kontrolle in Ihrer Ordination in etwa einer Woche.",
+      "Röntgen-Thorax-Kontrolle in sechs Wochen zur Dokumentation der Rückbildung empfohlen.",
+      "Wiedervorstellung bei erneutem Fieber, zunehmender Atemnot oder Hämoptysen.",
+      "Überprüfung des Impfstatus (Pneumokokken, Influenza) empfohlen."
+    ]},
+    { "kind": "closing", "lines": [
+      "Mit kollegialen Grüßen",
+      "{{PERSON:Dr. Anna Steiner}}, Assistenzärztin",
+      "{{PERSON:Prim. Dr. Josef Bauer}}, Abteilungsvorstand"
+    ]}
+  ]
+}

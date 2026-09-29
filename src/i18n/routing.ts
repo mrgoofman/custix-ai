@@ -68,5 +68,8 @@ export const routing = defineRouting({
     "/ratgeber": "/ratgeber",
     "/ratgeber/pseudonymisierung-vs-anonymisierung":
       "/ratgeber/pseudonymisierung-vs-anonymisierung",
+    "/ratgeber/aerztliche-schweigepflicht-und-ki":
+      "/ratgeber/aerztliche-schweigepflicht-und-ki",
+    "/ratgeber/arztbrief-schreiben-mit-ki": "/ratgeber/arztbrief-schreiben-mit-ki",
   },
 });

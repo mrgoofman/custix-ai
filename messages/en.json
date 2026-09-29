@@ -586,6 +586,7 @@
     "moreGuides": "More guides",
     "readGuide": "Read more",
     "germanOnly": "This guide is available in German only.",
+    "draft": "Preview: not yet published, not indexed, linked only for review.",
     "disclaimer": "This guide is general information and no substitute for legal advice in an individual case.",
     "cta": {
       "heading": "Use AI without giving away names",

@@ -2,7 +2,7 @@ import { getTranslations } from "next-intl/server";
 import { ArrowRight, Clock } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { formatDate } from "@/lib/format-date";
-import { GUIDES } from "@/content/ratgeber";
+import { publicGuides } from "@/content/ratgeber";
 import { Breadcrumb } from "./breadcrumb";
 
 /** Übersicht aller Ratgeber unter /ratgeber. */
@@ -19,7 +19,7 @@ export async function GuideIndex({ locale }: { locale: string }) {
         <p className="mt-4 text-lg text-slate-text/80">{t("indexIntro")}</p>
 
         <ul className="mt-10 space-y-4">
-          {GUIDES.map((g) => (
+          {publicGuides().map((g) => (
             <li key={g.routeKey}>
               <Link
                 href={g.routeKey}

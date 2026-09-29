@@ -61,8 +61,8 @@ export const pseudonymisierungVsAnonymisierung: Guide = {
           before:
             "Patientin Maria Huber, geb. 12.03.1968, SV-Nr. 1234 120368, stellt sich mit seit drei Wochen bestehendem Husten vor. Überweisung durch Dr. Peter Gruber, Graz.",
           after:
-            "Patientin [Person 1], geb. [Datum 1], SV-Nr. [Nummer 1], stellt sich mit seit drei Wochen bestehendem Husten vor. Überweisung durch [Person 2], [Ort 1].",
-          note: "Der medizinische Inhalt bleibt vollständig erhalten. Die Zuordnungsliste (Person 1 = Maria Huber) liegt getrennt vom Text. Wer sie hat, kann den Befund wieder zuordnen – deshalb ist das Pseudonymisierung, nicht Anonymisierung. Alle Namen sind erfunden.",
+            "Patientin [PERSON_1], geb. [DATUM_1], SV-Nr. [SVNR_1], stellt sich mit seit drei Wochen bestehendem Husten vor. Überweisung durch [PERSON_2], [ADRESSE_1].",
+          note: "Der medizinische Inhalt bleibt vollständig erhalten. Die Zuordnungsliste (PERSON_1 = Maria Huber) liegt getrennt vom Text. Wer sie hat, kann den Befund wieder zuordnen – deshalb ist das Pseudonymisierung, nicht Anonymisierung. Alle Namen sind erfunden.",
         },
         {
           type: "p",
@@ -143,7 +143,7 @@ export const pseudonymisierungVsAnonymisierung: Guide = {
           type: "ul",
           items: [
             "**[Arztpraxis](/fuer-gesundheitswesen):** Ein Befund soll von einer KI in einen Entwurf für den Arztbrief übersetzt werden. Name, Geburtsdatum, Sozialversicherungs- oder Krankenversichertennummer, Adresse, Behandler und Klinik werden durch Platzhalter ersetzt, Diagnosen und Laborwerte bleiben. Die Zuordnung bleibt in der Praxis. **Pseudonymisierung.**",
-            "**[Kanzlei](/fuer-anwaelte):** Ein Schriftsatz soll von einer KI auf Argumentationslücken geprüft werden. Mandant wird zu [Person 1], die Gegenseite zu [Person 2], das Aktenzeichen zu [Aktenzeichen 1]. Der Sachverhalt bleibt lesbar. **Pseudonymisierung.**",
+            "**[Kanzlei](/fuer-anwaelte):** Ein Schriftsatz soll von einer KI auf Argumentationslücken geprüft werden. Mandant wird zu [PERSON_1], die Gegenseite zu [PERSON_2], das Aktenzeichen zu einem eigenen Platzhalter. Der Sachverhalt bleibt lesbar. **Pseudonymisierung.**",
             "**[Personalabteilung](/fuer-hr):** Für den Jahresbericht wird die durchschnittliche Krankenstandsdauer pro Abteilung berechnet, nur für Abteilungen, in denen sich aus dem Durchschnitt niemand herauslesen lässt. Kein Rückweg zum Einzelnen. **Anonymisierung.**",
             "**Grauzone:** Ein einzelner Befund ohne Namen, aber mit seltener Diagnose, exaktem Datum und Klinik geht an eine KI. Für Außenstehende wirkt er anonym, für Kolleginnen und Kollegen in der Klinik ist die Person erkennbar. Rechtlich ist das **nicht anonym**. Solche Stellen sollte man zusätzlich entschärfen: Datum vergröbern, Klinik weglassen, seltene Merkmale prüfen.",
           ],
@@ -184,7 +184,7 @@ export const pseudonymisierungVsAnonymisierung: Guide = {
         {
           type: "ul",
           items: [
-            "custix erkennt Namen, Adressen, Geburtsdaten, Aktenzeichen, Steuernummern und weitere identifizierende Angaben und ersetzt sie durch Platzhalter wie [Person 1] oder [Datum 1].",
+            "custix erkennt Namen, Adressen, Geburtsdaten, Aktenzeichen, Steuernummern und weitere identifizierende Angaben und ersetzt sie durch Platzhalter wie [PERSON_1] oder [DATUM_1].",
             "Die Zuordnungstabelle zwischen Platzhaltern und Originaldaten entsteht und bleibt **auf Ihrem Gerät** – in der Desktop-App auf Ihrem Rechner, in der Web-App im lokalen Speicher Ihres Browsers. Sie wird nicht an uns und nicht an den KI-Anbieter übertragen (siehe [Datenschutzerklärung](/datenschutz)).",
             "An die KI Ihrer Wahl geht nur der Text mit Platzhaltern. Die Antwort setzen Sie mit custix lokal wieder in den Klartext zurück.",
           ],

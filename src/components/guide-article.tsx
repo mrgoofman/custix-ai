@@ -1,11 +1,12 @@
 import { getTranslations } from "next-intl/server";
-import { Clock } from "lucide-react";
+import { Clock, Download } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { formatDate } from "@/lib/format-date";
 import { RichText } from "./rich-text";
 import { Breadcrumb } from "./breadcrumb";
 import { FaqAccordion } from "./faq-accordion";
-import { GUIDE_CTA_ROUTE, relatedGuides } from "@/content/ratgeber";
+import { GUIDE_CTA_HREF, relatedGuides } from "@/content/ratgeber";
+import { BEISPIEL_ARZTBRIEF, letterSegments, type LetterVariant } from "@/content/ratgeber/beispiel-arztbrief";
 import type { Guide, GuideBlock } from "@/content/ratgeber/types";
 
 /**
@@ -45,7 +46,7 @@ export async function GuideArticle({
             {guide.teaser}
           </p>
           <p className="mt-5 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-muted">
-            <span>{t("byline")}</span>
+            <span>{guide.byline ?? t("byline")}</span>
             <span>
               {t("updated", { date: formatDate(new Date(guide.updated), locale) })}
             </span>
@@ -59,6 +60,11 @@ export async function GuideArticle({
 
       <article lang="de" className="py-12 lg:py-16">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+          {guide.hidden ? (
+            <p lang={locale} className="mb-4 rounded-xl bg-amber-light text-navy text-sm px-4 py-3">
+              {t("draft")}
+            </p>
+          ) : null}
           {locale !== "de" ? (
             <p
               lang={locale}
@@ -168,7 +174,7 @@ export async function GuideArticle({
           </h2>
           <p className="text-lg text-white/70 mb-8">{t("cta.text")}</p>
           <Link
-            href={GUIDE_CTA_ROUTE}
+            href={GUIDE_CTA_HREF}
             className="inline-block px-8 py-4 bg-royal text-white font-semibold rounded-xl hover:bg-royal-dark transition-colors text-lg shadow-lg shadow-royal/30"
           >
             {t("cta.button")}
@@ -194,6 +200,33 @@ function Block({
         <p className="mb-5 leading-relaxed text-slate-text/90">
           <RichText text={block.text} />
         </p>
+      );
+    case "h3":
+      return (
+        <h3 className="mt-8 mb-3 text-xl font-bold font-heading text-navy">{block.text}</h3>
+      );
+    case "letter":
+      return <Letter variant={block.variant} />;
+    case "downloads":
+      return (
+        <ul className="my-6 flex flex-col sm:flex-row flex-wrap gap-3">
+          {block.items.map((item) => (
+            <li key={item.href}>
+              <a
+                href={item.href}
+                download
+                className="inline-flex items-center gap-2 px-5 py-3 rounded-lg border-2 border-navy/10 text-navy font-semibold hover:bg-navy/5 transition-colors"
+              >
+                <Download className="w-4 h-4 text-royal" aria-hidden />
+                {item.label}
+                <span className="text-xs font-semibold uppercase tracking-wider text-muted">
+                  {item.format}
+                </span>
+              </a>
+              {item.note ? <p className="mt-1 text-xs text-muted">{item.note}</p> : null}
+            </li>
+          ))}
+        </ul>
       );
     case "ul":
     case "ol": {
@@ -317,7 +350,7 @@ function Block({
   }
 }
 
-/** Platzhalter wie [Person 1] farblich hervorheben, wie in der App. */
+/** Platzhalter wie [PERSON_1] farblich hervorheben, wie in der App. */
 function Placeholders({ text }: { text: string }) {
   return (
     <>
@@ -334,5 +367,78 @@ function Placeholders({ text }: { text: string }) {
         ),
       )}
     </>
+  );
+}
+
+/**
+ * Der Beispiel-Arztbrief als Dokument im Ratgeber. `template` zeigt die
+ * lesbare Vorlage, `placeholders` denselben Brief so, wie er nach custix
+ * aussieht. Beides aus einer Quelle, siehe content/ratgeber/beispiel-arztbrief.ts.
+ */
+function Letter({ variant }: { variant: LetterVariant }) {
+  const segs = letterSegments(variant);
+  const line = (b: number, i: number, className: string) => (
+    <p key={`${b}:${i}`} className={className}>
+      {(segs.get(`${b}:${i}`) ?? []).map((seg, k) =>
+        seg.placeholder ? (
+          <mark key={k} className="rounded px-1 bg-highlight-person text-navy font-medium">
+            {seg.text}
+          </mark>
+        ) : (
+          <span key={k}>{seg.text}</span>
+        ),
+      )}
+    </p>
+  );
+  return (
+    <figure className="my-8 rounded-2xl border border-muted/20 bg-surface overflow-hidden shadow-sm">
+      <figcaption className="px-6 py-3 bg-navy/5 text-sm font-semibold text-navy flex flex-wrap items-center justify-between gap-2">
+        <span>{BEISPIEL_ARZTBRIEF.title}</span>
+        <span className="text-xs font-semibold text-amber bg-amber-light rounded-full px-2.5 py-0.5">
+          Beispieldaten – erfunden
+        </span>
+      </figcaption>
+      <div className="p-6 sm:p-8 text-[15px] leading-relaxed text-slate-text/90">
+        {BEISPIEL_ARZTBRIEF.blocks.map((block, b) => {
+          switch (block.kind) {
+            case "header":
+              return (
+                <div key={b} className="mb-6">
+                  {block.lines.map((_, i) =>
+                    line(b, i, i === 0 ? "font-bold text-navy" : "text-sm"),
+                  )}
+                </div>
+              );
+            case "recipient":
+              return (
+                <div key={b} className="mb-6">
+                  {block.lines.map((_, i) => line(b, i, "text-sm"))}
+                </div>
+              );
+            case "date":
+              return <div key={b} className="mb-4 text-right text-sm">{line(b, 0, "")}</div>;
+            case "subject":
+              return <div key={b} className="mb-4 font-semibold text-navy">{line(b, 0, "")}</div>;
+            case "salutation":
+            case "paragraph":
+              return <div key={b} className="mb-4">{line(b, 0, "")}</div>;
+            case "section":
+              return (
+                <div key={b} className="mb-4">
+                  <p className="font-semibold text-navy">{block.heading}</p>
+                  {block.lines.map((_, i) => line(b, i, "mt-1"))}
+                </div>
+              );
+            case "closing":
+              return (
+                <div key={b} className="mt-8">
+                  {block.lines.map((_, i) => line(b, i, i === 0 ? "mb-6" : "text-sm"))}
+                </div>
+              );
+          }
+        })}
+      </div>
+      <p className="px-6 py-3 border-t border-muted/20 text-xs text-muted">{BEISPIEL_ARZTBRIEF.notice}</p>
+    </figure>
   );
 }

@@ -1,4 +1,5 @@
 import type { routing } from "@/i18n/routing";
+import type { LetterVariant } from "./beispiel-arztbrief";
 
 /**
  * Inhaltsmodell der Ratgeber (mrgoofman/custix-ai#6). Die Texte liegen als
@@ -12,8 +13,22 @@ import type { routing } from "@/i18n/routing";
  */
 export type InlineText = string;
 
+export type GuideDownload = {
+  label: string;
+  /** Pfad unter /public, z. B. "/ratgeber/beispiel-arztbrief-vorlage.docx". */
+  href: string;
+  format: "Word" | "PDF";
+  note?: string;
+};
+
 export type GuideBlock =
   | { type: "p"; text: InlineText }
+  /** Zwischenüberschrift innerhalb eines Abschnitts. */
+  | { type: "h3"; text: string }
+  /** Dateien zum Herunterladen, z. B. der Beispiel-Arztbrief als Word und PDF. */
+  | { type: "downloads"; items: GuideDownload[] }
+  /** Der Beispiel-Arztbrief, als Vorlage oder mit Platzhaltern (beispiel-arztbrief.ts). */
+  | { type: "letter"; variant: LetterVariant }
   | { type: "ul"; items: InlineText[] }
   | { type: "ol"; items: InlineText[] }
   | { type: "table"; head: string[]; rows: InlineText[][] }
@@ -57,4 +72,13 @@ export type Guide = {
   intro: InlineText[];
   sections: GuideSection[];
   faq: { q: string; a: InlineText }[];
+  /**
+   * Noch nicht veröffentlicht: noindex, nicht in der Sitemap, nicht in der
+   * Übersicht und nur von anderen verborgenen Ratgebern aus verlinkt. Die
+   * Seite ist unter ihrer URL erreichbar (zum Gegenlesen) und zeigt einen
+   * Hinweis „Vorabversion".
+   */
+  hidden?: boolean;
+  /** Ersetzt die Standard-Autorenzeile, z. B. mit dem Prüfstatus eines Rechtstexts. */
+  byline?: string;
 };

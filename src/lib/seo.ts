@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import { routing } from "@/i18n/routing";
+import { hiddenGuideRouteKeys } from "@/content/ratgeber";
 
 export const BASE_URL =
   process.env.NEXT_PUBLIC_BASE_URL?.replace(/\/$/, "") ?? "https://custix.ai";
@@ -33,7 +34,11 @@ export function localizedUrl(routeKey: string, locale: string): string {
  * nicht. Der Go-live (mrgoofman/custix-ai#11) nimmt den Schlüssel hier heraus
  * und ergänzt die Links in navbar.tsx, footer.tsx und audience-cards.tsx.
  */
-export const HIDDEN_ROUTE_KEYS: ReadonlySet<string> = new Set(["/fuer-aerzte"]);
+export const HIDDEN_ROUTE_KEYS: ReadonlySet<string> = new Set([
+  "/fuer-aerzte",
+  // Ratgeber mit `hidden: true` (src/content/ratgeber): noch nicht freigegeben.
+  ...hiddenGuideRouteKeys(),
+]);
 
 export function isHiddenRoute(routeKey: string): boolean {
   return HIDDEN_ROUTE_KEYS.has(routeKey);
