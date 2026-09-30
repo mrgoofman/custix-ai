@@ -29,8 +29,10 @@ Production: https://custix.ai
 `npm run build:cf`, then launch config `custix-wrangler` (`wrangler dev`, port 8787,
 local D1 from `.wrangler/state`). One-time setup:
 `npx wrangler d1 migrations apply custix-db --local` and a `.dev.vars` file
-(gitignored) with `BETTER_AUTH_SECRET=<anything>`,
-`BETTER_AUTH_URL=http://localhost:8787`, `NEXT_PUBLIC_BASE_URL=http://localhost:8787`.
+(gitignored) with `BETTER_AUTH_SECRET=<anything>` and
+`BETTER_AUTH_URL=http://localhost:8787`. Do NOT override `NEXT_PUBLIC_BASE_URL` there:
+the client bundle inlines the build-time value (`https://custix.ai`), a different runtime
+value makes React throw hydration error #418 on every page in the local preview only.
 Without `RESEND_API_KEY` emails are skipped silently; render the key email as HTML with
 `node scripts/preview-key-email.mts` (or send a test with `--to`).
 
