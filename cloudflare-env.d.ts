@@ -1,6 +1,6 @@
 // Augments the CloudflareEnv used by @opennextjs/cloudflare's getCloudflareContext()
 // with this project's bindings and vars. Keep in sync with wrangler.jsonc.
-import type { D1Database } from "@cloudflare/workers-types";
+import type { D1Database, RateLimit } from "@cloudflare/workers-types";
 
 declare global {
   interface CloudflareEnv {
@@ -11,6 +11,12 @@ declare global {
     RESEND_API_KEY?: string;
     STRIPE_SECRET_KEY?: string;
     STRIPE_WEBHOOK_SECRET?: string;
+    // Partner signup (ADR-0011)
+    TURNSTILE_SITE_KEY?: string;
+    TURNSTILE_SECRET_KEY?: string;
+    /** Nur lokal (.dev.vars): zusätzliche Ursprünge für die Vorschau, kommagetrennt. */
+    PARTNER_DEV_ORIGINS?: string;
+    PARTNER_SIGNUP_LIMITER?: RateLimit;
   }
 }
 

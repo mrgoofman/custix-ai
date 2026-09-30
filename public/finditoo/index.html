@@ -1,0 +1,58 @@
+<!doctype html>
+<!--
+  Vorschau der finditoo-Landingpage auf custix.ai (custix.ai/finditoo/).
+  Zeigt landing.html so, wie Elementor sie einbettet – nur ohne finditoos
+  Kopf- und Fußzeile. Das Formular läuft hier im Vorschau-Modus
+  (`data-demo`): Es legt KEIN Konto an. Echte Registrierungen zählen nur von
+  finditoos eigener Seite (ADR-0011, CONTEXT.md „Partner attribution“).
+
+  Lokal: http://localhost:8787/finditoo/ (wrangler dev) oder über die
+  Launch-Config „finditoo-preview“ (Port 8090) mit
+  ?api=http://localhost:8787&live=1 – dann echte Registrierung gegen das
+  lokale Backend (PARTNER_DEV_ORIGINS).
+-->
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Vorschau für finditoo · custix.ai</title>
+  <link rel="icon" href="/favicon.ico">
+  <style>
+    body{margin:0;background:#fff;font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+    .cxp-bar{background:#fffbe6;border-bottom:1px solid #f0e3a0;color:#5c4d00;font-size:14px;line-height:1.5;padding:10px 20px;text-align:center}
+    .cxp-bar a{color:inherit}
+  </style>
+</head>
+<body>
+  <div class="cxp-bar">
+    <strong>Vorschau für finditoo</strong> – so erscheint die Seite eingebettet auf
+    finditoo-marketing.com; Kopf- und Fußzeile kommen dort von WordPress.
+    Das Formular legt in dieser Vorschau kein Konto an.
+    <a href="landing.html" download="custix-finditoo-landing.html">Code herunterladen (landing.html)</a>
+  </div>
+  <main id="landing"></main>
+
+  <script>
+    (async function () {
+      var params = new URLSearchParams(location.search);
+      var api = params.get("api") || location.origin;
+      var html = await (await fetch("landing.html", { cache: "no-store" })).text();
+      if (api !== "https://custix.ai") html = html.split("https://custix.ai").join(api);
+      var target = document.getElementById("landing");
+      target.innerHTML = html;
+      if (!params.has("live")) {
+        var form = document.getElementById("custix-signup");
+        if (form) form.setAttribute("data-demo", "");
+      }
+      // innerHTML führt <script> nicht aus – wie Elementor neu anlegen.
+      target.querySelectorAll("script").forEach(function (old) {
+        var s = document.createElement("script");
+        for (var i = 0; i < old.attributes.length; i++) s.setAttribute(old.attributes[i].name, old.attributes[i].value);
+        s.textContent = old.textContent;
+        old.replaceWith(s);
+      });
+    })();
+  </script>
+</body>
+</html>

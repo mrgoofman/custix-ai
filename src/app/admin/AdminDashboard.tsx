@@ -28,6 +28,16 @@ interface LicenseRow {
   company: string | null;
   billing_interval: string | null;
   subscription_status: string | null;
+  partner: string | null;
+}
+interface PartnerFunnelRow {
+  partner: string;
+  month: string;
+  registered: number;
+  app_used: number;
+  trial_running: number;
+  trial_ended: number;
+  paying: number;
 }
 interface FeedbackRow {
   id: string;
@@ -55,14 +65,25 @@ export function AdminDashboard({
   adminEmail,
   waitlist,
   licenses,
+  funnel,
+  partnerIds,
   feedback,
 }: {
   adminEmail: string;
   waitlist: WaitlistRow[];
   licenses: LicenseRow[];
+  funnel: PartnerFunnelRow[];
+  /** Aus dem Partner-Register – auch Partner ohne bisherige Registrierung. */
+  partnerIds: readonly string[];
   feedback: FeedbackRow[];
 }) {
   const [busy, setBusy] = useState<string | null>(null);
+  /** "all" | "direct" | Partner-ID – filtert die Lizenztabelle. */
+  const [partnerFilter, setPartnerFilter] = useState("all");
+  const hasPartnerSignups = funnel.some((f) => f.partner !== "direct");
+  const shownLicenses = licenses.filter((l) =>
+    partnerFilter === "all" ? true : (l.partner ?? "direct") === partnerFilter,
+  );
   const [msg, setMsg] = useState<string | null>(null);
   const [sendEmail, setSendEmail] = useState("");
   const [sendName, setSendName] = useState("");
@@ -220,12 +241,72 @@ export function AdminDashboard({
       </section>
 
       <section className="mb-12">
-        <h2 className="text-lg font-semibold mb-3">Licenses ({licenses.length})</h2>
+        <h2 className="text-lg font-semibold mb-1">Partner</h2>
+        <p className="text-xs text-slate-500 mb-3">
+          Nach Monat der Registrierung. App genutzt = Desktop-App mindestens einmal
+          validiert. An Partner gehen nur diese Summen, keine Personen (ADR-0011).
+        </p>
+        {!hasPartnerSignups ? (
+          <p className="text-sm text-slate-400">Noch keine Registrierungen über Partner.</p>
+        ) : null}
         <div className="overflow-x-auto rounded-lg border border-slate-200">
           <table className="w-full text-sm">
             <thead className="bg-slate-50 text-left text-slate-500">
               <tr>
-                <th className="px-3 py-2">Account</th>
+                <th className="px-3 py-2">Monat</th><th className="px-3 py-2">Partner</th>
+                <th className="px-3 py-2 text-right">Registriert</th>
+                <th className="px-3 py-2 text-right">App genutzt</th>
+                <th className="px-3 py-2 text-right">Testphase läuft</th>
+                <th className="px-3 py-2 text-right">Testphase vorbei</th>
+                <th className="px-3 py-2 text-right">Zahlend</th>
+              </tr>
+            </thead>
+            <tbody>
+              {funnel.map((f) => (
+                <tr
+                  key={`${f.month}-${f.partner}`}
+                  className={`border-t border-slate-100 ${f.partner === "direct" ? "text-slate-400" : ""}`}
+                >
+                  <td className="px-3 py-2">{f.month ?? "—"}</td>
+                  <td className="px-3 py-2">{f.partner}</td>
+                  <td className="px-3 py-2 text-right">{f.registered}</td>
+                  <td className="px-3 py-2 text-right">{f.app_used}</td>
+                  <td className="px-3 py-2 text-right">{f.trial_running}</td>
+                  <td className="px-3 py-2 text-right">{f.trial_ended}</td>
+                  <td className="px-3 py-2 text-right">{f.paying}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section className="mb-12">
+        <div className="flex items-center justify-between mb-3">
+          <h2 className="text-lg font-semibold">
+            Licenses ({shownLicenses.length}
+            {shownLicenses.length !== licenses.length ? ` von ${licenses.length}` : ""})
+          </h2>
+          <label className="text-sm text-slate-500">
+            Partner{" "}
+            <select
+              value={partnerFilter}
+              onChange={(e) => setPartnerFilter(e.target.value)}
+              className="ml-1 rounded border px-2 py-1 text-slate-700"
+            >
+              <option value="all">alle</option>
+              <option value="direct">direkt</option>
+              {partnerIds.map((p) => (
+                <option key={p} value={p}>{p}</option>
+              ))}
+            </select>
+          </label>
+        </div>
+        <div className="overflow-x-auto rounded-lg border border-slate-200">
+          <table className="w-full text-sm">
+            <thead className="bg-slate-50 text-left text-slate-500">
+              <tr>
+                <th className="px-3 py-2">Account</th><th className="px-3 py-2">Partner</th>
                 <th className="px-3 py-2">Key</th><th className="px-3 py-2">Type</th>
                 <th className="px-3 py-2">Status</th><th className="px-3 py-2">Claimed</th>
                 <th className="px-3 py-2">Expires</th><th className="px-3 py-2">Last seen</th>
@@ -233,7 +314,7 @@ export function AdminDashboard({
               </tr>
             </thead>
             <tbody>
-              {licenses.map((l) => (
+              {shownLicenses.map((l) => (
                 <tr key={l.id} className="border-t border-slate-100">
                   <td className="px-3 py-2">
                     {l.email ? (
@@ -247,6 +328,7 @@ export function AdminDashboard({
                       <span className="text-slate-400">nicht beansprucht</span>
                     )}
                   </td>
+                  <td className="px-3 py-2">{l.partner ?? <span className="text-slate-400">—</span>}</td>
                   <td className="px-3 py-2 font-mono text-xs">{l.license_key}</td>
                   <td className="px-3 py-2">
                     {l.type}

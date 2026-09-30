@@ -2,7 +2,7 @@
  * Schlüssel-Mail ansehen oder testweise verschicken, ohne den Worker anzuwerfen.
  *
  *   node scripts/preview-key-email.mts [ausgabeordner]
- *     schreibt alle Varianten (trial/issued × de/en) als HTML-Dateien
+ *     schreibt alle Varianten (trial/partner/issued × de/en) als HTML-Dateien
  *     (Standard: .preview/emails, liegt im .gitignore).
  *
  *   RESEND_API_KEY=… node scripts/preview-key-email.mts --to name@example.com
@@ -45,6 +45,17 @@ for (const locale of ["de", "en"]) {
     locale,
     variant: "trial",
     expiresAt: inFourteenDays,
+    baseUrl,
+  });
+  // Partner signup (ADR-0011): Testphase ohne Web-App-Hinweis.
+  variants.push({
+    file: `partner-${locale}.html`,
+    name: locale === "de" ? "Mag. Paul Kanzlei" : "Paul Counsel",
+    key: "CUSTIX-TEST-0000-0000-0000",
+    locale,
+    variant: "trial",
+    expiresAt: inFourteenDays,
+    showWebApp: false,
     baseUrl,
   });
   variants.push({

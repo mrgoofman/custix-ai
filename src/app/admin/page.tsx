@@ -1,6 +1,7 @@
 import { headers } from "next/headers";
 import { getDb } from "@/lib/db";
 import { requireAdmin } from "@/lib/admin";
+import { PARTNER_IDS } from "@/lib/partners";
 import { AdminDashboard } from "./AdminDashboard";
 import { LoginForm } from "./LoginForm";
 import type { Metadata } from "next";
@@ -38,6 +39,18 @@ interface LicenseRow {
   company: string | null;
   billing_interval: string | null;
   subscription_status: string | null;
+  partner: string | null;
+}
+
+/** Eine Zeile des Partner-Trichters: ein Partner (oder „direct“) in einem Monat. */
+interface PartnerFunnelRow {
+  partner: string;
+  month: string;
+  registered: number;
+  app_used: number;
+  trial_running: number;
+  trial_ended: number;
+  paying: number;
 }
 
 interface FeedbackRow {
@@ -83,6 +96,7 @@ export default async function AdminPage() {
         // (anders als Beta-Anfragen) keinen waitlist_entry haben.
         `SELECT l.id, l.license_key, l.type, l.status, l.account_id,
                 l.expires_at, l.last_validated_at, l.billing_interval, l.subscription_status,
+                u.partner,
                 COALESCE(u.email, p.email, wp.email)     AS email,
                 COALESCE(u.name,  p.name,  wp.name)      AS name,
                 COALESCE(u.company, p.company, wp.company) AS company
@@ -96,6 +110,42 @@ export default async function AdminPage() {
           ORDER BY l.created_at DESC LIMIT 200`
       )
       .all<LicenseRow>()
+  ).results;
+
+  /**
+   * Partner-Trichter (ADR-0011): nur aus vorhandenen Daten, ohne eigenes
+   * Tracking. Registriert = Konto angelegt (Monat des Kontos; Better Auth
+   * speichert `createdAt` als ISO-Text); App genutzt = die Desktop-App hat
+   * mindestens einmal validiert; zahlend = Abo gültig wie in
+   * /api/license/validate (aktiv, Probezeit, Mahnlauf). Eine Lizenz je Konto
+   * (ux_license_account), widerrufene hängen an keinem Konto mehr.
+   * „direct“ = ohne Partner, zum Vergleich (inkl. Beta-Konten).
+   */
+  const funnel = (
+    await db
+      .prepare(
+        `SELECT partner, month,
+                COUNT(*) AS registered,
+                SUM(validated) AS app_used,
+                SUM(is_trial AND within_term) AS trial_running,
+                SUM(is_trial AND NOT within_term) AS trial_ended,
+                SUM(is_paying) AS paying
+           FROM (
+             SELECT COALESCE(u.partner, 'direct') AS partner,
+                    strftime('%Y-%m', u."createdAt") AS month,
+                    l.last_validated_at IS NOT NULL AS validated,
+                    l.type = 'trial' AS is_trial,
+                    (l.status = 'active' AND (l.expires_at IS NULL
+                       OR l.expires_at + l.grace_seconds > unixepoch())) AS within_term,
+                    (l.type = 'subscription' AND l.status = 'active'
+                       AND l.subscription_status IN ('active', 'trialing', 'past_due')) AS is_paying
+               FROM "user" u
+               LEFT JOIN license l ON l.account_id = u.id
+           )
+          GROUP BY partner, month
+          ORDER BY month DESC, partner`
+      )
+      .all<PartnerFunnelRow>()
   ).results;
 
   const feedback = (
@@ -112,6 +162,8 @@ export default async function AdminPage() {
       adminEmail={admin.email}
       waitlist={waitlist}
       licenses={licenses}
+      funnel={funnel}
+      partnerIds={PARTNER_IDS}
       feedback={feedback}
     />
   );

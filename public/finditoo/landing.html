@@ -1,0 +1,225 @@
+<!--
+  custix.ai × finditoo – Landingpage (Inhalt für ein Elementor-HTML-Widget)
+  Stand: 30.09.2026 · Quelle: custix.ai-Startseite, Registrierung über custix.ai
+  Vorschau: https://custix.ai/finditoo/ · Anleitung zum Einbau liegt bei.
+
+  Alles hier ist frei anpassbar – bis auf den Abschnitt „Registrierung“ ganz
+  unten (die <div id="custix-signup"> und das Skript). Das Formular kommt von
+  custix.ai und wird dort gepflegt.
+-->
+<style>
+  .cxl{--cxl-ink:#1B1635;--cxl-primary:#3D00FF;--cxl-primary-hover:#3200d1;--cxl-text:#4a4760;--cxl-muted:#7a7890;--cxl-soft:#f5f4fa;--cxl-border:#e6e4ee;--cxl-radius:6px;font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color:var(--cxl-text);line-height:1.6;-webkit-font-smoothing:antialiased}
+  .cxl *{box-sizing:border-box}
+  .cxl .cxl-wrap{max-width:1140px;margin:0 auto;padding:0 20px}
+  .cxl section{padding:88px 0}
+  .cxl h1,.cxl h2,.cxl h3{font-family:inherit;color:var(--cxl-ink);margin:0;line-height:1.2;letter-spacing:-.01em}
+  .cxl h2{font-size:36px;font-weight:600;text-align:center;margin-bottom:48px}
+  .cxl p{margin:0}
+  .cxl a.cxl-btn{display:inline-flex;align-items:center;justify-content:center;font-weight:600;font-size:17px;text-decoration:none;border-radius:var(--cxl-radius);padding:15px 28px;transition:background .15s,border-color .15s}
+  .cxl a.cxl-btn-primary{background:var(--cxl-primary);color:#fff}
+  .cxl a.cxl-btn-primary:hover{background:var(--cxl-primary-hover);color:#fff}
+  .cxl a.cxl-btn-ghost{border:1px solid rgba(255,255,255,.35);color:#fff}
+  .cxl a.cxl-btn-ghost:hover{border-color:#fff;color:#fff}
+
+  /* Hero */
+  .cxl .cxl-hero{background:var(--cxl-ink);color:#fff;padding:96px 0;border-radius:0}
+  .cxl .cxl-hero-grid{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center}
+  .cxl .cxl-eyebrow{display:inline-block;font-size:13px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:#b9a8ff;margin-bottom:18px}
+  .cxl .cxl-hero h1{color:#fff;font-size:48px;font-weight:600;margin-bottom:16px}
+  .cxl .cxl-hero .cxl-sub{font-size:22px;font-weight:500;color:#b9a8ff;margin-bottom:16px}
+  .cxl .cxl-hero .cxl-desc{font-size:17px;color:rgba(255,255,255,.78);margin-bottom:32px;max-width:540px}
+  .cxl .cxl-ctas{display:flex;flex-wrap:wrap;gap:14px}
+  .cxl .cxl-video{width:100%;aspect-ratio:16/9;display:block;border-radius:12px;background:#0f0c24;box-shadow:0 24px 60px rgba(0,0,0,.35)}
+
+  /* Vertrauen */
+  .cxl .cxl-trust{padding:56px 0;border-bottom:1px solid var(--cxl-border)}
+  .cxl .cxl-trust-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;text-align:center}
+  .cxl .cxl-icon{width:48px;height:48px;border-radius:12px;background:rgba(61,0,255,.08);color:var(--cxl-primary);display:flex;align-items:center;justify-content:center;margin:0 auto 12px}
+  .cxl .cxl-icon svg{width:24px;height:24px}
+  .cxl .cxl-trust strong{display:block;color:var(--cxl-ink);font-size:15px}
+  .cxl .cxl-trust span{display:block;font-size:13px;color:var(--cxl-muted);margin-top:4px}
+
+  /* So funktioniert's */
+  .cxl .cxl-steps{display:grid;grid-template-columns:repeat(4,1fr);gap:40px;text-align:center}
+  .cxl .cxl-num{font-size:44px;font-weight:700;color:rgba(61,0,255,.14);line-height:1;margin-bottom:10px}
+  .cxl .cxl-steps .cxl-icon{width:56px;height:56px;border-radius:14px;margin-bottom:16px}
+  .cxl .cxl-steps .cxl-icon svg{width:28px;height:28px}
+  .cxl .cxl-steps h3{font-size:18px;font-weight:600;margin-bottom:8px}
+  .cxl .cxl-steps p{font-size:15px;color:var(--cxl-muted)}
+
+  /* FAQ */
+  .cxl .cxl-faq{background:var(--cxl-soft)}
+  .cxl .cxl-faq-list{max-width:760px;margin:0 auto}
+  .cxl details{background:#fff;border:1px solid var(--cxl-border);border-radius:var(--cxl-radius);margin-bottom:12px}
+  .cxl summary{cursor:pointer;list-style:none;padding:18px 52px 18px 22px;font-weight:600;color:var(--cxl-ink);position:relative}
+  .cxl summary::-webkit-details-marker{display:none}
+  .cxl summary::after{content:"+";position:absolute;right:22px;top:50%;transform:translateY(-50%);font-size:22px;font-weight:400;color:var(--cxl-primary)}
+  .cxl details[open] summary::after{content:"–"}
+  .cxl details p{padding:0 22px 20px;font-size:15px}
+
+  /* Registrierung */
+  .cxl .cxl-signup{background:var(--cxl-ink)}
+  .cxl .cxl-signup h2{color:#fff;margin-bottom:12px}
+  .cxl .cxl-signup .cxl-lead{color:rgba(255,255,255,.75);text-align:center;max-width:620px;margin:0 auto 40px;font-size:17px}
+
+  @media (max-width:960px){
+    .cxl section{padding:64px 0}
+    .cxl .cxl-hero{padding:64px 0}
+    .cxl .cxl-hero-grid{grid-template-columns:1fr;gap:40px}
+    .cxl .cxl-hero h1{font-size:36px}
+    .cxl .cxl-hero .cxl-sub{font-size:19px}
+    .cxl .cxl-trust-grid{grid-template-columns:repeat(2,1fr)}
+    .cxl .cxl-steps{grid-template-columns:repeat(2,1fr);gap:32px}
+    .cxl h2{font-size:28px;margin-bottom:32px}
+  }
+  @media (max-width:560px){
+    .cxl .cxl-steps{grid-template-columns:1fr}
+    .cxl .cxl-ctas a.cxl-btn{width:100%}
+  }
+</style>
+
+<div class="cxl">
+
+  <!-- Hero -->
+  <section class="cxl-hero">
+    <div class="cxl-wrap cxl-hero-grid">
+      <div>
+        <span class="cxl-eyebrow">custix.ai × finditoo</span>
+        <h1>Dokumente anonymisieren in 5&nbsp;Sekunden</h1>
+        <p class="cxl-sub">KI sicher nutzen mit custix</p>
+        <p class="cxl-desc">Nutzen Sie ChatGPT, Claude &amp; Co. – ohne Mandantendaten zu gefährden. custix anonymisiert Ihre Dokumente lokal in Sekunden und re-identifiziert KI-Antworten automatisch.</p>
+        <div class="cxl-ctas">
+          <a class="cxl-btn cxl-btn-primary" href="#custix-registrierung">14 Tage kostenlos testen</a>
+          <a class="cxl-btn cxl-btn-ghost" href="#custix-so-gehts">So funktioniert's</a>
+        </div>
+      </div>
+      <div>
+        <video class="cxl-video" data-cxl-autoplay controls muted playsinline preload="metadata" poster="https://custix.ai/videos/poster-16x9.jpg">
+          <source src="https://custix.ai/videos/hero-16x9-web.mp4" type="video/mp4">
+        </video>
+      </div>
+    </div>
+  </section>
+
+  <!-- Vertrauen -->
+  <section class="cxl-trust">
+    <div class="cxl-wrap cxl-trust-grid">
+      <div>
+        <div class="cxl-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg></div>
+        <strong>100% Lokal</strong><span>Personenbezogene Daten verlassen nie Ihren Rechner</span>
+      </div>
+      <div>
+        <div class="cxl-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="8" x="2" y="2" rx="2" ry="2"/><rect width="20" height="8" x="2" y="14" rx="2" ry="2"/><line x1="6" x2="6.01" y1="6" y2="6"/><line x1="6" x2="6.01" y1="18" y2="18"/></svg></div>
+        <strong>DSGVO-konform</strong><span>Vollständig konform mit EU-Datenschutzrecht</span>
+      </div>
+      <div>
+        <div class="cxl-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/></svg></div>
+        <strong>Nur Platzhalter gehen raus</strong><span>An die KI geht ausschließlich der anonymisierte Text</span>
+      </div>
+      <div>
+        <div class="cxl-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg></div>
+        <strong>&lt; 5 Sekunden</strong><span>Dokumente in Sekunden anonymisiert</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- So funktioniert's -->
+  <section id="custix-so-gehts">
+    <div class="cxl-wrap">
+      <h2>So einfach funktioniert's</h2>
+      <div class="cxl-steps">
+        <div>
+          <div class="cxl-num">01</div>
+          <div class="cxl-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg></div>
+          <h3>Dokument einfügen</h3>
+          <p>Kopieren Sie Ihren Text oder laden Sie ein Dokument hoch.</p>
+        </div>
+        <div>
+          <div class="cxl-num">02</div>
+          <div class="cxl-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.64 3.64-1.28-1.28a1.21 1.21 0 0 0-1.72 0L2.36 18.64a1.21 1.21 0 0 0 0 1.72l1.28 1.28a1.2 1.2 0 0 0 1.72 0L21.64 5.36a1.2 1.2 0 0 0 0-1.72"/><path d="m14 7 3 3"/><path d="M5 6v4"/><path d="M19 14v4"/><path d="M10 2v2"/><path d="M7 8H3"/><path d="M21 16h-4"/><path d="M11 3H9"/></svg></div>
+          <h3>Automatisch anonymisieren</h3>
+          <p>custix erkennt und ersetzt personenbezogene Daten in unter 5&nbsp;Sekunden.</p>
+        </div>
+        <div>
+          <div class="cxl-num">03</div>
+          <div class="cxl-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/></svg></div>
+          <h3>KI sicher nutzen</h3>
+          <p>Verwenden Sie den anonymisierten Text mit jeder KI – ohne Datenschutzrisiko.</p>
+        </div>
+        <div>
+          <div class="cxl-num">04</div>
+          <div class="cxl-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg></div>
+          <h3>Automatisch re-identifizieren</h3>
+          <p>custix setzt die Originaldaten in der KI-Antwort automatisch wieder ein – fertig in Sekunden.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Häufige Fragen -->
+  <section class="cxl-faq">
+    <div class="cxl-wrap">
+      <h2>Häufig gestellte Fragen</h2>
+      <div class="cxl-faq-list">
+        <details>
+          <summary>Werden meine Daten in die Cloud gesendet?</summary>
+          <p>custix selbst sendet nichts: Die Anonymisierung läuft vollständig auf Ihrem Rechner, und die Zuordnung zwischen Platzhaltern und Originaldaten bleibt lokal. An die KI Ihrer Wahl geht ausschließlich der anonymisierte Text – Namen, Adressen und Aktenzeichen verlassen Ihren Rechner nie.</p>
+        </details>
+        <details>
+          <summary>Ist custix DSGVO-konform?</summary>
+          <p>Ja. Die Anonymisierung erfolgt lokal auf Ihrem Rechner, bevor Sie ein KI-Tool nutzen. Personenbezogene Daten werden dadurch gar nicht erst an Dritte übertragen.</p>
+        </details>
+        <details>
+          <summary>Welche Daten werden erkannt und anonymisiert?</summary>
+          <p>custix erkennt automatisch Namen, Adressen, Aktenzeichen, Steuernummern, Geburtsdaten und weitere personenbezogene Daten.</p>
+        </details>
+        <details>
+          <summary>Funktioniert custix mit ChatGPT und Claude?</summary>
+          <p>Ja. custix ist KI-unabhängig. Sie können den anonymisierten Text mit jedem KI-Tool verwenden, einschließlich ChatGPT, Claude, Gemini und anderen.</p>
+        </details>
+        <details>
+          <summary>Was kostet custix?</summary>
+          <p>custix kostet 15&nbsp;€ im Monat oder 150&nbsp;€ im Jahr pro Arbeitsplatz, inklusive Umsatzsteuer. Die ersten 14 Tage sind kostenlos und ohne Kreditkarte – danach wählen Sie ein Abo, sonst ruht die Anwendung.</p>
+        </details>
+        <details>
+          <summary>Wie funktioniert die Re-Identifizierung?</summary>
+          <p>Nachdem Sie die KI-Antwort erhalten haben, setzt custix automatisch die Originaldaten wieder ein – alles lokal, ohne Cloud.</p>
+        </details>
+        <details>
+          <summary>Wer verarbeitet meine Daten bei der Registrierung?</summary>
+          <p>Ihre Angaben im Formular (Name, Kanzlei, E-Mail, Passwort) gehen direkt an custix.ai, betrieben von der snekmedia GmbH – finditoo erhält sie nicht. Details in der <a href="https://custix.ai/datenschutz" target="_blank" rel="noopener">Datenschutzerklärung von custix.ai</a>.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- Registrierung – dieser Abschnitt kommt von custix.ai, bitte nicht verändern -->
+  <section class="cxl-signup" id="custix-registrierung">
+    <div class="cxl-wrap">
+      <h2>14 Tage kostenlos testen</h2>
+      <p class="cxl-lead">Konto anlegen, App herunterladen, loslegen. Ohne Kreditkarte – die Testphase endet automatisch.</p>
+      <div id="custix-signup" data-partner="finditoo"></div>
+    </div>
+  </section>
+
+</div>
+
+<script src="https://custix.ai/partner/signup.js" defer></script>
+<script>
+  /* Hero-Video: startet, sobald es im Bild ist, und pausiert beim
+     Verlassen. Kein Autostart bei „Bewegung reduzieren“, und wer selbst
+     pausiert, bekommt keinen ungefragten Neustart. */
+  (function () {
+    var v = document.querySelector(".cxl video[data-cxl-autoplay]");
+    if (!v || !("IntersectionObserver" in window)) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    var byUser = false, ours = false;
+    v.addEventListener("pause", function () { if (ours) { ours = false; return; } if (!v.ended) byUser = true; });
+    v.addEventListener("play", function () { byUser = false; });
+    new IntersectionObserver(function (entries) {
+      if (entries[0].isIntersecting) {
+        if (!byUser && v.paused && !v.ended) v.play().catch(function () {});
+      } else if (!v.paused) { ours = true; v.pause(); }
+    }, { threshold: 0.4 }).observe(v);
+  })();
+</script>

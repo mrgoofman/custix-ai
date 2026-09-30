@@ -45,6 +45,11 @@ Secrets (set via `wrangler secret put`):
 - `BETTER_AUTH_SECRET`
 - `STRIPE_SECRET_KEY`
 - `STRIPE_WEBHOOK_SECRET`
+- `TURNSTILE_SECRET_KEY` — partner signup forms (ADR-0011); site key is
+  `TURNSTILE_SITE_KEY` in `vars`. Setup: `docs/SETUP-PARTNER.md`.
+
+Local only (`.dev.vars`): `PARTNER_DEV_ORIGINS` — extra origins (e.g.
+`http://localhost:8090`) allowed to embed partner forms with Turnstile test keys.
 
 Non-secret Stripe config in `wrangler.jsonc` → `vars`:
 - `STRIPE_PRICE_MONTHLY`, `STRIPE_PRICE_ANNUAL` — the `price_…` IDs. Both Prices
@@ -53,6 +58,7 @@ Non-secret Stripe config in `wrangler.jsonc` → `vars`:
 
 Bindings (`wrangler.jsonc` → `d1_databases`):
 - `DB` - the Cloudflare D1 database (`custix-db`)
+- `PARTNER_SIGNUP_LIMITER` (`ratelimits`) - per-IP limit on `/api/partner/signup`
 
 ## Database (Cloudflare D1)
 
@@ -70,7 +76,8 @@ See `docs/SETUP-PHASE1.md` for D1 create / migrate / secret steps (cloud resourc
 ## Key Features (Phase 2 — paid, live)
 
 - Self-serve registration on the website (`/konto`, Better Auth email+password);
-  registering mints a 14-day `type='trial'` license and emails the key.
+  registering mints a 14-day `type='trial'` license bound to the account and sends the
+  trial email (download link, no key — the app fetches it after login via `/api/license/mine`).
   The beta waitlist and `/api/signup` are removed — existing beta licenses keep working.
 - Stripe subscriptions: 15 €/month or 150 €/year per seat, **prices include VAT**
   (the Stripe Prices must carry `tax_behavior: inclusive`). Checkout, Billing Portal
@@ -79,7 +86,14 @@ See `docs/SETUP-PHASE1.md` for D1 create / migrate / secret steps (cloud resourc
   and „Im Browser starten" → `/app`. `/konto?from=doctors` (or
   `rememberVisitSource("doctors")` from the doctors landing page, issue #9) makes the
   web app the primary action for that browser session (`src/lib/visit-source.ts`).
-  The trial welcome email links to the web app as well.
+  The trial welcome email links to the web app as well (except for Partner signups,
+  which are desktop-only).
+- Partner signup (ADR-0011): partners embed `/partner/signup.js` on their own site;
+  `/api/partner/signup` creates Account + trial server-side (no cross-site session)
+  and stamps `user.partner`. Registry `src/lib/partners.ts`; first partner finditoo
+  (handover README in `partners/finditoo/`, still `enabled: false`; preview for them at
+  `custix.ai/finditoo/` from `public/finditoo/`, demo form that creates no account).
+  Admin shows a partner funnel.
 - Admin panel (`/admin`) — approve→mint+email key, revoke, reset claim, anonymize
 - License validate (`/api/license/validate`) + claim (`/api/license/claim`) — desktop app contract
 - Deferred: invoice/bank-transfer payment (annual-only) — see ADR-0007, not built.

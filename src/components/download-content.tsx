@@ -2,18 +2,7 @@
 
 import { useTranslations, useLocale } from "next-intl";
 import { Monitor, Apple, Download } from "lucide-react";
-
-interface PlatformInfo {
-  signature: string;
-  url: string;
-}
-
-interface ReleaseManifest {
-  version: string;
-  notes: string;
-  pub_date: string;
-  platforms: Record<string, PlatformInfo>;
-}
+import { installerUrl, type ReleaseManifest } from "@/lib/release";
 
 interface DownloadContentProps {
   release: ReleaseManifest | null;
@@ -89,18 +78,8 @@ export function DownloadContent({ release, token }: DownloadContentProps) {
     if (token) {
       return `/api/download?token=${token}&platform=${platformKey}`;
     }
-    const url = release?.platforms[platformKey]?.url ?? "#";
-    // macOS: the manifest URL points at the UPDATER artifact (custix.app.tar.gz),
-    // which is for Tauri's background auto-updater — NOT a human download. For a
-    // manual download, serve the .dmg installer that lives in the same release.
-    if (platformKey.startsWith("darwin") && url.endsWith("custix.app.tar.gz")) {
-      const arch = platformKey === "darwin-aarch64" ? "aarch64" : "x64";
-      return url.replace(
-        "custix.app.tar.gz",
-        `custix_${release!.version}_${arch}.dmg`,
-      );
-    }
-    return url;
+    // macOS: .dmg statt des Updater-Archivs – Regel in lib/release.ts.
+    return (release && installerUrl(release, platformKey)) ?? "#";
   };
 
   return (

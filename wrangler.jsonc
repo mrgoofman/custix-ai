@@ -14,8 +14,21 @@
     // sie das Client-Bundle nicht. Sie steht in next.config.ts unter `env`.
     // Stripe-Preis-IDs (keine Geheimnisse). Aus dem Stripe-Dashboard eintragen.
     "STRIPE_PRICE_MONTHLY": "",
-    "STRIPE_PRICE_ANNUAL": ""
+    "STRIPE_PRICE_ANNUAL": "",
+    // Turnstile-Widget für Partner-Formulare (ADR-0011) – der Site-Key ist
+    // öffentlich; das Geheimnis kommt per `wrangler secret put TURNSTILE_SECRET_KEY`.
+    // Leer == Partner-Formulare zeigen „derzeit nicht verfügbar“.
+    "TURNSTILE_SITE_KEY": ""
   },
+  // Ratenbegrenzung für Partner signups pro IP (ADR-0011).
+  // period erlaubt nur 10 oder 60 Sekunden.
+  "ratelimits": [
+    {
+      "name": "PARTNER_SIGNUP_LIMITER",
+      "namespace_id": "1011",
+      "simple": { "limit": 5, "period": 60 }
+    }
+  ],
   "d1_databases": [
     {
       "binding": "DB",

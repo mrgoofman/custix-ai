@@ -10,6 +10,7 @@
 export type KeyEmailInput = {
   /** Anrede; bei fehlendem Namen die E-Mail-Adresse. */
   name: string;
+  /** Nur `issued` zeigt ihn; Website-Konten brauchen ihn nicht (CONTEXT.md, „License key“). */
   key: string;
   locale: string;
   /**
@@ -22,6 +23,11 @@ export type KeyEmailInput = {
   variant?: "trial" | "issued";
   /** Ablauf der Testphase (Unix-Sekunden), nur für `trial`. */
   expiresAt?: number | null;
+  /**
+   * Hinweis auf die Web-App, nur für `trial`. Standard: ja. Aus bei
+   * einem Partner signup – Partner verteilen nur die Desktop-App (ADR-0011).
+   */
+  showWebApp?: boolean;
   /** z. B. https://custix.ai (ein abschließender Schrägstrich wird entfernt) */
   baseUrl: string;
 };
@@ -48,6 +54,7 @@ export function renderKeyEmail(input: KeyEmailInput): {
   const baseUrl = input.baseUrl.replace(/\/$/, "");
   const isDE = locale === "de";
   const trial = input.variant === "trial";
+  const showWebApp = trial && input.showWebApp !== false;
 
   const until = input.expiresAt
     ? new Date(input.expiresAt * 1000).toLocaleDateString(
@@ -73,7 +80,7 @@ export function renderKeyEmail(input: KeyEmailInput): {
    * Testphasen-Mail: Wer sich auf der Website registriert hat, hat ein Konto
    * und kann sich dort sofort anmelden (mrgoofman/custix-ai#7).
    */
-  const webAppLine = trial
+  const webAppLine = showWebApp
     ? isDE
       ? `Lieber ohne Installation? <a href="${webAppUrl}" style="color:#2563eb;font-weight:600;">Starten Sie custix direkt im Browser</a> – unter custix.ai/app, mit denselben Zugangsdaten.`
       : `Prefer not to install anything? <a href="${webAppUrl}" style="color:#2563eb;font-weight:600;">Start custix directly in your browser</a> – at custix.ai/app, with the same credentials.`
@@ -87,10 +94,16 @@ export function renderKeyEmail(input: KeyEmailInput): {
       ? "2. Konto erstellen und Lizenzschlüssel eingeben"
       : "2. Create an account and enter your licence key";
 
+  /**
+   * Kein Schlüssel in der Testphasen-Mail: Die Lizenz hängt schon am Konto,
+   * die App holt den Schlüssel nach dem Login selbst (/api/license/mine).
+   * Ein Schlüssel, nach dem nie gefragt wird, wirft nur die Frage auf, wo er
+   * hingehört. Als Rückfall steht er auf /konto.
+   */
   const step2Body = trial
     ? isDE
-      ? "Melden Sie sich mit der E-Mail-Adresse und dem Passwort an, die Sie soeben gewählt haben. Falls die App nach einem Lizenzschlüssel fragt, verwenden Sie diesen:"
-      : "Sign in with the email address and password you just chose. If the app asks for a licence key, use this one:"
+      ? "Melden Sie sich mit der E-Mail-Adresse und dem Passwort an, die Sie bei der Registrierung gewählt haben. Die App erkennt Ihre Testphase automatisch – einen Lizenzschlüssel brauchen Sie nicht."
+      : "Sign in with the email address and password you chose when registering. The app recognises your trial automatically – you don't need a licence key."
     : isDE
       ? "Erstellen Sie beim ersten Start ein Konto (E-Mail + Passwort) und geben Sie dann diesen Schlüssel ein:"
       : "On first launch, create an account (email + password), then enter this key:";
@@ -101,7 +114,13 @@ export function renderKeyEmail(input: KeyEmailInput): {
       : `You can check your status and manage your plan any time at <a href="${baseUrl}/en/account" style="color:#2563eb;">custix.ai/account</a>.`
     : "";
 
-  const subject = isDE ? "Ihr custix Lizenzschlüssel" : "Your custix licence key";
+  const subject = trial
+    ? isDE
+      ? "Ihre custix Testphase läuft"
+      : "Your custix trial is running"
+    : isDE
+      ? "Ihr custix Lizenzschlüssel"
+      : "Your custix licence key";
 
   const html = `
 <!DOCTYPE html><html lang="${locale}"><head><meta charset="UTF-8"></head>
@@ -118,8 +137,8 @@ export function renderKeyEmail(input: KeyEmailInput): {
 </td></tr></table>
 ${webAppLine ? `<p style="margin:0 0 24px;font-size:14px;color:#475569;text-align:center;">${webAppLine}</p>` : ""}
 <p style="margin:0 0 8px;font-size:14px;font-weight:700;color:#1e293b;">${step2Title}</p>
-<p style="margin:0 0 12px;font-size:14px;color:#475569;">${step2Body}</p>
-<div style="background:#f1f5f9;border-radius:8px;padding:20px;text-align:center;margin-bottom:24px;font-family:monospace;font-size:20px;font-weight:700;letter-spacing:1px;color:#1e3a5f;">${key}</div>
+<p style="margin:0 0 ${trial ? "24" : "12"}px;font-size:14px;color:#475569;">${step2Body}</p>
+${trial ? "" : `<div style="background:#f1f5f9;border-radius:8px;padding:20px;text-align:center;margin-bottom:24px;font-family:monospace;font-size:20px;font-weight:700;letter-spacing:1px;color:#1e3a5f;">${key}</div>`}
 ${footer ? `<p style="margin:0 0 24px;font-size:14px;color:#475569;">${footer}</p>` : ""}
 <p style="margin:0;font-size:16px;color:#1e293b;">${isDE ? "Mit freundlichen Grüßen," : "Best regards,"}<br>${isDE ? "Das custix.ai Team" : "The custix.ai Team"}</p>
 </td></tr></table></td></tr></table></body></html>`.trim();

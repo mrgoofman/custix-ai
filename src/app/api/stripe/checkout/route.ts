@@ -48,6 +48,18 @@ export async function POST(request: Request) {
 
   if (!lic) return NextResponse.json({ error: "no_license" }, { status: 409 });
 
+  /**
+   * Partner-Zuordnung auch in Stripe (ADR-0011): Kommt später eine
+   * Provision, lässt sie sich direkt in Stripe-Exporten und Rechnungen
+   * nachvollziehen. Stripe-Metadaten nehmen nur Strings – „direct“ statt
+   * leer, damit sich in Stripe gezielt nach direkten Kunden filtern lässt.
+   */
+  const metadata = {
+    license_id: lic.id,
+    account_id: user.id,
+    partner: user.partner ?? "direct",
+  };
+
   // Kunde einmal anlegen und wiederverwenden – sonst entsteht pro Checkout ein
   // neuer Stripe-Kunde und die Rechnungsliste im Konto zerfällt.
   let customerId = lic.stripe_customer_id;
@@ -55,7 +67,7 @@ export async function POST(request: Request) {
     const customer = await stripe.customers.create({
       email: user.email,
       name: user.name ?? undefined,
-      metadata: { license_id: lic.id, account_id: user.id },
+      metadata,
     });
     customerId = customer.id;
     await db
@@ -83,9 +95,7 @@ export async function POST(request: Request) {
     customer: customerId,
     line_items: [{ price, quantity: 1 }],
     client_reference_id: lic.id,
-    subscription_data: {
-      metadata: { license_id: lic.id, account_id: user.id },
-    },
+    subscription_data: { metadata },
     // B2B: UID erfassen, damit Reverse Charge und Rechnungsangaben stimmen.
     tax_id_collection: { enabled: true },
     automatic_tax: { enabled: true },

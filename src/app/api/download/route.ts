@@ -1,31 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getDb, nowEpoch } from "@/lib/db";
 import { newId } from "@/lib/license-key";
-
-const MANIFEST_URL =
-  "https://github.com/znerol74/custix-releases/releases/latest/download/latest.json";
-
-interface PlatformInfo {
-  signature: string;
-  url: string;
-}
-
-interface ReleaseManifest {
-  version: string;
-  notes: string;
-  pub_date: string;
-  platforms: Record<string, PlatformInfo>;
-}
-
-async function getLatestRelease(): Promise<ReleaseManifest | null> {
-  try {
-    const res = await fetch(MANIFEST_URL, { cache: "no-store" });
-    if (!res.ok) return null;
-    return res.json();
-  } catch {
-    return null;
-  }
-}
+import { fetchLatestRelease, installerUrl } from "@/lib/release";
 
 // Legacy tokenized binary download, now backed by D1 (waitlist_entry.download_token).
 export async function GET(request: NextRequest) {
@@ -54,8 +30,10 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: "Token has expired" }, { status: 403 });
   }
 
-  const release = await getLatestRelease();
-  if (!release || !release.platforms[platform]) {
+  const release = await fetchLatestRelease(0);
+  // installerUrl: für macOS die .dmg statt des Updater-Archivs.
+  const url = release ? installerUrl(release, platform) : null;
+  if (!release || !url) {
     return NextResponse.json({ error: "Platform not available" }, { status: 404 });
   }
 
@@ -66,5 +44,5 @@ export async function GET(request: NextRequest) {
     .bind(newId(), row.id, JSON.stringify({ platform, version: release.version }), nowEpoch())
     .run();
 
-  return NextResponse.redirect(release.platforms[platform].url);
+  return NextResponse.redirect(url);
 }

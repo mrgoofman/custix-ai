@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { Loader2, MailCheck } from "lucide-react";
 import { authClient, signIn, signUp } from "@/lib/auth-client";
+import { Link } from "@/i18n/navigation";
 import type { VisitSource } from "@/lib/visit-source";
 
 type Mode = "signup" | "signin" | "forgot";
@@ -185,6 +186,25 @@ export function AuthForm({
           {busy ? <Loader2 className="w-4 h-4 animate-spin" /> : null}
           {t(`${mode}.cta`)}
         </button>
+
+        {/* Hinweis statt Häkchen: B2B, ein klarer Hinweis vor dem Knopf genügt
+            zur Einbeziehung. Derselbe Text steht im Partnerformular (ADR-0011). */}
+        {mode === "signup" ? (
+          <p className="text-xs text-muted text-center">
+            {t.rich("legal", {
+              terms: (chunks) => (
+                <Link href="/agb" target="_blank" className="underline hover:text-navy">
+                  {chunks}
+                </Link>
+              ),
+              privacy: (chunks) => (
+                <Link href="/datenschutz" target="_blank" className="underline hover:text-navy">
+                  {chunks}
+                </Link>
+              ),
+            })}
+          </p>
+        ) : null}
       </form>
 
       <div className="mt-4 space-y-2 text-center">

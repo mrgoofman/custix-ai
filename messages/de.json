@@ -550,6 +550,7 @@
       "password": "Passwort (mind. 8 Zeichen)",
       "passwordRepeat": "Passwort wiederholen"
     },
+    "legal": "Mit der Registrierung akzeptieren Sie die <terms>AGB</terms> und die <privacy>Datenschutzerklärung</privacy> von custix.ai (snekmedia GmbH).",
     "toSignin": "Sie haben bereits ein Konto? Anmelden",
     "toSignup": "Noch kein Konto? Jetzt anlegen",
     "errors": {

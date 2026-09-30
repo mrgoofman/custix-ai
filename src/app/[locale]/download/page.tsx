@@ -2,22 +2,8 @@ import { setRequestLocale } from "next-intl/server";
 import { getDb, nowEpoch } from "@/lib/db";
 import { newId } from "@/lib/license-key";
 import { DownloadContent } from "@/components/download-content";
+import { fetchLatestRelease } from "@/lib/release";
 import type { Metadata } from "next";
-
-const MANIFEST_URL =
-  "https://github.com/znerol74/custix-releases/releases/latest/download/latest.json";
-
-interface PlatformInfo {
-  signature: string;
-  url: string;
-}
-
-interface ReleaseManifest {
-  version: string;
-  notes: string;
-  pub_date: string;
-  platforms: Record<string, PlatformInfo>;
-}
 
 // Legacy download-token flow, now backed by D1 (waitlist_entry.download_token).
 // Kept working for any in-flight tokens during the beta transition.
@@ -42,24 +28,6 @@ async function logLinkClicked(waitlistId: string) {
     )
     .bind(newId(), waitlistId, nowEpoch())
     .run();
-}
-
-async function getLatestRelease(): Promise<ReleaseManifest | null> {
-  try {
-    const res = await fetch(MANIFEST_URL, {
-      next: { revalidate: 300 },
-    });
-
-    if (!res.ok) {
-      console.error(`Failed to fetch release manifest: ${res.status}`);
-      return null;
-    }
-
-    return res.json();
-  } catch (error) {
-    console.error("Error fetching release manifest:", error);
-    return null;
-  }
 }
 
 export async function generateMetadata({
@@ -101,7 +69,7 @@ export default async function DownloadPage({
     }
   }
 
-  const release = await getLatestRelease();
+  const release = await fetchLatestRelease();
 
   return <DownloadContent release={release} token={token ?? null} />;
 }

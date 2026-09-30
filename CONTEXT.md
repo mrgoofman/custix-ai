@@ -60,6 +60,33 @@ entering an already-claimed key is refused. This — plus the login requirement 
 key "tied to a person and not freely shared."
 _Avoid_: activation, redemption
 
+### Distribution partners
+
+**Partner**:
+An outside company that distributes custix on its own website. It hosts our registration form
+(a script served from custix.ai) inside its own page and branding; Account, License, billing and
+emails stay entirely ours — the Partner only brings people. First Partner: **finditoo**
+(finditoo-marketing.com, legal marketing for lawyers in AT/DE). Partners are registered in code
+(`src/lib/partners.ts`), not in D1. See ADR-0011.
+_Avoid_: affiliate, reseller, referrer (no commercial terms exist yet)
+
+**Partner signup**:
+Creating an Account through a Partner's form. Our server creates the Account and the 14-day trial
+License in one request and sets the Partner attribution; no session crosses the domain boundary —
+the person signs in afterwards in the desktop app. Desktop only: the form's success panel offers
+downloads, not the Web App.
+_Avoid_: partner registration, lead
+
+**Partner attribution**:
+`user.partner` — the Partner through whose form the Account was created; `NULL` means direct. Set
+once by the server (the Partner is confirmed by the Turnstile-verified hostname), never changed
+afterwards. Existing Accounts are never re-attributed, and there is no cookie or `?ref` tracking:
+an Account counts for a Partner **if and only if it was created through that Partner's form**.
+Copied into Stripe customer/subscription metadata at checkout. For now used for reporting only;
+Partners receive aggregate numbers, never personal data.
+_Avoid_: source, ref, lead source. Not to be confused with **VisitSource**
+(`src/lib/visit-source.ts`), which only weights buttons for one browser session and is never stored.
+
 ### Destructive admin operations (purposes are distinct — do not conflate)
 
 **Reset claim** — unbinds a key from its Account so it can be re-claimed. **Rare.** NOT for device
@@ -104,6 +131,10 @@ License. Distinct from a Download token — a License key unlocks ongoing *use* 
 Format: `CUSTIX-XXXX-XXXX-XXXX` — Crockford base32 (no ambiguous 0/O/1/I), grouped in 4s,
 ≥100 bits of entropy, unguessable and collision-free. Stored normalized (uppercase); compared
 case-insensitively (strip dashes/whitespace on input).
+For Accounts registered on the website (`/konto` or a Partner signup) the key is **internal**:
+the trial License is bound to the Account at creation, and the desktop app fetches the key after
+login (`/api/license/mine`). The trial email does not show it. Only Beta keys issued from the Admin
+panel are typed into the app.
 _Avoid_: token, activation code
 
 **Active**:

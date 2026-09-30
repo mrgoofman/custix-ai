@@ -23,7 +23,11 @@ const nextConfig: NextConfig = {
   // Fallback rewrites give it clean-URL entry + SPA routing: real files in
   // public/app win first, anything else lands on the SPA shell.
   async redirects() {
-    return [{ source: "/app", destination: "/app/", permanent: false }];
+    return [
+      { source: "/app", destination: "/app/", permanent: false },
+      // Vorschau der finditoo-Landingpage (public/finditoo/, ADR-0011).
+      { source: "/finditoo", destination: "/finditoo/", permanent: false },
+    ];
   },
   // Cross-origin isolation for the web app ONLY (znerol74/custix#27): its
   // NER worker may then run the ONNX runtime on several threads. Set here
