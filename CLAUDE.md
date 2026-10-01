@@ -91,7 +91,7 @@ See `docs/SETUP-PHASE1.md` for D1 create / migrate / secret steps (cloud resourc
 - Partner signup (ADR-0011): partners embed `/partner/signup.js` on their own site;
   `/api/partner/signup` creates Account + trial server-side (no cross-site session)
   and stamps `user.partner`. Registry `src/lib/partners.ts`; first partner finditoo
-  (handover README in `partners/finditoo/`, still `enabled: false`; preview for them at
+  (handover README in `partners/finditoo/`, `enabled: true` since 2026-10-01; preview for them at
   `custix.ai/finditoo/` from `public/finditoo/`, demo form that creates no account).
   Admin shows a partner funnel.
 - Admin panel (`/admin`) — approve→mint+email key, revoke, reset claim, anonymize

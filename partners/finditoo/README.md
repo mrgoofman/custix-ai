@@ -23,9 +23,9 @@ nichts betreiben.
    Breite und ohne Innenabstand** anlegen.
 3. Ein **HTML**-Widget hineinziehen und den kompletten Inhalt von
    `landing.html` einfügen.
-4. Speichern und in der Vorschau prüfen. Das Formular zeigt „in Kürze
-   verfügbar“, bis wir es für Ihre Domain freischalten – sagen Sie uns
-   Bescheid, sobald die Entwurfsseite steht.
+4. Speichern und in der Vorschau prüfen. Das Formular ist für
+   finditoo-marketing.com bereits freigeschaltet und funktioniert sofort –
+   auch auf der Entwurfsseite (siehe „Test vor dem Go-live“).
 
 Header und Footer kommen wie gewohnt von Ihrem Theme.
 
@@ -116,11 +116,14 @@ custix.ai setzt über das Formular keine Cookies auf Ihrer Seite.
 
 ## Test vor dem Go-live
 
-1. Sie legen die Entwurfsseite an und nennen uns ihre Adresse und – falls
-   vorhanden – Ihre Staging-Domain, damit wir beide freischalten.
-2. Wir schalten das Formular für Ihre Domain frei.
-3. Gemeinsame Testregistrierung mit einer Testadresse; wir prüfen die
-   Zuordnung bei uns und löschen das Testkonto danach.
+1. Sie legen die Entwurfsseite auf finditoo-marketing.com an und nennen uns
+   ihre Adresse. Eine Staging-Domain bitte vorher melden – die müssen wir
+   erst freischalten.
+2. Testregistrierung auf der Entwurfsseite mit einer Testadresse (z. B.
+   test@finditoo.com). Sie bekommen dabei auch die Benachrichtigung an
+   info@finditoo.com.
+3. Kurz Bescheid geben: Wir prüfen die Zuordnung bei uns und löschen das
+   Testkonto danach.
 4. Seite veröffentlichen.
 
 ## Was passiert nach der Registrierung?

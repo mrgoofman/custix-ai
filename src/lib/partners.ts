@@ -39,7 +39,7 @@ const PARTNERS: Record<PartnerId, Partner> = {
   finditoo: {
     id: "finditoo",
     name: "finditoo",
-    enabled: false,
+    enabled: true,
     origins: [
       "https://www.finditoo-marketing.com",
       "https://finditoo-marketing.com",
