@@ -1,6 +1,6 @@
 # custix.ai × finditoo – Landingpage zum Einbauen
 
-Stand: 30.09.2026 · Ansprechpartner custix.ai: Lorenz Kutschka
+Stand: 01.10.2026 · Ansprechpartner custix.ai: Lorenz Kutschka
 
 Diese Landingpage stellt custix.ai Ihren Kundinnen und Kunden vor und nimmt
 Registrierungen für die 14-tägige Testphase direkt auf Ihrer Seite entgegen.
@@ -12,13 +12,13 @@ nichts betreiben.
 | Was | Wofür |
 |---|---|
 | **Vorschau:** https://custix.ai/finditoo/ | So sieht die Seite aus. Das Formular dort ist eine Demo und legt kein Konto an. |
-| `landing.html` (liegt bei; auch in der Vorschau oben „Code herunterladen“) | Die ganze Seite als ein Block für ein Elementor-**HTML**-Widget: Hero mit Video, Vorteile, „So funktioniert's“, FAQ, Registrierung. |
-| Einbettungscode (unten) | Nur das Formular – falls Sie die Inhalte lieber selbst in Elementor bauen. |
+| `landing.html` | Die ganze Seite als ein Block für ein Elementor-**HTML**-Widget: Hero mit Video, Vorteile, „So funktioniert's“, FAQ, Registrierung. |
+| `nur-formular.html` | Nur das Formular – falls Sie die Inhalte lieber selbst in Elementor bauen (derselbe Code wie unten). |
 
 ## Einbau in Elementor
 
-1. Neue Seite anlegen, zunächst **als Entwurf** (nicht veröffentlichen). Die
-   geplante Adresse teilen Sie uns bitte mit: `{{PAGE_URL}}`
+1. Neue Seite anlegen, zunächst **als Entwurf** (nicht veröffentlichen), und
+   uns die geplante Adresse der Seite nennen.
 2. Seitenlayout „Elementor – volle Breite“, einen Abschnitt mit **voller
    Breite und ohne Innenabstand** anlegen.
 3. Ein **HTML**-Widget hineinziehen und den kompletten Inhalt von
@@ -111,8 +111,8 @@ custix.ai setzt über das Formular keine Cookies auf Ihrer Seite.
 
 ## Test vor dem Go-live
 
-1. Sie legen die Entwurfsseite an und nennen uns Adresse und – falls
-   vorhanden – Ihre Staging-Domain (`{{STAGING_HOST}}`).
+1. Sie legen die Entwurfsseite an und nennen uns ihre Adresse und – falls
+   vorhanden – Ihre Staging-Domain, damit wir beide freischalten.
 2. Wir schalten das Formular für Ihre Domain frei.
 3. Gemeinsame Testregistrierung mit einer Testadresse; wir prüfen die
    Zuordnung bei uns und löschen das Testkonto danach.
