@@ -24,6 +24,11 @@ export interface Partner {
   origins: readonly string[];
   /** Hostnamen, die Turnstile für diesen Partner bestätigen darf. */
   hostnames: readonly string[];
+  /**
+   * Bekommt bei jedem Partner signup eine Mail – ohne personenbezogene Daten
+   * (lib/partner-email.ts). Weglassen == keine Benachrichtigung.
+   */
+  notifyEmail?: string;
 }
 
 /**
@@ -40,6 +45,7 @@ const PARTNERS: Record<PartnerId, Partner> = {
       "https://finditoo-marketing.com",
     ],
     hostnames: ["www.finditoo-marketing.com", "finditoo-marketing.com"],
+    notifyEmail: "info@finditoo.com",
   },
 };
 

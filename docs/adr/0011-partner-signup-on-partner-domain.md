@@ -42,6 +42,10 @@ Eine Sitzung entsteht auf der Partnerseite nicht: Angemeldet wird danach in der 
 - **Datenweitergabe:** der Partner bekommt nur Summen (Registrierungen, App genutzt, Testphase,
   zahlend), keine personenbezogenen Daten. Verantwortlich bleibt snekmedia GmbH (ADR-0001); das
   Formular sagt das.
+- **Benachrichtigung (Ergänzung 01.10.2026):** bei jedem Partner signup geht eine Mail an die
+  Adresse des Partners (`notifyEmail`, finditoo: info@finditoo.com) – nur „jemand hat sich
+  registriert“ plus die laufende Summe, ohne Name, Kanzlei oder E-Mail. Nicht bei
+  Testregistrierungen aus der lokalen Vorschau.
 
 ## Consequences
 

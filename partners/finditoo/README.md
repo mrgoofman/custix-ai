@@ -29,6 +29,11 @@ nichts betreiben.
 
 Header und Footer kommen wie gewohnt von Ihrem Theme.
 
+**Empfänger müssen Sie nicht hinterlegen.** Das Formular ist kein
+Elementor-Formular: Die Angaben gehen direkt an custix.ai, in WordPress gibt es
+dafür nichts einzustellen. Über jede Registrierung informieren wir Sie per
+E-Mail an **info@finditoo.com** (siehe unten).
+
 ### Nur das Formular einbetten
 
 ```html
@@ -129,6 +134,10 @@ custix.ai setzt über das Formular keine Cookies auf Ihrer Seite.
   custix.ai ab.
 - Bereits registrierte Adressen werden erkannt; die Person wird auf die
   Anmeldung in der App verwiesen.
+- **Sie bekommen eine kurze E-Mail an info@finditoo.com:** „Über das
+  custix-Formular auf Ihrer Seite hat sich soeben eine Person registriert“,
+  mit der bisherigen Gesamtzahl – ohne Name, Kanzlei oder E-Mail-Adresse.
+  Eine andere Empfängeradresse? Kurz Bescheid geben, wir stellen sie um.
 
 Auswertungen (Registrierungen, genutzte Konten, Abschlüsse) bekommen Sie
 von uns als Summen – personenbezogene Daten geben wir nicht weiter.

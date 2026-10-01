@@ -43,7 +43,8 @@ npx wrangler d1 migrations apply custix-db --remote
 
 ## Neuer Partner
 
-Eintrag in `src/lib/partners.ts` (`PartnerId` erweitern), Hostnamen im
+Eintrag in `src/lib/partners.ts` (`PartnerId` erweitern, optional
+`notifyEmail` für die Benachrichtigung ohne Personendaten), Hostnamen im
 Turnstile-Widget, eigener Ordner `partners/<id>/` mit Landingpage und README.
 Keine Migration nötig.
 

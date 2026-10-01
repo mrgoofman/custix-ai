@@ -6,12 +6,13 @@ import { getDb } from "@/lib/db";
 import { resolvePartnerRequest, partnerPreflight } from "@/lib/partners";
 import { verifyTurnstile } from "@/lib/turnstile";
 import { startTrial } from "@/lib/trial";
+import { sendPartnerSignupNotice } from "@/lib/partner-email";
 
 /**
  * Partner signup (ADR-0011, CONTEXT.md): Das Formular auf der Partnerseite
  * (`/partner/signup.js`) legt hier in einer Anfrage an, was auf /konto zwei
- * Schritte mit Sitzung sind – Konto, 14-Tage-Testlizenz, Testphasen-Mail –
- * und markiert das Konto mit dem Partner.
+ * Schritte mit Sitzung sind – Konto, 14-Tage-Testlizenz, Testphasen-Mail –,
+ * markiert das Konto mit dem Partner und benachrichtigt ihn (ohne Personendaten).
  *
  * Eine Sitzung entsteht dabei nicht: Das Cookie wäre auf der Partnerseite ein
  * Drittanbieter-Cookie, Safari und Firefox sperren es. Angemeldet wird danach
@@ -128,6 +129,23 @@ export async function POST(request: Request) {
     "de",
     { showWebApp: false },
   );
+
+  // Partner benachrichtigen – ohne personenbezogene Daten, nur „jemand hat
+  // sich registriert“ plus Summe. Nicht bei Testregistrierungen aus der
+  // lokalen Vorschau. Ein Fehlschlag ändert nichts an der Registrierung.
+  if (partner.notifyEmail && !req.isDev) {
+    try {
+      const row = await getDb()
+        .prepare('SELECT COUNT(*) AS total FROM "user" WHERE partner = ?')
+        .bind(partner.id)
+        .first<{ total: number }>();
+      await sendPartnerSignupNotice(env.RESEND_API_KEY, partner.notifyEmail, {
+        total: row?.total ?? 1,
+      });
+    } catch (e) {
+      console.error(`partner ${partner.id}: notice email failed:`, e);
+    }
+  }
 
   // Scheitert nur die Testphase, steht das Konto trotzdem: Auf /konto lässt
   // sie sich per Knopf nachholen. Das Formular sagt das.

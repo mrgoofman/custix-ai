@@ -83,7 +83,8 @@ once by the server (the Partner is confirmed by the Turnstile-verified hostname)
 afterwards. Existing Accounts are never re-attributed, and there is no cookie or `?ref` tracking:
 an Account counts for a Partner **if and only if it was created through that Partner's form**.
 Copied into Stripe customer/subscription metadata at checkout. For now used for reporting only;
-Partners receive aggregate numbers, never personal data.
+Partners receive aggregate numbers, never personal data — including the per-signup notification
+email ("someone registered", plus the running total).
 _Avoid_: source, ref, lead source. Not to be confused with **VisitSource**
 (`src/lib/visit-source.ts`), which only weights buttons for one browser session and is never stored.
 
