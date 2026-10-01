@@ -18,7 +18,9 @@
     // Turnstile-Widget für Partner-Formulare (ADR-0011) – der Site-Key ist
     // öffentlich; das Geheimnis kommt per `wrangler secret put TURNSTILE_SECRET_KEY`.
     // Leer == Partner-Formulare zeigen „derzeit nicht verfügbar“.
-    "TURNSTILE_SITE_KEY": ""
+    // Widget „custix Partner-Formulare“, Hostnamen: finditoo-marketing.com,
+    // www.finditoo-marketing.com (Cloudflare → Turnstile).
+    "TURNSTILE_SITE_KEY": "0x4AAAAAAFK6FLkUWT2GKUGX"
   },
   // Ratenbegrenzung für Partner signups pro IP (ADR-0011).
   // period erlaubt nur 10 oder 60 Sekunden.
