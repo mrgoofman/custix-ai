@@ -19,6 +19,10 @@
   var API = script && script.src ? new URL(script.src).origin : "https://custix.ai";
   var TURNSTILE_SRC =
     "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit";
+  // Eine Registrierung dauert gut eine Sekunde. Am 15.10.2026 hingen Anfragen
+  // live ohne Antwort (Ursache offen) – dann nach dieser Zeit abbrechen und den
+  // Weg über custix.ai/konto anbieten, statt endlos „Wird angelegt …“ zu zeigen.
+  var SUBMIT_TIMEOUT_MS = 30000;
 
   var PLATFORMS = {
     "windows-x86_64": {
@@ -49,6 +53,12 @@
       "Dieses Formular ist für diese Seite noch nicht freigeschaltet. Bitte wenden Sie sich an custix.ai.",
     turnstile_unavailable:
       "Die Sicherheitsprüfung konnte nicht geladen werden. Bitte laden Sie die Seite neu oder prüfen Sie Werbe- und Skriptblocker.",
+    turnstile_retry:
+      "Die Sicherheitsprüfung hat nicht geklappt und startet neu. Bitte warten Sie einen Moment und klicken Sie dann erneut.",
+    timeout:
+      "custix.ai antwortet gerade nicht. Bitte versuchen Sie es gleich noch einmal oder registrieren Sie sich direkt auf <a href=\"" +
+      API +
+      "/konto\" target=\"_blank\" rel=\"noopener\">custix.ai/konto</a>.",
     network:
       "Keine Verbindung zu custix.ai. Bitte prüfen Sie Ihre Internetverbindung.",
     generic:
@@ -223,6 +233,10 @@
     var widgetId = null;
     /** Turnstile nicht ladbar (Blocker, Netz) – dann gleich sagen, nicht „läuft noch“. */
     var turnstileMissing = false;
+    /** Prüfung gescheitert; Turnstile wiederholt selbst (retry: auto), der Klick sofort. */
+    var turnstileFailed = false;
+    /** errBox zeigt den Turnstile-Hinweis – ein neuer Token räumt ihn weg. */
+    var turnstileNotice = false;
 
     if (!demo) loadTurnstile()
       .then(function (ts) {
@@ -232,12 +246,20 @@
           appearance: "interaction-only",
           callback: function (t) {
             token = t;
+            turnstileFailed = false;
+            if (turnstileNotice) {
+              turnstileNotice = false;
+              errBox.innerHTML = "";
+            }
           },
           "expired-callback": function () {
             token = null;
           },
           "error-callback": function () {
             token = null;
+            turnstileFailed = true;
+            if (!button.disabled) showTurnstileNotice();
+            return true;
           },
         });
       })
@@ -279,9 +301,21 @@
       button.innerHTML = on ? "<span class=\"cxs-spin\"></span> Wird angelegt …" : "Kostenlos registrieren";
     }
 
+    function showTurnstileNotice() {
+      errBox.innerHTML = ERRORS.turnstile_retry;
+      turnstileNotice = true;
+    }
+
+    /** Turnstile-Token gilt nur einmal – für den nächsten Versuch neu holen. */
+    function freshToken() {
+      token = null;
+      if (window.turnstile && widgetId != null) window.turnstile.reset(widgetId);
+    }
+
     form.addEventListener("submit", function (e) {
       e.preventDefault();
       errBox.innerHTML = "";
+      turnstileNotice = false;
       if (!validate()) return;
       if (demo) {
         busy(true);
@@ -295,13 +329,29 @@
         return;
       }
       if (!token) {
-        errBox.innerHTML = turnstileMissing
-          ? ERRORS.turnstile_unavailable
-          : "Die Sicherheitsprüfung läuft noch – bitte einen Moment warten und erneut klicken.";
+        if (turnstileMissing) {
+          errBox.innerHTML = ERRORS.turnstile_unavailable;
+        } else if (turnstileFailed) {
+          // Nicht auf den automatischen Neuversuch warten.
+          turnstileFailed = false;
+          freshToken();
+          showTurnstileNotice();
+        } else {
+          errBox.innerHTML = "Die Sicherheitsprüfung läuft noch – bitte einen Moment warten und erneut klicken.";
+        }
         return;
       }
       busy(true);
       var email = input("email").value.trim();
+      var controller = typeof AbortController === "function" ? new AbortController() : null;
+      var timedOut = false;
+      var timer = setTimeout(function () {
+        timedOut = true;
+        if (controller) controller.abort();
+        busy(false);
+        freshToken();
+        errBox.innerHTML = ERRORS.timeout;
+      }, SUBMIT_TIMEOUT_MS);
       fetch(api + "/api/partner/signup?partner=" + encodeURIComponent(partner), {
         method: "POST",
         credentials: "omit",
@@ -313,6 +363,7 @@
           password: input("password").value,
           turnstileToken: token,
         }),
+        signal: controller ? controller.signal : undefined,
       })
         .then(function (r) {
           return r.json().catch(function () {
@@ -320,14 +371,15 @@
           });
         })
         .then(function (res) {
+          // Zu spät: Der Abbruch hat schon eine Meldung gezeigt.
+          if (timedOut) return;
+          clearTimeout(timer);
           if (res && res.ok) {
             renderSuccess(box, api, config, email, res);
             return;
           }
           busy(false);
-          // Turnstile-Token gilt nur einmal – für den nächsten Versuch neu holen.
-          token = null;
-          if (window.turnstile && widgetId != null) window.turnstile.reset(widgetId);
+          freshToken();
           var code = res && res.error;
           if (code === "invalid_input" && res.field && FIELD_ERRORS[res.field]) {
             fail(res.field);
@@ -337,7 +389,10 @@
           errBox.innerHTML = ERRORS[code] || ERRORS.generic;
         })
         .catch(function () {
+          if (timedOut) return;
+          clearTimeout(timer);
           busy(false);
+          freshToken();
           errBox.innerHTML = ERRORS.network;
         });
     });

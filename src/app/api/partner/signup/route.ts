@@ -1,9 +1,9 @@
 import { NextResponse } from "next/server";
 import { getCloudflareContext } from "@opennextjs/cloudflare";
 import { isAPIError } from "better-auth/api";
-import { getAuth } from "@/lib/auth";
+import { getAuth, betterAuthReadyWithin } from "@/lib/auth";
 import { getDb } from "@/lib/db";
-import { resolvePartnerRequest, partnerPreflight } from "@/lib/partners";
+import { resolvePartnerRequest, partnerPreflight, type PartnerId } from "@/lib/partners";
 import { verifyTurnstile } from "@/lib/turnstile";
 import { startTrial } from "@/lib/trial";
 import { sendPartnerSignupNotice } from "@/lib/partner-email";
@@ -23,14 +23,22 @@ import { sendPartnerSignupNotice } from "@/lib/partner-email";
  *
  * Antworten: 200 { ok, trialStarted, expiresAt } oder { error } mit
  *   400 invalid_input (+ field) · 403 origin_not_allowed | turnstile_failed
- *   409 email_taken · 429 rate_limited · 503 partner_disabled · 500 signup_failed
+ *   409 email_taken · 429 rate_limited · 503 partner_disabled | signup_failed · 500 signup_failed
  */
 export async function POST(request: Request) {
-  const { env } = getCloudflareContext();
+  const { env, ctx } = getCloudflareContext();
   const req = resolvePartnerRequest(request, env.PARTNER_DEV_ORIGINS);
   if (!req)
     return NextResponse.json({ error: "unknown_partner" }, { status: 404 });
   const { partner } = req;
+
+  // Schrittprotokoll: Am 15.10.2026 hingen Partner signups live ohne Antwort
+  // in Better Auth (Workers-Falle, siehe lib/auth.ts). Hängt es wieder, zeigt
+  // `wrangler tail` den letzten erreichten Schritt. Ohne Personendaten.
+  const t0 = Date.now();
+  const step = (name: string) =>
+    console.log(`partner signup ${partner.id}: ${name} +${Date.now() - t0}ms`);
+  step("start");
 
   const reply = (body: object, status = 200) =>
     NextResponse.json(body, { status, headers: req.headers });
@@ -38,6 +46,14 @@ export async function POST(request: Request) {
   if (!req.allowed) return reply({ error: "origin_not_allowed" }, 403);
   if (!partner.enabled && !req.isDev)
     return reply({ error: "partner_disabled" }, 503);
+
+  // Ist Better Auth in diesem Isolat trotz lib/auth.ts nicht bereit, lieber
+  // gleich scheitern als die Anfrage bis zum Abbruch offen zu halten.
+  if (!(await betterAuthReadyWithin(3000))) {
+    console.error(`partner signup ${partner.id}: better-auth not ready, isolate stuck`);
+    return reply({ error: "signup_failed" }, 503);
+  }
+  step("auth ready");
 
   const ip = request.headers.get("cf-connecting-ip");
 
@@ -49,6 +65,7 @@ export async function POST(request: Request) {
     });
     if (!success) return reply({ error: "rate_limited" }, 429);
   }
+  step("rate limit passed");
 
   const body = (await request.json().catch(() => null)) as {
     name?: unknown;
@@ -58,6 +75,7 @@ export async function POST(request: Request) {
     turnstileToken?: unknown;
   } | null;
   if (!body) return reply({ error: "invalid_input" }, 400);
+  step("body read");
 
   const name = text(body.name, 200);
   const company = text(body.company, 200);
@@ -76,6 +94,7 @@ export async function POST(request: Request) {
   // Herkunft beweisen: Turnstile meldet den Hostnamen, auf dem das Widget
   // gelöst wurde. Testschlüssel (immer „example.com“) nur für die Vorschau.
   const ts = await verifyTurnstile(env.TURNSTILE_SECRET_KEY, body.turnstileToken, ip);
+  step(`turnstile ${ts.ok ? "passed" : ts.reason}`);
   if (!ts.ok) {
     if (ts.reason === "not_configured")
       return reply({ error: "partner_disabled" }, 503);
@@ -99,6 +118,7 @@ export async function POST(request: Request) {
     });
     user = res.user;
     sessionToken = res.token;
+    step("account created");
   } catch (e) {
     if (isAPIError(e)) {
       const code = (e.body as { code?: string } | undefined)?.code;
@@ -122,6 +142,7 @@ export async function POST(request: Request) {
       .run()
       .catch((e: unknown) => console.error("partner signup: session cleanup failed:", e));
   }
+  step("session removed");
 
   // Partner verteilen nur die Desktop-App: Testphasen-Mail ohne Web-App-Hinweis.
   const trial = await startTrial(
@@ -129,22 +150,18 @@ export async function POST(request: Request) {
     "de",
     { showWebApp: false },
   );
+  step(`trial ${trial.ok ? "started" : "failed"}`);
 
   // Partner benachrichtigen – ohne personenbezogene Daten, nur „jemand hat
   // sich registriert“ plus Summe. Nicht bei Testregistrierungen aus der
-  // lokalen Vorschau. Ein Fehlschlag ändert nichts an der Registrierung.
+  // lokalen Vorschau. Läuft nach der Antwort: Das Formular wartet nicht auf
+  // eine zweite Mail, und ein Fehlschlag ändert nichts an der Registrierung.
   if (partner.notifyEmail && !req.isDev) {
-    try {
-      const row = await getDb()
-        .prepare('SELECT COUNT(*) AS total FROM "user" WHERE partner = ?')
-        .bind(partner.id)
-        .first<{ total: number }>();
-      await sendPartnerSignupNotice(env.RESEND_API_KEY, partner.notifyEmail, {
-        total: row?.total ?? 1,
-      });
-    } catch (e) {
-      console.error(`partner ${partner.id}: notice email failed:`, e);
-    }
+    ctx.waitUntil(
+      notifyPartner(partner.id, partner.notifyEmail, env.RESEND_API_KEY).then(() =>
+        step("partner notice done"),
+      ),
+    );
   }
 
   // Scheitert nur die Testphase, steht das Konto trotzdem: Auf /konto lässt
@@ -154,6 +171,22 @@ export async function POST(request: Request) {
     trialStarted: trial.ok,
     expiresAt: trial.ok ? trial.expiresAt : null,
   });
+}
+
+async function notifyPartner(
+  partnerId: PartnerId,
+  to: string,
+  apiKey: string | undefined,
+): Promise<void> {
+  try {
+    const row = await getDb()
+      .prepare('SELECT COUNT(*) AS total FROM "user" WHERE partner = ?')
+      .bind(partnerId)
+      .first<{ total: number }>();
+    await sendPartnerSignupNotice(apiKey, to, { total: row?.total ?? 1 });
+  } catch (e) {
+    console.error(`partner ${partnerId}: notice email failed:`, e);
+  }
 }
 
 export async function OPTIONS(request: Request) {

@@ -14,6 +14,9 @@
 const SITEVERIFY_URL =
   "https://challenges.cloudflare.com/turnstile/v0/siteverify";
 
+/** siteverify antwortet in Millisekunden; ohne Grenze hinge der Signup mit. */
+const SITEVERIFY_TIMEOUT_MS = 10_000;
+
 export type TurnstileResult =
   | { ok: true; hostname: string; testing: boolean }
   | { ok: false; reason: "not_configured" | "missing_token" | "rejected" | "unreachable" };
@@ -32,7 +35,11 @@ export async function verifyTurnstile(
   if (ip) form.append("remoteip", ip);
 
   try {
-    const res = await fetch(SITEVERIFY_URL, { method: "POST", body: form });
+    const res = await fetch(SITEVERIFY_URL, {
+      method: "POST",
+      body: form,
+      signal: AbortSignal.timeout(SITEVERIFY_TIMEOUT_MS),
+    });
     const data = (await res.json()) as {
       success?: boolean;
       hostname?: string;

@@ -1,7 +1,46 @@
 import { betterAuth } from "better-auth";
+import { getAsyncLocalStorage } from "@better-auth/core/async_hooks";
 import { getCloudflareContext } from "@opennextjs/cloudflare";
 import { Resend } from "resend";
 import type { PartnerId } from "@/lib/partners";
+
+/*
+ * Workers-Falle in better-auth < 1.7.8 (gefunden 15.10.2026):
+ * `@better-auth/core/async_hooks` legt beim Laden ein Promise auf Modulebene an
+ * (`import("node:async_hooks")`), auf das jede Datenbank-Transaktion wartet.
+ * Auf Workers gehört es zu dem Request, der das Modul zuerst lädt. Endet der,
+ * bevor der Import fertig ist – etwa ein CORS-Preflight, der sofort 204 liefert –,
+ * verwirft workerd die Fortsetzung (Flag handle_cross_request_promise_resolution).
+ * Das Promise wird nie erfüllt, und jede Registrierung und Anmeldung in diesem
+ * Isolat hängt ohne Antwort. Deshalb hält der ladende Request per waitUntil
+ * durch, bis Better Auth bereit ist.
+ *
+ * @better-auth/core steht exakt auf derselben Version wie better-auth in
+ * package.json, damit es dasselbe Modul ist. Ab better-auth 1.7.8 gibt es das
+ * Modul-Promise nicht mehr – dann fällt dieser Block samt Abhängigkeit weg.
+ */
+const betterAuthReady = getAsyncLocalStorage().then(
+  () => true,
+  () => false,
+);
+try {
+  getCloudflareContext().ctx.waitUntil(betterAuthReady);
+} catch {
+  // Kein Request (Build, Prerender) – nichts festzuhalten.
+}
+
+/** Ist Better Auth in diesem Isolat nach spätestens `ms` bereit? */
+export async function betterAuthReadyWithin(ms: number): Promise<boolean> {
+  let timer: ReturnType<typeof setTimeout> | undefined;
+  const timeout = new Promise<boolean>((resolve) => {
+    timer = setTimeout(() => resolve(false), ms);
+  });
+  try {
+    return await Promise.race([betterAuthReady, timeout]);
+  } finally {
+    clearTimeout(timer);
+  }
+}
 
 /**
  * Per-request Better Auth instance. MUST be constructed inside a request — the D1
