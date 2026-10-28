@@ -3,7 +3,9 @@
  *
  *   node scripts/preview-key-email.mts [ausgabeordner]
  *     schreibt alle Varianten (trial/partner/issued × de/en) als HTML-Dateien
- *     (Standard: .preview/emails, liegt im .gitignore).
+ *     (Standard: .preview/emails, liegt im .gitignore), dazu die beiden Mails
+ *     der Registrierung „E-Mail zuerst“ (#15): signup-confirm-* („Zugang
+ *     bestätigen“) und signup-existing-* („Sie haben bereits ein Konto“).
  *
  *   RESEND_API_KEY=… node scripts/preview-key-email.mts --to name@example.com
  *     schickt zusätzlich die Testphasen-Mail (de und en) an diese Adresse –
@@ -20,6 +22,12 @@ import {
   renderKeyEmail,
   type KeyEmailInput,
 } from "../src/lib/key-email.ts";
+import {
+  accountPath,
+  renderExistingAccountEmail,
+  renderSignupConfirmEmail,
+  welcomePath,
+} from "../src/lib/signup-email.ts";
 
 const args = process.argv.slice(2);
 const toIndex = args.indexOf("--to");
@@ -73,6 +81,33 @@ for (const v of variants) {
   const path = join(outDir, v.file);
   writeFileSync(path, html);
   console.log(`${path}  (${subject})`);
+}
+
+// Registrierung „E-Mail zuerst“ (#15): Bestätigung und „Konto existiert“.
+// Das Token ist ein Platzhalter – echte Links erzeugt nur /api/signup/start.
+for (const locale of ["de", "en"]) {
+  const signupMails = [
+    {
+      file: `signup-confirm-${locale}.html`,
+      ...renderSignupConfirmEmail({
+        url: `${baseUrl}${welcomePath(locale)}#token=VORSCHAU`,
+        locale,
+      }),
+    },
+    {
+      file: `signup-existing-${locale}.html`,
+      ...renderExistingAccountEmail({
+        signInUrl: `${baseUrl}${accountPath(locale)}?mode=signin`,
+        forgotUrl: `${baseUrl}${accountPath(locale)}?mode=forgot`,
+        locale,
+      }),
+    },
+  ];
+  for (const m of signupMails) {
+    const path = join(outDir, m.file);
+    writeFileSync(path, m.html);
+    console.log(`${path}  (${m.subject})`);
+  }
 }
 
 if (to) {

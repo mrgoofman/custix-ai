@@ -4,7 +4,7 @@ import { useCallback, useEffect, useState, useSyncExternalStore } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { Download, ExternalLink, Loader2, Play } from "lucide-react";
 import { Link } from "@/i18n/navigation";
-import { AuthForm } from "./auth-form";
+import { AuthForm, type AuthMode } from "./auth-form";
 import { ResetPasswordForm } from "./reset-password-form";
 import { signOut } from "@/lib/auth-client";
 import { formatDate } from "@/lib/format-date";
@@ -28,6 +28,15 @@ const DAY = 86400;
 const subscribeToNothing = () => () => {};
 const tokenFromUrl = () => new URLSearchParams(window.location.search).get("token");
 const noToken = () => null;
+/**
+ * `?mode=signin` / `?mode=forgot` öffnet direkt Anmeldung bzw. „Passwort
+ * vergessen“ – für die Mail „Sie haben bereits ein Konto“ und die Web-App.
+ */
+const modeFromUrl = (): AuthMode => {
+  const mode = new URLSearchParams(window.location.search).get("mode");
+  return mode === "signin" || mode === "forgot" ? mode : "signup";
+};
+const defaultMode = (): AuthMode => "signup";
 
 export function AccountContent() {
   const t = useTranslations("account");
@@ -41,6 +50,7 @@ export function AccountContent() {
   const [error, setError] = useState<string | null>(null);
   /** Aus der Zurücksetzen-E-Mail: /konto?token=… zeigt das Passwortformular. */
   const urlToken = useSyncExternalStore(subscribeToNothing, tokenFromUrl, noToken);
+  const initialMode = useSyncExternalStore(subscribeToNothing, modeFromUrl, defaultMode);
   const [resetDone, setResetDone] = useState(false);
   const resetToken = resetDone ? null : urlToken;
 
@@ -124,19 +134,15 @@ export function AccountContent() {
   }
 
   // Nicht angemeldet: hier registrieren, nicht auf eine andere Seite schicken.
-  // Die Preisseite verlinkt genau hierher.
+  // Startseite, Preisseite und Navigation verlinken genau hierher. Das
+  // Formular trägt die Überschrift der Seite selbst („Kostenlos testen“ bzw.
+  // „Anmelden“). Die Registrierung endet auf /willkommen und von dort in der
+  // Web-App (#15); nach einer Anmeldung bleibt es beim Konto mit „custix im
+  // Browser starten“ (#14). Die Web-App übernimmt die Sitzung (znerol74/custix#41).
   if (error === "unauthenticated") {
     return (
       <Shell>
-        <h1 className="text-3xl sm:text-4xl font-bold font-heading text-navy mb-2">
-          {t("title")}
-        </h1>
-        <p className="text-slate-text/80 mb-8">{t("signedOut")}</p>
-        {/* Nach Registrierung oder Anmeldung bleibt es beim Konto: dort steht
-            für alle genau eine Hauptaktion, „custix im Browser starten“
-            (mrgoofman/custix-ai#14). Die Web-App übernimmt die Sitzung
-            (znerol74/custix#41), also kein zweites Login. */}
-        <AuthForm onDone={load} />
+        <AuthForm key={initialMode} initialMode={initialMode} onDone={load} />
       </Shell>
     );
   }

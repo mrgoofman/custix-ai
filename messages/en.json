@@ -492,7 +492,6 @@
   },
   "account": {
     "title": "Your account",
-    "signedOut": "Create an account or sign in.",
     "manage": "Manage subscription, cancel and invoices",
     "noLicense": {
       "heading": "14-day free trial",
@@ -537,9 +536,27 @@
   },
   "auth": {
     "signup": {
-      "heading": "Create account",
-      "sub": "Your 14-day trial starts right after – no credit card.",
-      "cta": "Create account"
+      "heading": "Try it free",
+      "sub": "We'll send you an email to confirm your address. 14 days free, no credit card.",
+      "email": "Your email address",
+      "consent": "I accept the <terms>Terms</terms> and have read the <privacy>Privacy Policy</privacy>.",
+      "consentHint": "Please tick the box for the Terms and Privacy Policy first.",
+      "emailInvalid": "Please enter a valid email address.",
+      "cta": "Send me the email",
+      "rateLimited": "Please wait a minute and then try again.",
+      "sendFailed": "We couldn't send the email just now. Please try again in a moment."
+    },
+    "check": {
+      "heading": "Please check your inbox",
+      "body": "We've sent an email to <b>{email}</b>. Click “Confirm access” in it.",
+      "sender": "From:",
+      "subject": "Subject:",
+      "spam": "Nothing arrived? Check your spam folder.",
+      "resend": "Send again",
+      "resent": "We've sent the email again.",
+      "otherEmail": "Use a different email address",
+      "devNote": "Local preview only (no RESEND_API_KEY): no email was sent.",
+      "devLink": "Open the link from the email"
     },
     "signin": {
       "heading": "Sign in",
@@ -547,15 +564,12 @@
       "cta": "Sign in"
     },
     "fields": {
-      "name": "Name",
-      "company": "Company, firm or practice",
       "email": "Email",
-      "password": "Password (at least 8 characters)",
+      "password": "Password",
       "passwordRepeat": "Repeat password"
     },
-    "legal": "By registering you accept the <terms>Terms</terms> and the <privacy>Privacy Policy</privacy> of custix.ai (snekmedia GmbH).",
     "toSignin": "Already have an account? Sign in",
-    "toSignup": "No account yet? Create one",
+    "toSignup": "No account yet? Try it free",
     "errors": {
       "generic": "That didn't work. Please check your details.",
       "passwordMismatch": "The two passwords don't match.",
@@ -575,6 +589,52 @@
       "cta": "Save password"
     },
     "spamHint": "Nothing arrived? Please check your spam folder too."
+  },
+  "welcome": {
+    "loading": "One moment …",
+    "verified": "<b>Email confirmed.</b> Thank you!",
+    "heading": "Choose your password",
+    "email": "Email address",
+    "password": "Password",
+    "show": "Show",
+    "hide": "Hide",
+    "showLabel": "Show password",
+    "hideLabel": "Hide password",
+    "rule": "At least {min} characters",
+    "ruleOk": "Good, at least {min} characters",
+    "tooShort": "Please choose a password with at least {min} characters.",
+    "company": "Company, firm or practice",
+    "optional": "(optional)",
+    "privacy": "Your password protects your custix access. <b>Your documents never leave your computer</b> – custix works right in your browser.",
+    "cta": "Save password",
+    "staySignedIn": "You'll stay signed in on this computer.",
+    "how": {
+      "heading": "How custix works",
+      "step1": "You drag your documents into custix.",
+      "step2": "custix replaces names, addresses and case numbers with placeholders such as <ph>[PERSON_1]</ph> – right on your computer, nothing is uploaded.",
+      "step3": "You pass the result on to your AI, such as ChatGPT or Claude. Only placeholders arrive there, no real names.",
+      "cta": "Open custix",
+      "trial": "Your trial runs until {date} – 14 days free, no credit card.",
+      "trialNoDate": "Your 14-day trial is running – no credit card."
+    },
+    "exists": {
+      "heading": "Your access is already set up",
+      "body": "There is already a custix account for this email address. Sign in with your password.",
+      "bodySignedIn": "You're signed in and can get started right away.",
+      "signIn": "Sign in",
+      "forgot": "Forgot your password?",
+      "open": "Open custix"
+    },
+    "invalid": {
+      "heading": "This link has expired or is invalid",
+      "body": "Confirmation links are valid for 24 hours. Simply request a new one – it only takes a moment.",
+      "cta": "Request a new link"
+    },
+    "loadFailed": "The page couldn't be loaded. Please check your connection.",
+    "retry": "Try again",
+    "errors": {
+      "generic": "That didn't work. Please try again or write to contact@custix.ai."
+    }
   },
   "guides": {
     "title": "Guides",

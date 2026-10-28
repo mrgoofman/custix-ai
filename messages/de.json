@@ -492,7 +492,6 @@
   },
   "account": {
     "title": "Ihr Konto",
-    "signedOut": "Legen Sie ein Konto an oder melden Sie sich an.",
     "manage": "Abo verwalten, kündigen und Rechnungen",
     "noLicense": {
       "heading": "14 Tage kostenlos testen",
@@ -537,9 +536,27 @@
   },
   "auth": {
     "signup": {
-      "heading": "Konto anlegen",
-      "sub": "Danach startet Ihre 14-tägige Testphase – ohne Kreditkarte.",
-      "cta": "Konto anlegen"
+      "heading": "Kostenlos testen",
+      "sub": "Wir schicken Ihnen eine E-Mail, um Ihre Adresse zu bestätigen. 14 Tage kostenlos, ohne Kreditkarte.",
+      "email": "Ihre E-Mail-Adresse",
+      "consent": "Ich akzeptiere die <terms>AGB</terms> und habe die <privacy>Datenschutzerklärung</privacy> zur Kenntnis genommen.",
+      "consentHint": "Bitte setzen Sie zuerst den Haken bei AGB und Datenschutz.",
+      "emailInvalid": "Bitte geben Sie eine gültige E-Mail-Adresse ein.",
+      "cta": "E-Mail anfordern",
+      "rateLimited": "Bitte warten Sie eine Minute und versuchen Sie es dann noch einmal.",
+      "sendFailed": "Die E-Mail konnte gerade nicht verschickt werden. Bitte versuchen Sie es gleich noch einmal."
+    },
+    "check": {
+      "heading": "Bitte sehen Sie in Ihr Postfach",
+      "body": "Wir haben eine E-Mail an <b>{email}</b> geschickt. Klicken Sie darin auf „Zugang bestätigen“.",
+      "sender": "Absender:",
+      "subject": "Betreff:",
+      "spam": "Nichts angekommen? Sehen Sie im Spam-Ordner nach.",
+      "resend": "Erneut senden",
+      "resent": "Wir haben die E-Mail noch einmal geschickt.",
+      "otherEmail": "Andere E-Mail-Adresse verwenden",
+      "devNote": "Nur in der lokalen Vorschau (ohne RESEND_API_KEY): Es wurde keine E-Mail verschickt.",
+      "devLink": "Link aus der E-Mail öffnen"
     },
     "signin": {
       "heading": "Anmelden",
@@ -547,15 +564,12 @@
       "cta": "Anmelden"
     },
     "fields": {
-      "name": "Name",
-      "company": "Firma, Kanzlei oder Praxis",
       "email": "E-Mail",
-      "password": "Passwort (mind. 8 Zeichen)",
+      "password": "Passwort",
       "passwordRepeat": "Passwort wiederholen"
     },
-    "legal": "Mit der Registrierung akzeptieren Sie die <terms>AGB</terms> und die <privacy>Datenschutzerklärung</privacy> von custix.ai (snekmedia GmbH).",
     "toSignin": "Sie haben bereits ein Konto? Anmelden",
-    "toSignup": "Noch kein Konto? Jetzt anlegen",
+    "toSignup": "Noch kein Konto? Kostenlos testen",
     "errors": {
       "generic": "Das hat nicht geklappt. Bitte prüfen Sie Ihre Eingaben.",
       "passwordMismatch": "Die beiden Passwörter stimmen nicht überein.",
@@ -575,6 +589,52 @@
       "cta": "Passwort speichern"
     },
     "spamHint": "Nichts angekommen? Bitte prüfen Sie auch den Spam-Ordner."
+  },
+  "welcome": {
+    "loading": "Einen Moment …",
+    "verified": "<b>E-Mail bestätigt.</b> Danke!",
+    "heading": "Wählen Sie Ihr Passwort",
+    "email": "E-Mail-Adresse",
+    "password": "Passwort",
+    "show": "Anzeigen",
+    "hide": "Verbergen",
+    "showLabel": "Passwort anzeigen",
+    "hideLabel": "Passwort verbergen",
+    "rule": "Mindestens {min} Zeichen",
+    "ruleOk": "Gut, mindestens {min} Zeichen",
+    "tooShort": "Bitte wählen Sie ein Passwort mit mindestens {min} Zeichen.",
+    "company": "Firma, Kanzlei oder Praxis",
+    "optional": "(optional)",
+    "privacy": "Ihr Passwort schützt Ihren custix-Zugang. <b>Ihre Dokumente verlassen nie Ihren Computer</b> – custix arbeitet direkt in Ihrem Browser.",
+    "cta": "Passwort speichern",
+    "staySignedIn": "Sie bleiben auf diesem Computer angemeldet.",
+    "how": {
+      "heading": "So funktioniert custix",
+      "step1": "Sie ziehen Ihre Dokumente in custix.",
+      "step2": "custix ersetzt Namen, Adressen und Aktenzeichen durch Platzhalter wie <ph>[PERSON_1]</ph> – direkt auf Ihrem Computer, nichts wird hochgeladen.",
+      "step3": "Das Ergebnis geben Sie an Ihre KI weiter, etwa ChatGPT oder Claude. Dort kommen nur Platzhalter an, keine echten Namen.",
+      "cta": "custix öffnen",
+      "trial": "Ihre Testphase läuft bis zum {date} – 14 Tage kostenlos, ohne Kreditkarte.",
+      "trialNoDate": "Ihre 14-tägige Testphase läuft – ohne Kreditkarte."
+    },
+    "exists": {
+      "heading": "Ihr Zugang ist schon eingerichtet",
+      "body": "Für diese E-Mail-Adresse gibt es bereits ein custix-Konto. Melden Sie sich mit Ihrem Passwort an.",
+      "bodySignedIn": "Sie sind angemeldet und können direkt loslegen.",
+      "signIn": "Anmelden",
+      "forgot": "Passwort vergessen?",
+      "open": "custix öffnen"
+    },
+    "invalid": {
+      "heading": "Dieser Link ist abgelaufen oder ungültig",
+      "body": "Bestätigungslinks gelten 24 Stunden. Fordern Sie einfach einen neuen an – das dauert nur einen Moment.",
+      "cta": "Neuen Link anfordern"
+    },
+    "loadFailed": "Die Seite konnte nicht geladen werden. Bitte prüfen Sie Ihre Verbindung.",
+    "retry": "Erneut versuchen",
+    "errors": {
+      "generic": "Das hat nicht geklappt. Bitte versuchen Sie es noch einmal oder schreiben Sie an contact@custix.ai."
+    }
   },
   "guides": {
     "title": "Ratgeber",

@@ -62,6 +62,13 @@ export const routing = defineRouting({
       de: "/konto",
       en: "/account",
     },
+    // Ziel des Bestätigungslinks der Registrierung „E-Mail zuerst“ (#15):
+    // Passwort wählen, dann „So funktioniert custix“. Nicht in der Sitemap
+    // (siehe PRIVATE_ROUTE_KEYS in lib/seo.ts), noindex.
+    "/willkommen": {
+      de: "/willkommen",
+      en: "/welcome",
+    },
     // Ratgeber gibt es nur auf Deutsch (keine EN-Recherche, siehe
     // mrgoofman/custix-ai#6). Der Pfad ist in beiden Sprachen gleich; die
     // EN-Ausgabe zeigt den deutschen Text mit noindex, siehe lib/seo.ts.

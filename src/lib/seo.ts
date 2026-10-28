@@ -45,12 +45,19 @@ export function isHiddenRoute(routeKey: string): boolean {
 }
 
 /**
- * Alle Routenschlüssel für die Sitemap außer den verborgenen. (/download und
- * /konto stehen mit drin; /download sperrt robots.ts, /konto ist per eigener
- * Metadata noindex – so war es schon vor den verborgenen Seiten.)
+ * Seiten, die nur über einen persönlichen Link erreichbar sind und nie in die
+ * Sitemap gehören: /willkommen ist das Ziel des Bestätigungslinks der
+ * Registrierung (#15) und ohne ihn leer.
+ */
+const PRIVATE_ROUTE_KEYS: ReadonlySet<string> = new Set(["/willkommen"]);
+
+/**
+ * Alle Routenschlüssel für die Sitemap außer den verborgenen und privaten.
+ * (/download und /konto stehen mit drin; /download sperrt robots.ts, /konto
+ * ist per eigener Metadata noindex – so war es schon vor den verborgenen Seiten.)
  */
 export const INDEXABLE_ROUTE_KEYS = Object.keys(pathnames).filter(
-  (key) => !isHiddenRoute(key),
+  (key) => !isHiddenRoute(key) && !PRIVATE_ROUTE_KEYS.has(key),
 );
 
 /**

@@ -53,14 +53,25 @@ export async function betterAuthReadyWithin(ms: number): Promise<boolean> {
  * `input: false` für jede Eingabe gesperrt, auch serverseitig, und ein
  * nachgeschobenes UPDATE könnte zwischen Konto und Markierung scheitern.
  *
+ * `confirmedSignup`: nur für /api/signup/complete (Registrierung „E-Mail
+ * zuerst“, mrgoofman/custix-ai#15, ADR-0013). Die Adresse ist über den Link
+ * aus der Mail bestätigt – das Konto entsteht mit emailVerified = true, im
+ * selben INSERT. Und die Bestätigungs-Mail war schon die eine Mail dieser
+ * Registrierung: keine Willkommens-Mail hinterher.
+ *
  * Nach jedem neuen Konto legt der Create-Hook die 14-Tage-Testlizenz an und
  * bindet sie ans Konto (ADR-0012) – für jede Registrierung, ob über /konto,
  * die Web-App, die Desktop-App oder ein Partnerformular. Better Auth führt ihn
  * aus, bevor die Registrierung antwortet; Fehler fängt er selbst ab.
  */
-export function getAuth(opts: { stampPartner?: PartnerId } = {}) {
+export function getAuth(
+  opts: {
+    stampPartner?: PartnerId;
+    confirmedSignup?: { email: string; locale: "de" | "en" };
+  } = {},
+) {
   const { env } = getCloudflareContext();
-  const { stampPartner } = opts;
+  const { stampPartner, confirmedSignup } = opts;
 
   return betterAuth({
     database: env.DB, // native D1 driver (better-auth >=1.5)
@@ -90,10 +101,17 @@ export function getAuth(opts: { stampPartner?: PartnerId } = {}) {
     databaseHooks: {
       user: {
         create: {
-          ...(stampPartner
+          ...(stampPartner || confirmedSignup
             ? {
                 before: async (user: Record<string, unknown>) => ({
-                  data: { ...user, partner: stampPartner },
+                  data: {
+                    ...user,
+                    ...(stampPartner ? { partner: stampPartner } : {}),
+                    ...(confirmedSignup &&
+                    String(user.email).toLowerCase() === confirmedSignup.email
+                      ? { emailVerified: true }
+                      : {}),
+                  },
                 }),
               }
             : {}),
@@ -105,6 +123,9 @@ export function getAuth(opts: { stampPartner?: PartnerId } = {}) {
             await startTrialForNewAccount(
               u,
               context?.headers ?? context?.request?.headers ?? null,
+              confirmedSignup
+                ? { locale: confirmedSignup.locale, welcomeMail: false }
+                : {},
             );
           },
         },
@@ -173,10 +194,11 @@ export async function getSessionUser(
   return {
     id: u.id,
     email: u.email,
-    // Name und Firma werden bei der Registrierung erfasst; ohne sie landet die
-    // E-Mail-Anrede bei der Adresse und der PII-Eintrag bliebe unvollständig.
-    name: u.name ?? null,
-    company: u.company ?? null,
+    // Name und Firma erfassen Web-App, Desktop-App und Partnerformular. Die
+    // Registrierung „E-Mail zuerst“ auf der Website fragt keinen Namen und die
+    // Firma nur freiwillig (#15) – dort bleibt name leer. Leer heißt null.
+    name: u.name || null,
+    company: u.company || null,
     partner: u.partner ?? null,
   };
 }

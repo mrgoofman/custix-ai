@@ -33,7 +33,11 @@ export type TrialResult =
 export async function startTrial(
   user: Pick<SessionUser, "id" | "email" | "name" | "company">,
   locale: "de" | "en",
-  opts: { variant?: "trial" | "partner" } = {},
+  opts: {
+    variant?: "trial" | "partner";
+    /** false: keine Willkommens-Mail (Registrierung „E-Mail zuerst“, #15). */
+    sendMail?: boolean;
+  } = {},
 ): Promise<TrialResult> {
   const db = getDb();
   const now = nowEpoch();
@@ -91,6 +95,10 @@ export async function startTrial(
 
   await upsertPerson(user, locale, now);
 
+  // Registrierung „E-Mail zuerst“ (#15): Die Bestätigungs-Mail war schon die
+  // eine Mail; das Ende der Testphase zeigt die Seite nach dem Passwort.
+  if (opts.sendMail === false) return { ok: true, key, expiresAt };
+
   // Ein Fehlschlag beim Versand darf die schon angelegte Lizenz nicht
   // entwerten: Die Lizenz hängt am Konto, Web- und Desktop-App finden sie
   // nach dem Login über /api/license/mine.
@@ -117,7 +125,10 @@ export async function startTrial(
  * die Lizenz dann, bietet /konto „Testphase starten“ an.
  *
  * Partner-Konten (`user.partner`, ADR-0011) bekommen die Desktop-Variante der
- * Mail, alle anderen die Willkommens-Mail mit der Web-App.
+ * Mail, alle anderen die Willkommens-Mail mit der Web-App – außer bei der
+ * Registrierung „E-Mail zuerst“ auf der Website (`welcomeMail: false`, #15):
+ * Dort war die Bestätigungs-Mail schon die eine Mail der Registrierung, und
+ * die Sprache steht im Bestätigungslink (`locale`).
  */
 export async function startTrialForNewAccount(
   user: {
@@ -128,17 +139,22 @@ export async function startTrialForNewAccount(
     partner?: string | null;
   },
   headers: Headers | null | undefined,
+  opts: { locale?: "de" | "en"; welcomeMail?: boolean } = {},
 ): Promise<void> {
   try {
     const result = await startTrial(
       {
         id: user.id,
         email: user.email,
-        name: user.name ?? null,
-        company: user.company ?? null,
+        // Leer (Registrierung ohne Namen) heißt unbekannt.
+        name: user.name || null,
+        company: user.company || null,
       },
-      localeFromHeaders(headers),
-      { variant: user.partner ? "partner" : "trial" },
+      opts.locale ?? localeFromHeaders(headers),
+      {
+        variant: user.partner ? "partner" : "trial",
+        sendMail: opts.welcomeMail !== false,
+      },
     );
     if (!result.ok && result.error !== "already_has_license")
       console.error(`trial at signup not started: ${result.error}`);

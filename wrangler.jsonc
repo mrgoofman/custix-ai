@@ -29,6 +29,19 @@
       "name": "PARTNER_SIGNUP_LIMITER",
       "namespace_id": "1011",
       "simple": { "limit": 5, "period": 60 }
+    },
+    // Registrierung „E-Mail zuerst“ (#15, ADR-0013): /api/signup/start schickt
+    // eine Mail an eine frei eingegebene Adresse. Pro IP (eine Kanzlei hinter
+    // einem Anschluss) und pro Adresse („Erneut senden“ einmal pro Minute).
+    {
+      "name": "SIGNUP_IP_LIMITER",
+      "namespace_id": "1012",
+      "simple": { "limit": 10, "period": 60 }
+    },
+    {
+      "name": "SIGNUP_EMAIL_LIMITER",
+      "namespace_id": "1013",
+      "simple": { "limit": 2, "period": 60 }
     }
   ],
   "d1_databases": [

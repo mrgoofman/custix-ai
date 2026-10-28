@@ -17,6 +17,9 @@ declare global {
     /** Nur lokal (.dev.vars): zusätzliche Ursprünge für die Vorschau, kommagetrennt. */
     PARTNER_DEV_ORIGINS?: string;
     PARTNER_SIGNUP_LIMITER?: RateLimit;
+    // Registrierung „E-Mail zuerst“ (#15, ADR-0013): Bestätigungs-Mails begrenzen
+    SIGNUP_IP_LIMITER?: RateLimit;
+    SIGNUP_EMAIL_LIMITER?: RateLimit;
   }
 }
 
