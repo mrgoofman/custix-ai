@@ -33,8 +33,11 @@ local D1 from `.wrangler/state`). One-time setup:
 `BETTER_AUTH_URL=http://localhost:8787`. Do NOT override `NEXT_PUBLIC_BASE_URL` there:
 the client bundle inlines the build-time value (`https://custix.ai`), a different runtime
 value makes React throw hydration error #418 on every page in the local preview only.
-Without `RESEND_API_KEY` emails are skipped silently; render the key email as HTML with
-`node scripts/preview-key-email.mts` (or send a test with `--to`).
+Without `RESEND_API_KEY` emails are skipped silently; render the key email (and the two
+signup mails) as HTML with `node scripts/preview-key-email.mts` (or send a test with `--to`).
+Registration („E-Mail zuerst“) works locally anyway: on `localhost` without Resend,
+`/api/signup/start` returns the confirmation link to the page („Link aus der E-Mail öffnen“)
+and logs it — never in production.
 
 ## Environment Variables
 
@@ -61,6 +64,8 @@ Non-secret Stripe config in `wrangler.jsonc` → `vars`:
 Bindings (`wrangler.jsonc` → `d1_databases`):
 - `DB` - the Cloudflare D1 database (`custix-db`)
 - `PARTNER_SIGNUP_LIMITER` (`ratelimits`) - per-IP limit on `/api/partner/signup`
+- `SIGNUP_IP_LIMITER`, `SIGNUP_EMAIL_LIMITER` (`ratelimits`) - per IP / per address on
+  `/api/signup/start` (confirmation mails, ADR-0013)
 
 ## Database (Cloudflare D1)
 
@@ -77,13 +82,18 @@ See `docs/SETUP-PHASE1.md` for D1 create / migrate / secret steps (cloud resourc
 
 ## Key Features (Phase 2 — paid, live)
 
-- Self-serve registration (Better Auth email+password) on `/konto`, in the web app, in the
-  desktop app or via a partner form: a Better Auth create hook (`src/lib/auth.ts` →
-  `startTrialForNewAccount` in `src/lib/trial.ts`) mints a 14-day `type='trial'` license
-  bound to the account and sends the welcome email (web-app link only — no key, no download;
-  preview with `node scripts/preview-key-email.mts`). Partner signups get the desktop variant
-  (`partner`).
-  The beta waitlist and `/api/signup` are removed — existing beta licenses keep working.
+- Website registration „E-Mail zuerst“ (issue #15, ADR-0013): `/konto` asks only email +
+  AGB/Datenschutz checkbox → one mail „Zugang bestätigen“ (24 h, encrypted stateless token in
+  the URL fragment) → `/willkommen` (`/en/welcome`): choose password (≥ 10 chars), optional
+  company → account created via Better Auth `signUpEmail`, signed in → „So funktioniert
+  custix“ → `/app/`. Routes `/api/signup/{start,check,complete}`. `/konto?mode=signin|forgot`
+  opens sign-in / password reset directly.
+- Every registration (that flow, the web app, the desktop app, a partner form) goes through a
+  Better Auth create hook (`src/lib/auth.ts` → `startTrialForNewAccount` in `src/lib/trial.ts`)
+  that mints a 14-day `type='trial'` license bound to the account. Direct registrations also get
+  the welcome email (web-app link only — no key, no download; partner signups the desktop
+  variant); the email-first flow does not — its confirmation mail is the one mail.
+  The beta waitlist and the old `/api/signup` are removed — existing beta licenses keep working.
 - Stripe subscriptions: 15 €/month or 150 €/year per seat, **prices include VAT**
   (the Stripe Prices must carry `tax_behavior: inclusive`). Checkout, Billing Portal
   (cancel + invoices) and the webhook are wired.

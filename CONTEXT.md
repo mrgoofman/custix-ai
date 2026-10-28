@@ -51,6 +51,9 @@ _Avoid_: signup, lead, registration
 A person's authenticated identity in the desktop app, created by logging in with any email
 the user chooses (the login email need not match the email a key was delivered to). A claimed
 License is bound to exactly one Account; using the app requires being logged into that Account.
+On the website an Account only comes into existence once its email is confirmed: email first,
+confirmation link, then the password (ADR-0013). The Web App, the desktop app and Partner forms
+still create it directly.
 _Avoid_: user (when identity is meant), profile
 
 **Key claim**:
