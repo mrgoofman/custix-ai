@@ -21,6 +21,10 @@ decisions are **cross-context** and bind both.
 - **App → Backend (License validation):** the desktop app holds one License key, requires login,
   and validates **monthly** against the backend's validate endpoint. The endpoint response
   (`valid`, `type`, `expires`) is a published contract. See ADR-0002, ADR-0003, ADR-0004 here.
+- **Web App → Backend (License check):** the Web App holds no key; it asks `/api/license/mine` with
+  the website session on every start and is locked only by an explicit `valid: false` (network
+  failure = keep working). That response is a published contract too — see ADR-0012 here (it
+  replaces the free web phase of ADR-0010) and znerol74/custix#54.
 - **Backend → App (entitlement source of truth):** the backend owns Account, License, key-claim,
   and (Phase 2) the Stripe→License status mapping. The app never talks to Stripe.
 - **Conflict resolved:** ADR-0004 (monthly online validation + login) **supersedes** the app

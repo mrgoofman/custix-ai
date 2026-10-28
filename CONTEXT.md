@@ -105,16 +105,19 @@ Friction: **type-the-email to confirm**; audited.
 
 **License**:
 The single entitlement the desktop app and the Web App (`custix.ai/app`) validate for an
-Account's entire lifetime. One License covers both; there is no separate web plan. **Interim (ADR-0010,
-since 2026-09-27): the Web App checks no License at all — a login is enough and use is free until
-billing for the web is decided; the desktop app is unchanged.** Has a
+Account's entire lifetime. One License covers both; there is no separate web plan and no separate
+web price (ADR-0012, since 2026-10-28; it replaces the free web phase of ADR-0010). Every new
+Account gets its 14-day trial License bound at creation, whichever client registers it. The desktop
+app validates its key (`/api/license/validate`); the Web App holds no key and asks
+`/api/license/mine` with its session — both answers come from the same rule
+(`src/lib/entitlement.ts`). Has a
 `type` (`beta` | `trial` | `subscription`) and a `status` (`active` | `expired` | `revoked`),
-plus an expiry. The app always asks the backend "is this license valid right now?" — the
+plus an expiry. The apps always ask the backend "is this license valid right now?" — the
 check never changes as the type flips beta → subscription. Stripe webhooks keep status/expiry
-current. The app never talks to Stripe directly.
+current. Neither app talks to Stripe directly.
 _Avoid_: license code, token, access code, entitlement
 
-> `type=trial` is in use: website registration mints a 14-day trial (grace 0); the first paid `checkout.session.completed` flips it to `type=subscription`, same key.
+> `type=trial` is in use: every registration (website, Web App, desktop app, Partner form) mints a 14-day trial (grace 0) through a Better Auth create hook; the first paid `checkout.session.completed` flips it to `type=subscription`, same key.
 > Beta access = a team-issued Beta key; otherwise a paid subscription. Real trial mechanics
 > (and length) are decided at public launch.
 > **Copy conflict to fix:** the site/emails say "14 Tage kostenlos testen" (and the legacy
@@ -133,10 +136,11 @@ License. Distinct from a Download token — a License key unlocks ongoing *use* 
 Format: `CUSTIX-XXXX-XXXX-XXXX` — Crockford base32 (no ambiguous 0/O/1/I), grouped in 4s,
 ≥100 bits of entropy, unguessable and collision-free. Stored normalized (uppercase); compared
 case-insensitively (strip dashes/whitespace on input).
-For Accounts registered on the website (`/konto` or a Partner signup) the key is **internal**:
-the trial License is bound to the Account at creation, and the desktop app fetches the key after
-login (`/api/license/mine`). The trial email does not show it. Only Beta keys issued from the Admin
-panel are typed into the app.
+For self-registered Accounts (website, Web App, desktop app or Partner signup) the key is
+**internal**: the trial License is bound to the Account at creation, the desktop app fetches the
+key after login (`/api/license/mine`), and the Web App never needs it. Neither the welcome email nor
+`/konto` shows it (`/konto` only for Accounts whose License already runs in the desktop app). Only
+Beta keys issued from the Admin panel are typed in — in the desktop app or on `/konto`.
 _Avoid_: token, activation code
 
 **Active**:

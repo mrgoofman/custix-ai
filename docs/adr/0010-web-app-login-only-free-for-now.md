@@ -1,6 +1,8 @@
 # Web-App vorerst ohne Lizenzprüfung: Login genügt, Nutzung kostenlos
 
-**Status:** Accepted (Entscheidung Lorenz, 27.09.2026) · **Betrifft:** Web-App unter custix.ai/app,
+**Status:** Superseded by [ADR-0012](0012-web-app-hinter-lizenz.md) (Entscheidung Lorenz,
+28.10.2026: Web-App hinter Testphase und Abo wie die Desktop-App) · ursprünglich Accepted
+(Entscheidung Lorenz, 27.09.2026) · **Betrifft:** Web-App unter custix.ai/app,
 Website (Ärzte-Landingpage, Konto) · **Umsetzung:** znerol74/custix#39, mrgoofman/custix-ai#9
 
 Die Web-App verlangt vorerst nur den Login (Better-Auth-Konto). Lizenzschlüssel, Lizenzprüfung

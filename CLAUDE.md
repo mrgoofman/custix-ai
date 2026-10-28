@@ -77,10 +77,12 @@ See `docs/SETUP-PHASE1.md` for D1 create / migrate / secret steps (cloud resourc
 
 ## Key Features (Phase 2 — paid, live)
 
-- Self-serve registration on the website (`/konto`, Better Auth email+password);
-  registering mints a 14-day `type='trial'` license bound to the account and sends the
-  welcome email (web-app link only — no key, no download; preview with
-  `node scripts/preview-key-email.mts`). Partner signups get the desktop variant (`partner`).
+- Self-serve registration (Better Auth email+password) on `/konto`, in the web app, in the
+  desktop app or via a partner form: a Better Auth create hook (`src/lib/auth.ts` →
+  `startTrialForNewAccount` in `src/lib/trial.ts`) mints a 14-day `type='trial'` license
+  bound to the account and sends the welcome email (web-app link only — no key, no download;
+  preview with `node scripts/preview-key-email.mts`). Partner signups get the desktop variant
+  (`partner`).
   The beta waitlist and `/api/signup` are removed — existing beta licenses keep working.
 - Stripe subscriptions: 15 €/month or 150 €/year per seat, **prices include VAT**
   (the Stripe Prices must carry `tax_behavior: inclusive`). Checkout, Billing Portal
@@ -98,6 +100,10 @@ See `docs/SETUP-PHASE1.md` for D1 create / migrate / secret steps (cloud resourc
   Admin shows a partner funnel.
 - Admin panel (`/admin`) — approve→mint+email key, revoke, reset claim, anonymize
 - License validate (`/api/license/validate`) + claim (`/api/license/claim`) — desktop app contract
+- Web app behind trial + subscription (ADR-0012, replaces ADR-0010's free phase): the web app
+  asks `/api/license/mine` with its session (no key; response contract in ADR-0012). validate
+  and mine share one rule (`src/lib/entitlement.ts`). Expired → `/konto` offers the subscription;
+  revoked → `/konto` shows „Zugang gesperrt“ and no new trial.
 - Deferred: invoice/bank-transfer payment (annual-only) — see ADR-0007, not built.
 
 Design decisions: `CONTEXT.md`, `CONTEXT-MAP.md`, `docs/adr/`.
