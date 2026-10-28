@@ -52,8 +52,11 @@ export async function POST(request: Request) {
       if (target) {
         await db.batch([
           db
+            // claimed_at mit leeren: Der CHECK ((account_id IS NULL) =
+            // (claimed_at IS NULL)) ließ das UPDATE sonst scheitern, und jeder
+            // Claim aus einer laufenden Testphase heraus endete mit 500.
             .prepare(
-              "UPDATE license SET status = 'revoked', account_id = NULL, updated_at = ? WHERE id = ?"
+              "UPDATE license SET status = 'revoked', account_id = NULL, claimed_at = NULL, updated_at = ? WHERE id = ?"
             )
             .bind(now, own.id),
           db
