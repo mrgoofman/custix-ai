@@ -22,9 +22,10 @@ import { trackEvent } from "@/lib/analytics";
  * generischen Branchenvorlage: Stapel-Vorschau, Ablauf bis zum Arztbrief,
  * Vertrauensteil und FAQ sind ärztespezifisch.
  *
- * Entscheidung vom 27.09.2026: Die Web-App ist vorerst kostenlos (nur Login,
- * znerol74/custix#39). Deshalb kein Preis-Teaser, sondern „Derzeit kostenlos",
- * und der CTA führt direkt in die Web-App.
+ * Der CTA führt direkt in die Web-App, wo Registrierung und Anmeldung
+ * stattfinden. Seit 28.10.2026 läuft sie wie der Desktop hinter Testphase und
+ * Abo (ADR-0012, ersetzt die kostenlose Phase aus ADR-0010): Deshalb „14 Tage
+ * kostenlos testen“ mit Preis statt „Derzeit kostenlos“.
  *
  * Rechtliche Leitplanken (Spec #5): keine absolute DSGVO-Aussage – deshalb
  * nicht die geteilten Trust-Badges („vollständig konform") –, „pseudonymisiert"
@@ -39,7 +40,7 @@ import { trackEvent } from "@/lib/analytics";
  */
 const TRUST_ICONS = [Globe, HardDrive, MessageSquareLock, Download] as const;
 
-type CtaPosition = "hero" | "free" | "bottom";
+type CtaPosition = "hero" | "price" | "bottom";
 
 /**
  * Haupt-CTA: führt direkt in die Web-App, wo Registrierung und Anmeldung
@@ -195,7 +196,7 @@ export function DoctorsPageContent() {
         </div>
       </section>
 
-      {/* Scans & Fotos + Derzeit kostenlos */}
+      {/* Scans & Fotos + Testphase und Preis */}
       <section className="py-16 lg:py-20">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-2 gap-8">
           <div className="rounded-2xl border border-muted/20 bg-surface p-8">
@@ -206,10 +207,10 @@ export function DoctorsPageContent() {
             <p className="text-slate-text/80 leading-relaxed">{t("scans.text")}</p>
           </div>
           <div className="rounded-2xl border border-royal/20 bg-royal/5 p-8 flex flex-col">
-            <h2 className="text-2xl font-bold font-heading text-navy mb-3">{t("free.title")}</h2>
-            <p className="text-slate-text/80 leading-relaxed mb-6">{t("free.text")}</p>
+            <h2 className="text-2xl font-bold font-heading text-navy mb-3">{t("price.title")}</h2>
+            <p className="text-slate-text/80 leading-relaxed mb-6">{t("price.text")}</p>
             <div className="mt-auto">
-              <StartCta position="free" className="w-full sm:w-auto" />
+              <StartCta position="price" className="w-full sm:w-auto" />
             </div>
           </div>
         </div>

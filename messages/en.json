@@ -26,7 +26,7 @@
     },
     "doctors": {
       "title": "Write medical reports with AI, anonymise findings | custix for doctors",
-      "description": "Anonymise findings in your browser and write medical reports with AI: only placeholders reach the AI, patient data stays in your practice. For doctors. Currently free."
+      "description": "Anonymise findings in your browser and write medical reports with AI: only placeholders reach the AI, patient data stays in your practice. For doctors. 14-day free trial."
     },
     "insurance": {
       "title": "Data Anonymization for Insurance | custix",
@@ -207,13 +207,13 @@
     "points": [
       "Full functionality, no document limit",
       "100% local – personal data never leaves your computer",
-      "Windows and macOS",
+      "In the browser and on Windows and macOS – one licence for both",
       "Updates included",
       "Invoice with VAT shown, available any time in your account"
     ],
     "trial": {
       "heading": "How the trial works",
-      "body": "Sign up, get your licence key by email and use custix without limits for 14 days. No credit card required. After 14 days you pick a plan – without payment the application pauses, and your data stays untouched on your computer."
+      "body": "Create an account and start custix right in your browser – 14 days without limits, no credit card and no licence key. After 14 days you pick a plan; without payment the application pauses, and your documents stay untouched on your device."
     },
     "haveKey": "Already have a key?",
     "downloadLink": "Download here"
@@ -602,8 +602,8 @@
     "eyebrow": "For doctors and medical practices",
     "h1": "Anonymise findings, write medical reports with AI – patient data stays in your practice",
     "intro": "custix replaces names, dates of birth, insurance numbers and addresses in medical findings with placeholders – right in your browser, no installation. The medical content stays. Only the text with placeholders reaches ChatGPT, Claude & Co., for medical reports and case discussions. That supports your duty of medical confidentiality but does not replace your own review.",
-    "cta": "Start free in your browser",
-    "ctaNote": "Create an account and get going. Currently free, no credit card.",
+    "cta": "Try it free in your browser",
+    "ctaNote": "Create an account and get going. 14 days free, no credit card.",
     "secondaryCta": "How it works",
     "preview": {
       "title": "Several findings, one run",
@@ -692,9 +692,9 @@
       "title": "Scans and photos too",
       "text": "Scanned findings and phone photos are read with text recognition and redacted directly in the image. Mark signatures, stamps or logos with a rectangle; custix blacks out the area itself, not just the text on top."
     },
-    "free": {
-      "title": "Currently free",
-      "text": "Right now custix in the browser is free. Create an account and start immediately – no credit card, no fixed term. If pricing is introduced, we will let you know in good time."
+    "price": {
+      "title": "Try it free for 14 days",
+      "text": "Create an account and start right away – 14 days with every feature, no credit card. After that custix costs €15 a month or €150 a year per seat, VAT included. Without a subscription, access simply ends after the trial; nothing renews automatically."
     },
     "faq": {
       "title": "Questions doctors ask us",
@@ -709,7 +709,7 @@
         },
         {
           "q": "Do my findings leave my device?",
-          "a": "No. Reading, detection and replacement run in the browser on your device. Only sign-in data reaches our servers. What you hand to an AI afterwards is the text with placeholders – that is your decision."
+          "a": "No. Reading, detection and replacement run in the browser on your device. Only sign-in and licence data reaches our servers. What you hand to an AI afterwards is the text with placeholders – that is your decision."
         },
         {
           "q": "Which AI can I use?",
@@ -721,14 +721,14 @@
         },
         {
           "q": "What does custix cost?",
-          "a": "Currently nothing. The web app is free. If pricing is introduced, we will let you know in good time."
+          "a": "The first 14 days are free, no credit card needed. After that custix costs €15 a month or €150 a year per seat, VAT included. Without a subscription, access simply ends after the trial. One licence covers custix in the browser and the desktop app."
         }
       ]
     },
     "guideLink": "Read more in our guide: pseudonymisation vs. anonymisation (German)",
     "bottom": {
       "title": "AI for medical reports – patient names stay with you",
-      "text": "Create an account and start in your browser. Currently free."
+      "text": "Create an account and start in your browser. 14 days free."
     }
   }
 }

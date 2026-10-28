@@ -31,8 +31,9 @@ export default async function DoctorsPage({
   const tMeta = await getTranslations({ locale, namespace: "pageMeta" });
   const faq = t.raw("faq.items") as { q: string; a: string }[];
 
-  // Produkt (Web-App) und FAQ als strukturierte Daten. Preis 0, weil die
-  // Web-App vorerst kostenlos ist (ADR-0010); mit der Bezahl-Phase anpassen.
+  // Produkt (Web-App) und FAQ als strukturierte Daten. Preise wie auf /preise:
+  // 15 € im Monat oder 150 € im Jahr pro Arbeitsplatz, inkl. USt.; die Web-App
+  // läuft wie der Desktop hinter Testphase und Abo (ADR-0012).
   const softwareLd = {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
@@ -43,7 +44,21 @@ export default async function DoctorsPage({
     browserRequirements: "Requires a current browser with WebAssembly",
     inLanguage: locale,
     description: tMeta("doctors.description"),
-    offers: { "@type": "Offer", price: "0", priceCurrency: "EUR" },
+    offers: [
+      { unit: "MON", price: "15" },
+      { unit: "ANN", price: "150" },
+    ].map(({ unit, price }) => ({
+      "@type": "Offer",
+      price,
+      priceCurrency: "EUR",
+      priceSpecification: {
+        "@type": "UnitPriceSpecification",
+        price,
+        priceCurrency: "EUR",
+        unitCode: unit,
+        valueAddedTaxIncluded: true,
+      },
+    })),
   };
 
   const faqLd = {

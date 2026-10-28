@@ -11,8 +11,8 @@ export function MobileCta() {
   const { data: session } = useSession();
   const pathname = usePathname();
 
-  // Auf der Ärzte-Seite führt jeder CTA direkt in die kostenlose Web-App
-  // (mrgoofman/custix-ai#9); der Umweg über /konto wäre dort irreführend.
+  // Auf der Ärzte-Seite führt jeder CTA direkt in die Web-App
+  // (mrgoofman/custix-ai#9) – dort registrieren und die Testphase starten.
   const onDoctorsPage = pathname === "/fuer-aerzte";
 
   return (

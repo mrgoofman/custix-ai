@@ -26,7 +26,7 @@
     },
     "doctors": {
       "title": "Arztbrief schreiben mit KI, Befunde anonymisieren | custix für Ärzte",
-      "description": "Befunde im Browser anonymisieren, Arztbrief mit KI schreiben: Nur Platzhalter gehen an die KI, Patientendaten bleiben in der Praxis. Für Ärztinnen und Ärzte. Derzeit kostenlos."
+      "description": "Befunde im Browser anonymisieren, Arztbrief mit KI schreiben: Nur Platzhalter gehen an die KI, Patientendaten bleiben in der Praxis. Für Ärztinnen und Ärzte. 14 Tage kostenlos testen."
     },
     "insurance": {
       "title": "Anonymisierung für Versicherungen | custix",
@@ -207,13 +207,13 @@
     "points": [
       "Voller Funktionsumfang, keine Begrenzung der Dokumente",
       "100 % lokal – personenbezogene Daten verlassen nie Ihren Rechner",
-      "Windows und macOS",
+      "Im Browser sowie für Windows und macOS – eine Lizenz für beides",
       "Updates inklusive",
       "Rechnung mit ausgewiesener USt., jederzeit im Konto abrufbar"
     ],
     "trial": {
       "heading": "So läuft die Testphase",
-      "body": "Sie registrieren sich, erhalten Ihren Lizenzschlüssel per E-Mail und nutzen custix 14 Tage lang uneingeschränkt. Eine Kreditkarte brauchen Sie dafür nicht. Nach 14 Tagen wählen Sie ein Abo – ohne Zahlung ruht die Anwendung, Ihre Daten bleiben unangetastet auf Ihrem Rechner."
+      "body": "Sie legen ein Konto an und starten custix direkt im Browser – 14 Tage lang uneingeschränkt, ohne Kreditkarte und ohne Lizenzschlüssel. Nach 14 Tagen wählen Sie ein Abo; ohne Zahlung ruht die Anwendung, Ihre Dokumente bleiben unangetastet auf Ihrem Gerät."
     },
     "haveKey": "Sie haben bereits einen Schlüssel?",
     "downloadLink": "Hier herunterladen"
@@ -602,8 +602,8 @@
     "eyebrow": "Für Ärztinnen, Ärzte und Praxen",
     "h1": "Befunde anonymisieren, Arztbrief mit KI schreiben – Patientendaten bleiben in der Praxis",
     "intro": "custix ersetzt Namen, Geburtsdaten, Versicherungsnummern und Adressen in Befunden durch Platzhalter – direkt im Browser, ohne Installation. Der medizinische Inhalt bleibt. An ChatGPT, Claude & Co. geht nur der Text mit Platzhaltern, für Arztbrief und Fallbesprechung. Das entlastet Sie bei der ärztlichen Schweigepflicht, ersetzt aber nicht Ihre eigene Prüfung.",
-    "cta": "Kostenlos im Browser starten",
-    "ctaNote": "Konto anlegen und loslegen. Derzeit kostenlos, keine Kreditkarte.",
+    "cta": "Im Browser kostenlos testen",
+    "ctaNote": "Konto anlegen und loslegen. 14 Tage kostenlos, ohne Kreditkarte.",
     "secondaryCta": "So funktioniert's",
     "preview": {
       "title": "Mehrere Befunde, ein Durchgang",
@@ -692,9 +692,9 @@
       "title": "Auch Scans und Fotos",
       "text": "Gescannte Befunde und Handyfotos werden per Texterkennung gelesen und direkt im Bild geschwärzt. Unterschriften, Stempel oder Logos markieren Sie mit einem Rechteck; custix schwärzt die Fläche selbst, nicht nur den Text darüber."
     },
-    "free": {
-      "title": "Derzeit kostenlos",
-      "text": "Derzeit ist custix im Browser kostenlos. Sie legen ein Konto an und starten sofort – ohne Kreditkarte, ohne Laufzeit. Wenn ein Preis kommt, sagen wir rechtzeitig Bescheid."
+    "price": {
+      "title": "14 Tage kostenlos testen",
+      "text": "Sie legen ein Konto an und starten sofort – 14 Tage mit vollem Funktionsumfang, ohne Kreditkarte. Danach kostet custix 15 € im Monat oder 150 € im Jahr pro Arbeitsplatz, inklusive Umsatzsteuer. Ohne Abo endet der Zugang nach der Testphase von selbst, es verlängert sich nichts automatisch."
     },
     "faq": {
       "title": "Häufige Fragen von Ärztinnen und Ärzten",
@@ -709,7 +709,7 @@
         },
         {
           "q": "Verlassen Befunde mein Gerät?",
-          "a": "Nein. Lesen, Erkennen und Ersetzen laufen im Browser auf Ihrem Gerät. An unsere Server gehen nur Anmeldedaten. Was Sie danach an eine KI geben, ist der Text mit Platzhaltern – das entscheiden Sie."
+          "a": "Nein. Lesen, Erkennen und Ersetzen laufen im Browser auf Ihrem Gerät. An unsere Server gehen nur Anmelde- und Lizenzdaten. Was Sie danach an eine KI geben, ist der Text mit Platzhaltern – das entscheiden Sie."
         },
         {
           "q": "Welche KI kann ich verwenden?",
@@ -721,14 +721,14 @@
         },
         {
           "q": "Was kostet custix?",
-          "a": "Derzeit nichts. Die Web-App ist kostenlos. Wenn ein Preis kommt, informieren wir rechtzeitig."
+          "a": "Die ersten 14 Tage sind kostenlos und ohne Kreditkarte. Danach kostet custix 15 € im Monat oder 150 € im Jahr pro Arbeitsplatz, inklusive Umsatzsteuer. Ohne Abo endet der Zugang nach der Testphase von selbst. Eine Lizenz gilt für custix im Browser und für die Desktop-App."
         }
       ]
     },
     "guideLink": "Mehr dazu im Ratgeber: Pseudonymisierung vs. Anonymisierung",
     "bottom": {
       "title": "KI für den Arztbrief – Patientennamen bleiben bei Ihnen",
-      "text": "Konto anlegen und im Browser starten. Derzeit kostenlos."
+      "text": "Konto anlegen und im Browser starten. 14 Tage kostenlos."
     }
   }
 }
