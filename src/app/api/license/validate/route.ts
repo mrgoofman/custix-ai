@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { getDb, nowEpoch } from "@/lib/db";
 import { getSessionUser } from "@/lib/auth";
 import { canonicalizeLicenseKey, newId } from "@/lib/license-key";
+import { entitlementOf, epochToIsoDate } from "@/lib/entitlement";
 
 /**
  * License validation — the desktop app's lifelong contract (ADR-0002).
@@ -53,42 +54,18 @@ export async function POST(request: Request) {
       return NextResponse.json({ valid: false, message_key: "license.unknown" });
     }
 
-    const graceUntil =
-      row.expires_at == null ? null : row.expires_at + row.grace_seconds;
-
     // Entitlement decision — arm order is load-bearing (see docs/schema).
+    // Ownership first (ADR-0003), then the shared rule in lib/entitlement.ts,
+    // which /api/license/mine uses for the web app too (ADR-0012).
+    const { graceUntil, ...decision } = entitlementOf(row, now);
     let valid = false;
     let messageKey: string;
     if (row.account_id == null) {
       messageKey = "license.not_claimed";
     } else if (row.account_id !== caller) {
       messageKey = "license.claimed_elsewhere";
-    } else if (row.status === "revoked") {
-      messageKey = "license.revoked";
-    } else if (row.status === "expired") {
-      messageKey = "license.expired";
-    } else if (graceUntil != null && now >= graceUntil) {
-      messageKey = "license.expired";
-    } else if (row.type === "beta" || row.type === "trial") {
-      valid = true;
-      messageKey =
-        row.expires_at != null && now >= row.expires_at
-          ? "license.in_grace"
-          : "license.ok";
-    } else if (
-      row.type === "subscription" &&
-      row.subscription_status != null &&
-      ["active", "trialing", "past_due"].includes(row.subscription_status)
-    ) {
-      valid = true;
-      messageKey =
-        row.subscription_status === "past_due"
-          ? "license.renewal_due"
-          : row.expires_at != null && now >= row.expires_at
-            ? "license.in_grace"
-            : "license.ok";
     } else {
-      messageKey = "license.expired";
+      ({ valid, messageKey } = decision);
     }
 
     // Telemetry + per-check-in event — ONLY for the legitimate owner, and NEVER
@@ -122,8 +99,4 @@ export async function POST(request: Request) {
     // resilience rule (keep working until grace), rather than locking the user out.
     return NextResponse.json({ error: "internal error" }, { status: 500 });
   }
-}
-
-function epochToIsoDate(epoch: number): string {
-  return new Date(epoch * 1000).toISOString().slice(0, 10);
 }

@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { getCloudflareContext } from "@opennextjs/cloudflare";
 import { isAPIError } from "better-auth/api";
 import { getAuth, betterAuthReadyWithin } from "@/lib/auth";
-import { getDb } from "@/lib/db";
+import { getDb, findLicenseForAccount } from "@/lib/db";
 import { resolvePartnerRequest, partnerPreflight, type PartnerId } from "@/lib/partners";
 import { verifyTurnstile } from "@/lib/turnstile";
 import { startTrial } from "@/lib/trial";
@@ -10,8 +10,9 @@ import { sendPartnerSignupNotice } from "@/lib/partner-email";
 
 /**
  * Partner signup (ADR-0011, CONTEXT.md): Das Formular auf der Partnerseite
- * (`/partner/signup.js`) legt hier in einer Anfrage an, was auf /konto zwei
- * Schritte mit Sitzung sind – Konto, 14-Tage-Testlizenz, Testphasen-Mail –,
+ * (`/partner/signup.js`) legt hier in einer Anfrage das Konto an – die
+ * 14-Tage-Testlizenz und die Testphasen-Mail (Desktop-Variante) hängt der
+ * Create-Hook daran wie bei jeder Registrierung (lib/auth.ts, ADR-0012) –,
  * markiert das Konto mit dem Partner und benachrichtigt ihn (ohne Personendaten).
  *
  * Eine Sitzung entsteht dabei nicht: Das Cookie wäre auf der Partnerseite ein
@@ -144,13 +145,24 @@ export async function POST(request: Request) {
   }
   step("session removed");
 
-  // Partner verteilen die Desktop-App: Testphasen-Mail mit Download statt
-  // Web-App (ADR-0011, Variante „partner“).
-  const trial = await startTrial(
-    { id: user.id, email: user.email, name: user.name, company },
-    "de",
-    { variant: "partner" },
-  );
+  // Die Testlizenz hat der Create-Hook beim Anlegen schon gebunden und die
+  // Mail in der Partner-Variante verschickt (Download statt Web-App, ADR-0011).
+  // Ist er gescheitert, hier ein zweiter Versuch.
+  let trial: { ok: boolean; expiresAt: number | null } = { ok: false, expiresAt: null };
+  try {
+    const lic = await findLicenseForAccount(user.id);
+    if (lic) trial = { ok: true, expiresAt: lic.expires_at };
+    else {
+      const started = await startTrial(
+        { id: user.id, email: user.email, name: user.name, company },
+        "de",
+        { variant: "partner" },
+      );
+      if (started.ok) trial = { ok: true, expiresAt: started.expiresAt };
+    }
+  } catch (e) {
+    console.error("partner signup: trial lookup failed:", e);
+  }
   step(`trial ${trial.ok ? "started" : "failed"}`);
 
   // Partner benachrichtigen – ohne personenbezogene Daten, nur „jemand hat
@@ -170,7 +182,7 @@ export async function POST(request: Request) {
   return reply({
     ok: true,
     trialStarted: trial.ok,
-    expiresAt: trial.ok ? trial.expiresAt : null,
+    expiresAt: trial.expiresAt,
   });
 }
 

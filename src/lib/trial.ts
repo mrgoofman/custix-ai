@@ -1,4 +1,10 @@
-import { getDb, nowEpoch, findLicenseForAccount, type AccountLicense } from "@/lib/db";
+import {
+  getDb,
+  nowEpoch,
+  findLicenseForAccount,
+  findRevokedLicenseForAccount,
+  type AccountLicense,
+} from "@/lib/db";
 import { generateLicenseKey, newId } from "@/lib/license-key";
 import { sendKeyEmail } from "@/lib/admin-actions";
 import { GRACE, TRIAL_DAYS } from "@/lib/license-policy";
@@ -7,18 +13,22 @@ import type { SessionUser } from "@/lib/auth";
 export type TrialResult =
   | { ok: true; key: string; expiresAt: number }
   | { ok: false; error: "already_has_license"; existing: AccountLicense }
+  | { ok: false; error: "revoked" }
   | { ok: false; error: "trial_failed" };
 
 /**
  * Startet die 14-tägige Testphase: Lizenz mit type='trial' und
- * expires_at = jetzt + 14 Tage, gebunden an das Konto, dazu der
- * person-Eintrag und die Testphasen-Mail.
+ * expires_at = jetzt + 14 Tage, sofort an das Konto gebunden (account_id), dazu
+ * der person-Eintrag und die Willkommens-Mail. Die Bindung ist der Punkt: Web-
+ * und Desktop-App finden die Lizenz über die Anmeldung, ohne Schlüssel
+ * (/api/license/mine, ADR-0012).
  *
- * Gemeinsamer Weg für /konto (`/api/trial/start`, mit Sitzung) und die
- * Partner signup (`/api/partner/signup`, ohne Sitzung – ADR-0011).
+ * Normalfall ist startTrialForNewAccount() direkt beim Anlegen des Kontos. Von
+ * Hand nur noch über /konto (`/api/trial/start`, Knopf „Testphase starten“) –
+ * für Konten ohne Lizenz, etwa aus der kostenlosen Web-Phase (ADR-0010).
  *
- * Die Sperre danach braucht keinen eigenen Code – /api/license/validate wertet
- * expires_at + grace_seconds aus und liefert danach valid:false.
+ * Die Sperre danach braucht keinen eigenen Code – lib/entitlement.ts wertet
+ * expires_at + grace_seconds aus, validate und mine liefern danach valid:false.
  */
 export async function startTrial(
   user: Pick<SessionUser, "id" | "email" | "name" | "company">,
@@ -31,6 +41,10 @@ export async function startTrial(
   // Genau eine Testphase pro Konto – auch abgelaufene zählen.
   const existing = await findLicenseForAccount(user.id);
   if (existing) return { ok: false, error: "already_has_license", existing };
+  // Ein Widerruf löst die Lizenz vom Konto. Eine neue Testphase auf Knopfdruck
+  // höbe ihn auf – „Login does NOT restore it“ (CONTEXT.md, „Revoke“).
+  if (await findRevokedLicenseForAccount(user.id))
+    return { ok: false, error: "revoked" };
 
   const expiresAt = now + TRIAL_DAYS * 86400;
   let licenseId = newId();
@@ -90,6 +104,70 @@ export async function startTrial(
   }
 
   return { ok: true, key, expiresAt };
+}
+
+/**
+ * Jede neue Registrierung bekommt sofort ihre Testlizenz – egal wo das Konto
+ * entsteht: /konto, Web-App (/app), Desktop-App oder Partnerformular. Läuft als
+ * Better-Auth-Hook nach dem Anlegen des Kontos (lib/auth.ts, ADR-0012), also
+ * bevor die Antwort auf die Registrierung beim Client ist; die App findet die
+ * Lizenz danach über /api/license/mine.
+ *
+ * Darf die Registrierung nie scheitern lassen: Fehler werden nur geloggt. Fehlt
+ * die Lizenz dann, bietet /konto „Testphase starten“ an.
+ *
+ * Partner-Konten (`user.partner`, ADR-0011) bekommen die Desktop-Variante der
+ * Mail, alle anderen die Willkommens-Mail mit der Web-App.
+ */
+export async function startTrialForNewAccount(
+  user: {
+    id: string;
+    email: string;
+    name?: string | null;
+    company?: string | null;
+    partner?: string | null;
+  },
+  headers: Headers | null | undefined,
+): Promise<void> {
+  try {
+    const result = await startTrial(
+      {
+        id: user.id,
+        email: user.email,
+        name: user.name ?? null,
+        company: user.company ?? null,
+      },
+      localeFromHeaders(headers),
+      { variant: user.partner ? "partner" : "trial" },
+    );
+    if (!result.ok && result.error !== "already_has_license")
+      console.error(`trial at signup not started: ${result.error}`);
+  } catch (e) {
+    console.error("trial at signup failed:", e);
+  }
+}
+
+/**
+ * Sprache der Willkommens-Mail aus der Registrierungsanfrage. Der Hook kennt
+ * keine Locale; /konto schickt sie nicht mit, Web- und Desktop-App auch nicht.
+ *   1. Referer auf einer Website-Seite: /en/… = Englisch, sonst Deutsch.
+ *   2. Sonst (Web-App unter /app, Desktop-App, Server-Aufruf): Accept-Language.
+ *   3. Standard Deutsch – die Zielgruppe ist AT/DE.
+ */
+export function localeFromHeaders(headers: Headers | null | undefined): "de" | "en" {
+  if (!headers) return "de";
+  const referer = headers.get("referer");
+  if (referer) {
+    try {
+      const path = new URL(referer).pathname;
+      if (path === "/en" || path.startsWith("/en/")) return "en";
+      if (!path.startsWith("/app")) return "de";
+    } catch {
+      // Kein gültiger Referer – weiter mit Accept-Language.
+    }
+  }
+  const lang = headers.get("accept-language")?.trim().toLowerCase() ?? "";
+  return lang.startsWith("en") ? "en" : "de";
 }
 
 /**

@@ -3,6 +3,7 @@ import { getAsyncLocalStorage } from "@better-auth/core/async_hooks";
 import { getCloudflareContext } from "@opennextjs/cloudflare";
 import { Resend } from "resend";
 import type { PartnerId } from "@/lib/partners";
+import { startTrialForNewAccount } from "@/lib/trial";
 
 /*
  * Workers-Falle in better-auth < 1.7.8 (gefunden 15.10.2026):
@@ -51,6 +52,11 @@ export async function betterAuthReadyWithin(ms: number): Promise<boolean> {
  * Partner-Zuordnung im selben INSERT wie das Konto – `partner` ist per
  * `input: false` für jede Eingabe gesperrt, auch serverseitig, und ein
  * nachgeschobenes UPDATE könnte zwischen Konto und Markierung scheitern.
+ *
+ * Nach jedem neuen Konto legt der Create-Hook die 14-Tage-Testlizenz an und
+ * bindet sie ans Konto (ADR-0012) – für jede Registrierung, ob über /konto,
+ * die Web-App, die Desktop-App oder ein Partnerformular. Better Auth führt ihn
+ * aus, bevor die Registrierung antwortet; Fehler fängt er selbst ab.
  */
 export function getAuth(opts: { stampPartner?: PartnerId } = {}) {
   const { env } = getCloudflareContext();
@@ -81,19 +87,29 @@ export function getAuth(opts: { stampPartner?: PartnerId } = {}) {
         partner: { type: "string", required: false, input: false },
       },
     },
-    ...(stampPartner
-      ? {
-          databaseHooks: {
-            user: {
-              create: {
+    databaseHooks: {
+      user: {
+        create: {
+          ...(stampPartner
+            ? {
                 before: async (user: Record<string, unknown>) => ({
                   data: { ...user, partner: stampPartner },
                 }),
-              },
-            },
+              }
+            : {}),
+          after: async (user, context) => {
+            const u = user as typeof user & {
+              company?: string | null;
+              partner?: string | null;
+            };
+            await startTrialForNewAccount(
+              u,
+              context?.headers ?? context?.request?.headers ?? null,
+            );
           },
-        }
-      : {}),
+        },
+      },
+    },
     emailAndPassword: {
       enabled: true,
       // Password reset via Resend. The {url} is the tokenized reset link Better

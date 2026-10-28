@@ -3,9 +3,10 @@ import { getSessionUser } from "@/lib/auth";
 import { startTrial } from "@/lib/trial";
 
 /**
- * Startet die 14-tägige Testphase für das angemeldete Konto (/konto).
- * Die eigentliche Arbeit liegt in lib/trial.ts – derselbe Weg wie beim
- * Partner signup (CONTEXT.md).
+ * Startet die 14-tägige Testphase für das angemeldete Konto von Hand – der
+ * Knopf „Testphase starten“ auf /konto. Normalerweise legt sie schon die
+ * Registrierung an (Create-Hook, lib/auth.ts); den Knopf sehen nur Konten ohne
+ * Lizenz, etwa aus der kostenlosen Web-Phase. Die Arbeit liegt in lib/trial.ts.
  */
 export async function POST(request: Request) {
   const user = await getSessionUser(request);
@@ -27,6 +28,8 @@ export async function POST(request: Request) {
       { status: 409 },
     );
   }
+  if (!result.ok && result.error === "revoked")
+    return NextResponse.json({ error: "revoked" }, { status: 403 });
   if (!result.ok)
     return NextResponse.json({ error: "trial_failed" }, { status: 500 });
 

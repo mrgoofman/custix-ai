@@ -499,16 +499,22 @@
       "body": "Start your trial and use custix in your browser without limits for 14 days – no credit card.",
       "cta": "Start trial"
     },
+    "revoked": {
+      "heading": "Access blocked",
+      "body": "The licence on this account has been blocked. If you have questions, write to contact@custix.ai."
+    },
     "status": {
       "label": "Status",
       "trial": "Trial",
+      "beta": "Beta access",
       "trialExpired": "Trial expired",
       "subscription": "Subscription",
       "active": "Active",
       "locked": "Locked",
       "daysLeft": "{days} days left – your trial ends on {date}.",
       "expiredOn": "Expired on {date}. Choose a plan to keep using custix.",
-      "renewsOn": "Renews on {date}."
+      "renewsOn": "Renews on {date}.",
+      "validUntil": "Valid until {date}."
     },
     "buy": {
       "annual": "Annual – €150",

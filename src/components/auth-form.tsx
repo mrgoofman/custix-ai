@@ -60,15 +60,9 @@ export function AuthForm({ onDone }: { onDone: () => void }) {
         return;
       }
 
-      // Direkter Einstieg: die Testphase startet mit der Registrierung, nicht
-      // erst auf Knopfdruck. Schlägt sie fehl, bleibt der Knopf auf /konto.
-      if (mode === "signup") {
-        await fetch("/api/trial/start", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ locale }),
-        }).catch(() => {});
-      }
+      // Die Testphase legt der Server mit dem Konto an (Create-Hook in
+      // lib/auth.ts, ADR-0012) – hier ist nichts mehr nachzuschieben. Fehlt
+      // sie trotzdem, bietet /konto den Knopf „Testphase starten“.
       onDone();
     } catch {
       setError(t("errors.generic"));

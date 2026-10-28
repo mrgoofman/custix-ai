@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState, useSyncExternalStore } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { Download, ExternalLink, Loader2, Play } from "lucide-react";
 import { Link } from "@/i18n/navigation";
@@ -9,45 +9,65 @@ import { ResetPasswordForm } from "./reset-password-form";
 import { signOut } from "@/lib/auth-client";
 import { formatDate } from "@/lib/format-date";
 
+/** Antwort von /api/license/mine (Vertrag in ADR-0012). */
 type License = {
   key: string | null;
-  type?: string;
-  status?: string;
-  expires_at?: number | null;
-  grace_seconds?: number;
+  type: string | null;
+  /** Wirksamer Stand; null = das Konto hat keine Lizenz. */
+  status: "active" | "expired" | "revoked" | null;
+  /** Dieselbe Entscheidung wie /api/license/validate (lib/entitlement.ts). */
+  valid: boolean;
+  expires_at: number | null;
   /** Läuft die Lizenz schon in der Desktop-App? Nur dann Download und Schlüssel. */
-  desktop_used?: boolean;
+  desktop_used: boolean;
 };
 
 const DAY = 86400;
+
+/** Die URL meldet keine Änderungen; gelesen wird einmal pro Aufruf. */
+const subscribeToNothing = () => () => {};
+const tokenFromUrl = () => new URLSearchParams(window.location.search).get("token");
+const noToken = () => null;
 
 export function AccountContent() {
   const t = useTranslations("account");
   const locale = useLocale();
   const [license, setLicense] = useState<License | null>(null);
+  /** Zeitpunkt der letzten Antwort (Unix-Sekunden) – für „noch X Tage“. */
+  const [loadedAt, setLoadedAt] = useState(0);
   const [loading, setLoading] = useState(true);
   /** Läuft gerade ein Stripe-/Trial-Aufruf? Enthält den Pfad, um Doppelklicks zu sperren. */
   const [pendingPath, setPendingPath] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   /** Aus der Zurücksetzen-E-Mail: /konto?token=… zeigt das Passwortformular. */
-  const [resetToken, setResetToken] = useState<string | null>(null);
+  const urlToken = useSyncExternalStore(subscribeToNothing, tokenFromUrl, noToken);
+  const [resetDone, setResetDone] = useState(false);
+  const resetToken = resetDone ? null : urlToken;
+
+  /** Holt die Lizenz; setzt Zustand nur in den Rückrufen, nie synchron. */
+  const refresh = useCallback(
+    () =>
+      fetch("/api/license/mine")
+        .then((r) => (r.ok ? r.json() : Promise.reject(r.status)))
+        .then((d: License) => {
+          setLicense(d);
+          setLoadedAt(Math.floor(Date.now() / 1000));
+          setError(null);
+        })
+        .catch((s) => setError(s === 401 ? "unauthenticated" : "load_failed"))
+        .finally(() => setLoading(false)),
+    [],
+  );
 
   useEffect(() => {
-    const t = new URLSearchParams(window.location.search).get("token");
-    if (t) setResetToken(t);
-  }, []);
+    refresh();
+  }, [refresh]);
 
   const load = () => {
     setLoading(true);
     setError(null);
-    fetch("/api/license/mine")
-      .then((r) => (r.ok ? r.json() : Promise.reject(r.status)))
-      .then((d: License) => setLicense(d))
-      .catch((s) => setError(s === 401 ? "unauthenticated" : "load_failed"))
-      .finally(() => setLoading(false));
+    refresh();
   };
-
-  useEffect(load, []);
 
   /**
    * Ruft einen Endpunkt auf, der entweder mit einer Stripe-URL antwortet (dann
@@ -85,8 +105,6 @@ export function AccountContent() {
     );
   }
 
-  // Nicht angemeldet: hier registrieren, nicht auf eine andere Seite schicken.
-  // Die Preisseite verlinkt genau hierher.
   if (resetToken) {
     return (
       <Shell>
@@ -97,7 +115,7 @@ export function AccountContent() {
           token={resetToken}
           onDone={() => {
             window.history.replaceState({}, "", window.location.pathname);
-            setResetToken(null);
+            setResetDone(true);
             load();
           }}
         />
@@ -105,6 +123,8 @@ export function AccountContent() {
     );
   }
 
+  // Nicht angemeldet: hier registrieren, nicht auf eine andere Seite schicken.
+  // Die Preisseite verlinkt genau hierher.
   if (error === "unauthenticated") {
     return (
       <Shell>
@@ -121,152 +141,34 @@ export function AccountContent() {
     );
   }
 
-  const now = Math.floor(Date.now() / 1000);
-  const isSubscription = license?.type === "subscription";
-  const expiresAt = license?.expires_at ?? null;
-  const daysLeft = expiresAt ? Math.ceil((expiresAt - now) / DAY) : null;
-  // „Aktiv" wie in CONTEXT.md und /api/license/validate: status=active und
-  // noch innerhalb von expires_at + Kulanzfrist. Ein Abo mit offener
-  // Zahlung ist in der Kulanzfrist also noch aktiv, ein per Webhook auf
-  // status=expired gesetztes nicht – auch wenn expires_at in der Zukunft liegt.
-  const graceUntil =
-    expiresAt == null ? null : expiresAt + (license?.grace_seconds ?? 0);
-  const expired =
-    (license?.status ?? "active") !== "active" ||
-    (graceUntil != null && now >= graceUntil);
-
   return (
     <Shell>
       <h1 className="text-3xl sm:text-4xl font-bold font-heading text-navy mb-8">
         {t("title")}
       </h1>
 
-      {!license?.key ? (
-        <Card>
-          <h2 className="text-lg font-bold font-heading text-navy mb-2">
-            {t("noLicense.heading")}
-          </h2>
-          <p className="text-slate-text/80 mb-6">{t("noLicense.body")}</p>
-          <button
-            onClick={() => postAndFollow("/api/trial/start", { locale })}
-            disabled={pendingPath !== null}
-            className="px-6 py-3 bg-royal text-white font-semibold rounded-lg hover:bg-royal-dark transition-colors disabled:opacity-60"
-          >
-            {t("noLicense.cta")}
-          </button>
-        </Card>
-      ) : (
-        <>
-          <Card>
-            <div className="flex items-start justify-between gap-4 mb-6">
-              <div>
-                <p className="text-sm text-muted mb-1">{t("status.label")}</p>
-                <p className="text-xl font-bold font-heading text-navy">
-                  {isSubscription
-                    ? t("status.subscription")
-                    : expired
-                      ? t("status.trialExpired")
-                      : t("status.trial")}
-                </p>
-              </div>
-              <span
-                className={`px-3 py-1 rounded-full text-xs font-semibold ${
-                  expired
-                    ? "bg-red-50 text-red-700"
-                    : "bg-green-50 text-green-700"
-                }`}
-              >
-                {expired ? t("status.locked") : t("status.active")}
-              </span>
-            </div>
-
-            {expiresAt ? (
-              <p className="text-slate-text/80 mb-6">
-                {expired
-                  ? t("status.expiredOn", { date: formatDate(new Date(expiresAt * 1000), locale) })
-                  : isSubscription
-                    ? t("status.renewsOn", { date: formatDate(new Date(expiresAt * 1000), locale) })
-                    : t("status.daysLeft", {
-                        days: daysLeft ?? 0,
-                        date: formatDate(new Date(expiresAt * 1000), locale),
-                      })}
-              </p>
-            ) : null}
-
-            {/*
-              Den Schlüssel braucht nur die Desktop-App, und auch die holt ihn
-              nach dem Login selbst über /api/license/mine. Deshalb nur für
-              Konten, die schon in der Desktop-App laufen – einklappbar, für
-              den Support und die Beta-Lizenzen aus der Zeit vor den Konten.
-              Neue Konten sehen keinen Schlüssel (mrgoofman/custix-ai#14).
-            */}
-            {license.desktop_used ? (
-              <details className="mb-6 group">
-                <summary className="text-sm text-muted cursor-pointer hover:text-navy transition-colors list-none">
-                  {t("showKey")}
-                </summary>
-                <code className="mt-3 block font-mono text-base text-navy bg-snow rounded-lg px-4 py-3 select-all">
-                  {license.key}
-                </code>
-                <p className="mt-2 text-xs text-muted">{t("keyHint")}</p>
-              </details>
-            ) : null}
-
-            {expired && !isSubscription ? (
-              // Erst nach Ablauf der Testphase geht es ums Bezahlen.
-              <div className="flex flex-col sm:flex-row gap-3">
-                <button
-                  onClick={() =>
-                    postAndFollow("/api/stripe/checkout", { interval: "annual" })
-                  }
-                  disabled={pendingPath !== null}
-                  className="px-6 py-3 bg-royal text-white font-semibold rounded-lg hover:bg-royal-dark transition-colors disabled:opacity-60"
-                >
-                  {t("buy.annual")}
-                </button>
-                <button
-                  onClick={() =>
-                    postAndFollow("/api/stripe/checkout", { interval: "monthly" })
-                  }
-                  disabled={pendingPath !== null}
-                  className="px-6 py-3 border-2 border-navy/10 text-navy font-semibold rounded-lg hover:bg-navy/5 transition-colors disabled:opacity-60"
-                >
-                  {t("buy.monthly")}
-                </button>
-              </div>
-            ) : (
-              <>
-                {/* Aktive Lizenz (Testphase, Beta oder laufende Subscription):
-                    der nächste Schritt ist starten, nicht kaufen. */}
-                {!expired ? (
-                  <StartActions desktop={license.desktop_used === true} />
-                ) : null}
-                {isSubscription ? (
-                  <button
-                    onClick={() => postAndFollow("/api/stripe/portal")}
-                    disabled={pendingPath !== null}
-                    className={`inline-flex items-center gap-2 px-6 py-3 border-2 border-navy/10 text-navy font-semibold rounded-lg hover:bg-navy/5 transition-colors disabled:opacity-60 ${
-                      expired ? "" : "mt-4"
-                    }`}
-                  >
-                    {t("manage")}
-                    <ExternalLink className="w-4 h-4" />
-                  </button>
-                ) : null}
-              </>
-            )}
-          </Card>
-        </>
-      )}
+      {license ? (
+        <LicenseCard
+          license={license}
+          now={loadedAt}
+          locale={locale}
+          busy={pendingPath !== null}
+          onStartTrial={() => postAndFollow("/api/trial/start", { locale })}
+          onCheckout={(interval) =>
+            postAndFollow("/api/stripe/checkout", { interval })
+          }
+          onPortal={() => postAndFollow("/api/stripe/portal")}
+        />
+      ) : null}
 
       {/* Beta-Schlüssel aus der Zeit vor der Registrierung einlösen. Ohne das
           kämen die noch nicht beanspruchten Beta-Lizenzen nie an ihr Konto. */}
-      <ClaimKey onDone={load} />
+      {license ? <ClaimKey onDone={load} /> : null}
 
-      {license?.key ? (
+      {license ? (
         <button
           onClick={() => signOut().then(load)}
-          className="mt-8 text-sm text-muted hover:text-navy transition-colors"
+          className="mt-8 block text-sm text-muted hover:text-navy transition-colors"
         >
           {t("signOut")}
         </button>
@@ -278,6 +180,169 @@ export function AccountContent() {
         </p>
       ) : null}
     </Shell>
+  );
+}
+
+/**
+ * Was das Konto zur Lizenz zeigt. Gültig oder nicht entscheidet der Server
+ * (`valid` aus /api/license/mine, dieselbe Regel wie die Desktop-Prüfung) –
+ * die Seite rechnet das nicht nach. Eine Lizenz deckt Web und Desktop
+ * (ADR-0012):
+ *  - keine Lizenz:   Testphase starten (Konten aus der kostenlosen Web-Phase)
+ *  - widerrufen:     gesperrt, Kontakt – keine neue Testphase
+ *  - gültig:         „custix im Browser starten“ (+ Download für Desktop-Konten)
+ *  - abgelaufen:     Abo abschließen (Checkout); laufende Abos über das Portal
+ */
+function LicenseCard({
+  license,
+  now,
+  locale,
+  busy,
+  onStartTrial,
+  onCheckout,
+  onPortal,
+}: {
+  license: License;
+  now: number;
+  locale: string;
+  busy: boolean;
+  onStartTrial: () => void;
+  onCheckout: (interval: "annual" | "monthly") => void;
+  onPortal: () => void;
+}) {
+  const t = useTranslations("account");
+
+  if (license.status === null) {
+    return (
+      <Card>
+        <h2 className="text-lg font-bold font-heading text-navy mb-2">
+          {t("noLicense.heading")}
+        </h2>
+        <p className="text-slate-text/80 mb-6">{t("noLicense.body")}</p>
+        <button
+          onClick={onStartTrial}
+          disabled={busy}
+          className="px-6 py-3 bg-royal text-white font-semibold rounded-lg hover:bg-royal-dark transition-colors disabled:opacity-60"
+        >
+          {t("noLicense.cta")}
+        </button>
+      </Card>
+    );
+  }
+
+  if (license.status === "revoked") {
+    return (
+      <Card>
+        <h2 className="text-lg font-bold font-heading text-navy mb-2">
+          {t("revoked.heading")}
+        </h2>
+        <p className="text-slate-text/80">{t("revoked.body")}</p>
+      </Card>
+    );
+  }
+
+  const valid = license.valid;
+  const isSubscription = license.type === "subscription";
+  const expiresAt = license.expires_at;
+  const date = expiresAt ? formatDate(new Date(expiresAt * 1000), locale) : null;
+  const daysLeft = expiresAt ? Math.max(0, Math.ceil((expiresAt - now) / DAY)) : 0;
+
+  const label = isSubscription
+    ? t("status.subscription")
+    : license.type === "beta"
+      ? t("status.beta")
+      : valid
+        ? t("status.trial")
+        : t("status.trialExpired");
+
+  const dateLine = !date
+    ? null
+    : !valid
+      ? t("status.expiredOn", { date })
+      : isSubscription
+        ? t("status.renewsOn", { date })
+        : license.type === "beta"
+          ? t("status.validUntil", { date })
+          : t("status.daysLeft", { days: daysLeft, date });
+
+  return (
+    <Card>
+      <div className="flex items-start justify-between gap-4 mb-6">
+        <div>
+          <p className="text-sm text-muted mb-1">{t("status.label")}</p>
+          <p className="text-xl font-bold font-heading text-navy">{label}</p>
+        </div>
+        <span
+          className={`px-3 py-1 rounded-full text-xs font-semibold ${
+            valid ? "bg-green-50 text-green-700" : "bg-red-50 text-red-700"
+          }`}
+        >
+          {valid ? t("status.active") : t("status.locked")}
+        </span>
+      </div>
+
+      {dateLine ? <p className="text-slate-text/80 mb-6">{dateLine}</p> : null}
+
+      {/*
+        Den Schlüssel braucht nur die Desktop-App, und auch die holt ihn
+        nach dem Login selbst über /api/license/mine. Deshalb nur für
+        Konten, die schon in der Desktop-App laufen – einklappbar, für
+        den Support und die Beta-Lizenzen aus der Zeit vor den Konten.
+        Neue Konten sehen keinen Schlüssel (mrgoofman/custix-ai#14).
+      */}
+      {license.desktop_used && license.key ? (
+        <details className="mb-6 group">
+          <summary className="text-sm text-muted cursor-pointer hover:text-navy transition-colors list-none">
+            {t("showKey")}
+          </summary>
+          <code className="mt-3 block font-mono text-base text-navy bg-snow rounded-lg px-4 py-3 select-all">
+            {license.key}
+          </code>
+          <p className="mt-2 text-xs text-muted">{t("keyHint")}</p>
+        </details>
+      ) : null}
+
+      {valid ? (
+        // Aktive Lizenz (Testphase, Beta oder laufendes Abo): der nächste
+        // Schritt ist starten, nicht kaufen.
+        <StartActions desktop={license.desktop_used} />
+      ) : !isSubscription ? (
+        // Testphase (oder befristete Beta) vorbei: jetzt geht es ums Abo. Es
+        // gilt für Web und Desktop, gleicher Schlüssel (type wird umgestellt).
+        <div className="flex flex-col sm:flex-row gap-3">
+          <button
+            onClick={() => onCheckout("annual")}
+            disabled={busy}
+            className="px-6 py-3 bg-royal text-white font-semibold rounded-lg hover:bg-royal-dark transition-colors disabled:opacity-60"
+          >
+            {t("buy.annual")}
+          </button>
+          <button
+            onClick={() => onCheckout("monthly")}
+            disabled={busy}
+            className="px-6 py-3 border-2 border-navy/10 text-navy font-semibold rounded-lg hover:bg-navy/5 transition-colors disabled:opacity-60"
+          >
+            {t("buy.monthly")}
+          </button>
+        </div>
+      ) : null}
+
+      {/* Abo: Zahlung nachholen, kündigen, Rechnungen – im Stripe-Portal. Ein
+          abgelaufenes Abo landet ebenfalls dort, nicht in einem zweiten
+          Checkout (sonst liefen zwei Abos nebeneinander). */}
+      {isSubscription ? (
+        <button
+          onClick={onPortal}
+          disabled={busy}
+          className={`inline-flex items-center gap-2 px-6 py-3 border-2 border-navy/10 text-navy font-semibold rounded-lg hover:bg-navy/5 transition-colors disabled:opacity-60 ${
+            valid ? "mt-4" : ""
+          }`}
+        >
+          {t("manage")}
+          <ExternalLink className="w-4 h-4" />
+        </button>
+      ) : null}
+    </Card>
   );
 }
 

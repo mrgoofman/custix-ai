@@ -499,16 +499,22 @@
       "body": "Starten Sie Ihre Testphase und nutzen Sie custix 14 Tage lang uneingeschränkt im Browser – ohne Kreditkarte.",
       "cta": "Testphase starten"
     },
+    "revoked": {
+      "heading": "Zugang gesperrt",
+      "body": "Die Lizenz dieses Kontos wurde gesperrt. Bei Fragen schreiben Sie uns an contact@custix.ai."
+    },
     "status": {
       "label": "Status",
       "trial": "Testphase",
+      "beta": "Beta-Zugang",
       "trialExpired": "Testphase abgelaufen",
       "subscription": "Abo",
       "active": "Aktiv",
       "locked": "Gesperrt",
       "daysLeft": "Noch {days} Tage – Ihre Testphase endet am {date}.",
       "expiredOn": "Abgelaufen am {date}. Wählen Sie ein Abo, um custix weiter zu nutzen.",
-      "renewsOn": "Verlängert sich am {date}."
+      "renewsOn": "Verlängert sich am {date}.",
+      "validUntil": "Gültig bis {date}."
     },
     "buy": {
       "annual": "Jahresabo – 150 €",
