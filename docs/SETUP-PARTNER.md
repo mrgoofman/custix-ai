@@ -4,6 +4,14 @@ Was auf unserer Seite nötig ist, damit ein Partner (zuerst finditoo) das
 Formular `/partner/signup.js` einbetten kann. Die Übergabe an den Partner
 steht in `partners/<partner>/README.md`.
 
+**Nach der Registrierung** zeigt das Formular „Ihre Testphase läuft bis …“
+und genau einen Knopf „custix im Browser starten“ (→ `custix.ai/app/`, neuer
+Tab), darunter „Melden Sie sich dort mit <E-Mail> und Ihrem Passwort an“.
+Keine Download-Knöpfe, kein Lizenzschlüssel (ADR-0011, Update 28.10.2026).
+Die Mail an die Person ist die Partner-Variante von `src/lib/key-email.ts`:
+derselbe Knopf zur Web-App. `/api/partner/config` liefert `downloads` weiter
+mit, das Formular liest es nicht mehr.
+
 ## Einmalig: Cloudflare Turnstile
 
 1. Cloudflare-Dashboard (Konto Moritz, `790369fbd60bd3d4d6e34bacbd0c854d`) →
@@ -37,8 +45,9 @@ npx wrangler d1 migrations apply custix-db --remote
 2. Deploy mit `enabled: false` – der Partner kann auf seiner Entwurfsseite
    einbauen, das Formular zeigt „in Kürze verfügbar“.
 3. Für den gemeinsamen Test `enabled: true`, deployen, einmal mit einer
-   Testadresse registrieren. Im Admin-Panel prüfen: Lizenz mit Partner
-   „finditoo“, Trichter zählt 1. Testkonto danach löschen.
+   Testadresse registrieren und mit „custix im Browser starten“ in der
+   Web-App anmelden. Im Admin-Panel prüfen: Lizenz mit Partner „finditoo“,
+   Trichter zählt 1. Testkonto danach löschen.
 4. Partner veröffentlicht die Seite.
 
 ## Neuer Partner

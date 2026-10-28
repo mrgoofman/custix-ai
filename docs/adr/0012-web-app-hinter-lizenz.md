@@ -132,7 +132,8 @@ Konten aus der kostenlosen Web-Phase (seit 27.09.2026):
   ein („Ich habe bereits einen Lizenzschlüssel“, die Testlizenz wird dabei abgelöst).
 - Willkommens-Mail nach der Registrierung: nur die Web-App, kein Schlüssel, kein Download
   (mrgoofman/custix-ai#14). Partner signups behalten die Desktop-Variante; Formular und Mail der
-  Partner folgen ADR-0011 („Nur Desktop“), bis dort anders entschieden wird.
+  Partner folgen ADR-0011 („Nur Desktop“), bis dort anders entschieden wird. *Update 28.10.2026:
+  anders entschieden – auch Partner signups bekommen nur die Web-App (ADR-0011, Update).*
 - Die Partner-Auswertung im Admin zählt als „App genutzt“ weiter nur Desktop-Prüfungen
   (`last_validated_at`); Web-Nutzung erscheint dort nicht, weil `/api/license/mine` nichts
   protokolliert.

@@ -5,9 +5,12 @@
  *   <div id="custix-signup" data-partner="finditoo"></div>
  *   <script src="https://custix.ai/partner/signup.js" defer></script>
  *
- * Legt über custix.ai ein Konto mit 14-tägiger Testphase an und zeigt danach
- * die Download-Links der Desktop-App. Die Daten gehen direkt an custix.ai,
- * nicht an den Partner. Kein Cookie, keine Sitzung auf der Partnerseite.
+ * Legt über custix.ai ein Konto mit 14-tägiger Testphase an und schickt die
+ * Person danach in die Web-App (custix.ai/app/), wo sie sich mit E-Mail und
+ * Passwort anmeldet – seit 28.10.2026 wie jede andere Registrierung nur die
+ * Web-App, kein Download (ADR-0011, Update). Die Daten gehen direkt an
+ * custix.ai, nicht an den Partner. Kein Cookie, keine Sitzung auf der
+ * Partnerseite.
  *
  * Aussehen über CSS-Variablen anpassbar (am inneren .cxs-root, der sie setzt):
  *   #custix-signup .cxs-root { --cxs-primary: #3D00FF; --cxs-ink: #1B1635; ... }
@@ -24,24 +27,11 @@
   // Weg über custix.ai/konto anbieten, statt endlos „Wird angelegt …“ zu zeigen.
   var SUBMIT_TIMEOUT_MS = 30000;
 
-  var PLATFORMS = {
-    "windows-x86_64": {
-      label: "Windows",
-      hint: "Beim ersten Start zeigt Windows „Der Computer wurde durch Windows geschützt“: auf „Weitere Informationen“ und dann „Trotzdem ausführen“ klicken.",
-    },
-    "darwin-aarch64": {
-      label: "macOS (Apple Silicon)",
-      hint: "Beim ersten Start warnt macOS: im Finder mit Rechtsklick auf custix.app → „Öffnen“ und im Dialog bestätigen.",
-    },
-    "darwin-x86_64": {
-      label: "macOS (Intel)",
-      hint: "Beim ersten Start warnt macOS: im Finder mit Rechtsklick auf custix.app → „Öffnen“ und im Dialog bestätigen.",
-    },
-  };
-
   var ERRORS = {
     email_taken:
-      "Für diese E-Mail-Adresse gibt es bereits ein custix-Konto. Melden Sie sich direkt in der App an – das Passwort können Sie auf <a href=\"" +
+      "Für diese E-Mail-Adresse gibt es bereits ein custix-Konto. Melden Sie sich direkt an: <a href=\"" +
+      API +
+      "/app/\" target=\"_blank\" rel=\"noopener\">custix im Browser starten</a>. Das Passwort können Sie auf <a href=\"" +
       API +
       "/konto\" target=\"_blank\" rel=\"noopener\">custix.ai/konto</a> zurücksetzen.",
     turnstile_failed:
@@ -92,18 +82,13 @@
     ".cxs-root button.cxs-btn,.cxs-root a.cxs-btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;font:inherit;font-size:16px;font-weight:600;color:#fff;background:var(--cxs-primary);border:0;border-radius:var(--cxs-radius);padding:14px 20px;cursor:pointer;text-decoration:none;transition:background .15s}" +
     ".cxs-root button.cxs-btn:hover,.cxs-root a.cxs-btn:hover{background:var(--cxs-primary-hover);color:#fff}" +
     ".cxs-root button.cxs-btn[disabled]{opacity:.6;cursor:default}" +
-    ".cxs-root a.cxs-btn.cxs-alt{background:#fff;color:var(--cxs-ink);border:1px solid var(--cxs-border)}" +
-    ".cxs-root a.cxs-btn.cxs-alt:hover{border-color:var(--cxs-ink);background:#fff;color:var(--cxs-ink)}" +
     ".cxs-root .cxs-err{margin:0 0 14px;padding:12px 14px;border-radius:var(--cxs-radius);background:#fef3f2;color:var(--cxs-error);font-size:14px}" +
     ".cxs-root .cxs-err:empty{display:none}" +
     ".cxs-root .cxs-err a,.cxs-root .cxs-legal a,.cxs-root .cxs-note a{color:inherit;text-decoration:underline}" +
     ".cxs-root p.cxs-legal{margin:14px 0 0;font-size:12px;color:var(--cxs-muted);text-align:center}" +
-    ".cxs-root .cxs-steps{margin:20px 0 0;padding:0;list-style:none}" +
-    ".cxs-root .cxs-steps>li{margin:0 0 20px;padding:0}" +
-    ".cxs-root .cxs-step{display:block;font-weight:600;color:var(--cxs-ink);margin:0 0 8px;font-size:15px}" +
-    ".cxs-root .cxs-dl{display:grid;gap:8px}" +
-    ".cxs-root .cxs-hint{font-size:12px;color:var(--cxs-muted);margin:6px 0 0}" +
     ".cxs-root .cxs-note{margin:0;padding:12px 14px;border-radius:var(--cxs-radius);background:var(--cxs-soft);font-size:14px}" +
+    ".cxs-root .cxs-start{margin:20px 0 0}" +
+    ".cxs-root .cxs-start .cxs-note{margin-top:14px}" +
     ".cxs-root .cxs-ok{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:50%;background:rgba(61,0,255,.1);color:var(--cxs-primary);font-size:20px;font-weight:700;margin:0 0 12px}" +
     ".cxs-root .cxs-spin{width:16px;height:16px;border:2px solid rgba(255,255,255,.5);border-top-color:#fff;border-radius:50%;animation:cxs-spin .7s linear infinite}" +
     "@keyframes cxs-spin{to{transform:rotate(360deg)}}" +
@@ -151,11 +136,6 @@
   function formatDate(epoch) {
     var d = new Date(epoch * 1000);
     return d.toLocaleDateString("de-AT", { day: "2-digit", month: "2-digit", year: "numeric" });
-  }
-
-  function isMac() {
-    var p = (navigator.userAgentData && navigator.userAgentData.platform) || navigator.platform || navigator.userAgent;
-    return /mac/i.test(p);
   }
 
   function mount(root) {
@@ -410,32 +390,13 @@
     );
   }
 
+  /**
+   * Nach der Registrierung: nur die Web-App (ADR-0011, Update 28.10.2026).
+   * `config.downloads` liefert /api/partner/config weiter mit (Vertrag
+   * unverändert, falls irgendwo noch eine ältere Fassung dieses Skripts im
+   * Cache liegt) – diese Fassung liest es nicht mehr.
+   */
   function renderSuccess(box, api, config, email, res, demo) {
-    var order = isMac()
-      ? ["darwin-aarch64", "darwin-x86_64", "windows-x86_64"]
-      : ["windows-x86_64", "darwin-aarch64", "darwin-x86_64"];
-    var byPlatform = {};
-    (config.downloads || []).forEach(function (d) {
-      byPlatform[d.platform] = d.url;
-    });
-    var buttons = order
-      .filter(function (p) {
-        return byPlatform[p];
-      })
-      .map(function (p, i) {
-        return (
-          "<div><a class=\"cxs-btn" + (i === 0 ? "" : " cxs-alt") + "\" href=\"" + esc(byPlatform[p]) +
-          "\" rel=\"noopener\">custix für " + PLATFORMS[p].label + " herunterladen</a>" +
-          (i === 0 ? "<p class=\"cxs-hint\">" + PLATFORMS[p].hint + "</p>" : "") +
-          "</div>"
-        );
-      })
-      .join("");
-    if (!buttons) {
-      buttons =
-        "<a class=\"cxs-btn\" href=\"" + api + "/download\" target=\"_blank\" rel=\"noopener\">Zur Download-Seite</a>";
-    }
-
     var headline = res.trialStarted
       ? "Ihre Testphase läuft" + (res.expiresAt ? " bis " + formatDate(res.expiresAt) : "")
       : "Ihr Konto ist angelegt";
@@ -448,15 +409,14 @@
       (demo ? DEMO_NOTE : "") +
       "<div class=\"cxs-ok\" aria-hidden=\"true\">✓</div>" +
       "<h3 class=\"cxs-h\" tabindex=\"-1\">" + headline + "</h3>" +
-      "<p class=\"cxs-sub\">Willkommen bei custix. In zwei Schritten geht es los.</p>" +
+      "<p class=\"cxs-sub\">Willkommen bei custix. Sie arbeiten direkt im Browser – ohne Installation.</p>" +
       trialNote +
-      "<ol class=\"cxs-steps\">" +
-      "<li><span class=\"cxs-step\">1. App herunterladen</span><div class=\"cxs-dl\">" + buttons + "</div></li>" +
-      "<li><span class=\"cxs-step\">2. In der App anmelden</span>" +
-      "<p class=\"cxs-note\">Öffnen Sie custix und melden Sie sich mit <strong>" + esc(email) +
-      "</strong> und Ihrem Passwort an. Einen Lizenzschlüssel brauchen Sie nicht.</p></li>" +
-      "</ol>" +
-      "<p class=\"cxs-legal\">Eine Bestätigung mit Link zur Download-Seite ist per E-Mail unterwegs. Konto und Abo verwalten Sie auf <a href=\"" +
+      "<div class=\"cxs-start\">" +
+      "<a class=\"cxs-btn\" href=\"" + api + "/app/\" target=\"_blank\" rel=\"noopener\">custix im Browser starten</a>" +
+      "<p class=\"cxs-note\">Melden Sie sich dort mit <strong>" + esc(email) +
+      "</strong> und Ihrem Passwort an. Einen Lizenzschlüssel brauchen Sie nicht.</p>" +
+      "</div>" +
+      "<p class=\"cxs-legal\">Eine Bestätigung mit Link zur Web-App ist per E-Mail unterwegs. Konto und Abo verwalten Sie auf <a href=\"" +
       api + "/konto\" target=\"_blank\" rel=\"noopener\">custix.ai/konto</a>.</p>";
     var h = box.querySelector(".cxs-h");
     if (h) h.focus();

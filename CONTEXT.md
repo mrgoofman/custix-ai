@@ -76,8 +76,9 @@ _Avoid_: affiliate, reseller, referrer (no commercial terms exist yet)
 **Partner signup**:
 Creating an Account through a Partner's form. Our server creates the Account and the 14-day trial
 License in one request and sets the Partner attribution; no session crosses the domain boundary —
-the person signs in afterwards in the desktop app. Desktop only: the form's success panel offers
-downloads, not the Web App.
+the person signs in afterwards in the Web App. Web App only (since 2026-10-28, like every other
+registration): the form's success panel offers „custix im Browser starten“, no downloads
+(ADR-0011, update).
 _Avoid_: partner registration, lead
 
 **Partner attribution**:

@@ -3,14 +3,19 @@ import { getCloudflareContext } from "@opennextjs/cloudflare";
 import { resolvePartnerRequest, partnerPreflight } from "@/lib/partners";
 import { fetchLatestRelease, installerUrl } from "@/lib/release";
 
-/** Plattformen, die das Partnerformular anbietet (Desktop, ADR-0011). */
+/**
+ * Plattformen für `downloads`. Das Partnerformular zeigt seit 28.10.2026 keine
+ * Downloads mehr, nur die Web-App (ADR-0011, Update). Das Feld bleibt, damit
+ * sich die Antwort nicht ändert – eine noch zwischengespeicherte ältere
+ * Fassung von signup.js liest es.
+ */
 const PARTNER_PLATFORMS = ["windows-x86_64", "darwin-aarch64", "darwin-x86_64"];
 
 /**
  * Alles, was `/partner/signup.js` vor dem Anzeigen braucht, in einer Anfrage:
- * ob das Formular aktiv ist, den Turnstile-Site-Key und die aktuellen
- * Installer-Links. Die Links kommen live aus dem Release-Manifest, damit die
- * Partnerseite nach einem Release nicht auf eine alte Version zeigt.
+ * ob das Formular aktiv ist, den Turnstile-Site-Key und (nicht mehr genutzt,
+ * siehe PARTNER_PLATFORMS) die aktuellen Installer-Links aus dem
+ * Release-Manifest.
  *
  *   GET /api/partner/config?partner=finditoo
  *

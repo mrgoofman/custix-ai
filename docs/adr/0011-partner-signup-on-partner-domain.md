@@ -1,6 +1,7 @@
 # Partner signup auf der Partnerseite: Konto serverseitig, Zuordnung am Konto
 
-**Status:** Accepted (Entscheidung Lorenz, 30.09.2026) · **Betrifft:** Website/Backend
+**Status:** Accepted (Entscheidung Lorenz, 30.09.2026; Update 28.10.2026: nur Web-App, siehe
+unten) · **Betrifft:** Website/Backend
 (`/api/partner/*`, `/konto`, Trial-Mail, Admin-Panel, Stripe-Checkout) · **Erster Partner:**
 finditoo (finditoo-marketing.com, WordPress + Elementor)
 
@@ -8,7 +9,8 @@ Ein Partner bettet unser Registrierformular in seine eigene Seite ein. Das Formu
 von custix.ai (`/partner/signup.js`); es schickt Name, Kanzlei, E-Mail und **Passwort** an
 `POST /api/partner/signup`. Der Server legt dort in einem Schritt das Konto (Better Auth), die
 14-Tage-Testlizenz und die Partner-Zuordnung `user.partner` an und verschickt die Testphasen-Mail.
-Eine Sitzung entsteht auf der Partnerseite nicht: Angemeldet wird danach in der Desktop-App.
+Eine Sitzung entsteht auf der Partnerseite nicht: Angemeldet wird danach in der Desktop-App
+(seit 28.10.2026 in der Web-App, siehe Update).
 
 ## Why / context
 
@@ -38,7 +40,8 @@ Eine Sitzung entsteht auf der Partnerseite nicht: Angemeldet wird danach in der 
   Ratenbegrenzung pro IP, und die Übergabe verlangt, dass Tracking-Tools das Formular nicht
   mitschneiden.
 - **Nur Desktop, kein Schlüssel:** das Erfolgsfeld zeigt Downloads (live aus dem Release-Manifest),
-  keinen Web-App-Knopf und keinen Lizenzschlüssel.
+  keinen Web-App-Knopf und keinen Lizenzschlüssel. *(Überholt am 28.10.2026: nur Web-App, siehe
+  Update.)*
 - **Datenweitergabe:** der Partner bekommt nur Summen (Registrierungen, App genutzt, Testphase,
   zahlend), keine personenbezogenen Daten. Verantwortlich bleibt snekmedia GmbH (ADR-0001); das
   Formular sagt das.
@@ -53,7 +56,32 @@ Eine Sitzung entsteht auf der Partnerseite nicht: Angemeldet wird danach in der 
   Schalter `enabled`, neue Geheimnisse `TURNSTILE_SECRET_KEY` und Variable `TURNSTILE_SITE_KEY`,
   Ratenbegrenzung über das Workers-Rate-Limiting-Binding.
 - Die Testphasen-Mail zeigt für alle Website-Konten keinen Schlüssel mehr (CONTEXT.md, „License
-  key“); Partner-Konten bekommen sie ohne Web-App-Hinweis.
+  key“); Partner-Konten bekommen sie ohne Web-App-Hinweis. *(Seit 28.10.2026 mit dem Knopf zur
+  Web-App, siehe Update.)*
 - `/konto` und das Partnerformular tragen denselben Hinweis auf AGB und Datenschutzerklärung.
 - Kommen Provision oder Sonderpreise, ist dieses ADR zu ergänzen: die Zuordnung ist dafür da, die
   Regeln der Abrechnung sind es noch nicht.
+
+## Update 28.10.2026: nur noch Web-App (Entscheidung Lorenz)
+
+Partner signups bekommen wie alle anderen Registrierungen seit mrgoofman/custix-ai#14 nur noch
+die Web-App vorgeschlagen; ein Download wird nicht mehr angeboten. Ersetzt die Entscheidung
+„Nur Desktop, kein Schlüssel“.
+
+- **Erfolgsfeld** (`/partner/signup.js`): „Ihre Testphase läuft bis …“, genau ein Knopf
+  „custix im Browser starten“ → `custix.ai/app/` (neuer Tab), darunter „Melden Sie sich dort mit
+  <E-Mail> und Ihrem Passwort an. Einen Lizenzschlüssel brauchen Sie nicht.“ Keine
+  Download-Knöpfe, kein Link auf die Download-Seite. „Adresse schon registriert“ verlinkt
+  ebenfalls die Web-App.
+- **Mail:** die Partner-Variante der Willkommens-Mail (`src/lib/key-email.ts`) zeigt denselben
+  Knopf zur Web-App wie die Mail nach jeder anderen Registrierung, ohne Schlüssel und ohne
+  Download. Unterschied nur im Satz zur Anmeldung: Der Partner signup legt keine Sitzung im
+  Browser an, die Web-App fragt also immer nach E-Mail und Passwort.
+- **Kein Vertragswechsel:** `/api/partner/config` liefert `downloads` weiter mit; das Formular
+  liest es nicht mehr. `/api/partner/signup` ist unverändert.
+- **Der Partner merkt es** am Erfolgsfeld (kommt live von custix.ai, ohne sein Zutun). In seiner
+  Kopie der Landingpage steht noch „App herunterladen“; den Satz muss er selbst ändern
+  (`partners/finditoo/README.md`).
+- **Auswertung:** „App genutzt“ im Partner-Trichter zählt weiter nur Desktop-Prüfungen
+  (`last_validated_at`, ADR-0012). Für Partner-Konten bleibt der Wert damit fast immer 0, bis die
+  Web-Nutzung dort mitgezählt wird; Registrierungen, Testphase und zahlend stimmen.

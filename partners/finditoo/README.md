@@ -1,6 +1,15 @@
 # custix.ai × finditoo – Landingpage zum Einbauen
 
-Stand: 01.10.2026 · Ansprechpartner custix.ai: Lorenz Kutschka
+Stand: 28.10.2026 · Ansprechpartner custix.ai: Lorenz Kutschka
+
+> **Neu seit 28.10.2026:** Nach der Registrierung schickt das Formular die
+> Person direkt in die Web-App von custix (custix.ai/app/, läuft im Browser,
+> ohne Installation) – die Download-Knöpfe für Windows und macOS entfallen.
+> Am Formular müssen Sie nichts tun, es wird von custix.ai geladen. In Ihrer
+> Kopie von `landing.html` bitte einen Satz anpassen: im Abschnitt
+> „Registrierung“ „Konto anlegen, App herunterladen, loslegen.“ durch
+> „Konto anlegen, im Browser starten, loslegen. Ohne Installation und ohne
+> Kreditkarte – die Testphase endet automatisch.“ ersetzen.
 
 Diese Landingpage stellt custix.ai Ihren Kundinnen und Kunden vor und nimmt
 Registrierungen für die 14-tägige Testphase direkt auf Ihrer Seite entgegen.
@@ -59,8 +68,8 @@ Elementor unter „Benutzerdefiniertes CSS“:
   es ist Ihre Seite.
 - **Bitte unverändert lassen:** den Abschnitt „Registrierung“ (die
   `<div id="custix-signup">` und das `signup.js`-Skript). Das Formular pflegen
-  wir zentral; Änderungen an Fehlermeldungen, Preisen oder Download-Links
-  kommen so ohne Ihr Zutun bei Ihnen an.
+  wir zentral; Änderungen an Fehlermeldungen, Preisen oder am Weg nach der
+  Registrierung kommen so ohne Ihr Zutun bei Ihnen an.
 - **Preisangaben** (15 € / Monat oder 150 € / Jahr pro Arbeitsplatz, inkl.
   USt.) bitte nur in Absprache ändern – sie müssen zu custix.ai passen.
 
@@ -128,15 +137,16 @@ custix.ai setzt über das Formular keine Cookies auf Ihrer Seite.
 
 ## Was passiert nach der Registrierung?
 
-- Das Formular zeigt die Download-Knöpfe (Windows, macOS) – immer die
-  aktuelle Version.
-- Die Person bekommt eine Bestätigung per E-Mail von custix.ai, mit Link zur
-  Download-Seite.
-- In der App meldet sie sich mit E-Mail und Passwort an; die Testphase läuft
-  14 Tage und endet automatisch. Ein Abo schließt sie bei Bedarf auf
-  custix.ai ab.
-- Bereits registrierte Adressen werden erkannt; die Person wird auf die
-  Anmeldung in der App verwiesen.
+- Das Formular zeigt den Knopf „custix im Browser starten“: Er öffnet die
+  Web-App (custix.ai/app/) in einem neuen Tab. Nichts zu installieren, die
+  Dokumente bleiben auf dem Rechner der Person.
+- Dort meldet sie sich mit E-Mail und Passwort aus dem Formular an – einen
+  Lizenzschlüssel braucht sie nicht. Die Testphase läuft 14 Tage und endet
+  automatisch. Ein Abo schließt sie bei Bedarf auf custix.ai ab.
+- Die Person bekommt eine Bestätigung per E-Mail von custix.ai, mit demselben
+  Knopf zur Web-App.
+- Bereits registrierte Adressen werden erkannt; die Person bekommt den Link
+  zur Anmeldung in der Web-App.
 - **Sie bekommen eine kurze E-Mail an info@finditoo.com:** „Über das
   custix-Formular auf Ihrer Seite hat sich soeben eine Person registriert“,
   mit der bisherigen Gesamtzahl – ohne Name, Kanzlei oder E-Mail-Adresse.

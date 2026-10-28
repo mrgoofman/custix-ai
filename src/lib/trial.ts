@@ -124,11 +124,12 @@ export async function startTrial(
  * Darf die Registrierung nie scheitern lassen: Fehler werden nur geloggt. Fehlt
  * die Lizenz dann, bietet /konto „Testphase starten“ an.
  *
- * Partner-Konten (`user.partner`, ADR-0011) bekommen die Desktop-Variante der
- * Mail, alle anderen die Willkommens-Mail mit der Web-App – außer bei der
- * Registrierung „E-Mail zuerst“ auf der Website (`welcomeMail: false`, #15):
- * Dort war die Bestätigungs-Mail schon die eine Mail der Registrierung, und
- * die Sprache steht im Bestätigungslink (`locale`).
+ * Alle bekommen die Willkommens-Mail mit der Web-App, Partner-Konten
+ * (`user.partner`, ADR-0011) in der Partner-Variante („melden Sie sich dort
+ * an“, der Partner signup legt keine Sitzung im Browser an). Keine Mail gibt
+ * es bei der Registrierung „E-Mail zuerst“ auf der Website (`welcomeMail:
+ * false`, #15): Dort war die Bestätigungs-Mail schon die eine Mail der
+ * Registrierung, und die Sprache steht im Bestätigungslink (`locale`).
  */
 export async function startTrialForNewAccount(
   user: {

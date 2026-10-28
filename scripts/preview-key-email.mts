@@ -55,7 +55,8 @@ for (const locale of ["de", "en"]) {
     expiresAt: inFourteenDays,
     baseUrl,
   });
-  // Partner signup (ADR-0011): Testphase mit Download, ohne Web-App-Hinweis.
+  // Partner signup (ADR-0011, Update 28.10.2026): Testphase, nur die Web-App,
+  // ohne Sitzung im Browser – also immer anmelden.
   variants.push({
     file: `partner-${locale}.html`,
     name: locale === "de" ? "Mag. Paul Kanzlei" : "Paul Counsel",

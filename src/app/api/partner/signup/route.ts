@@ -11,13 +11,14 @@ import { sendPartnerSignupNotice } from "@/lib/partner-email";
 /**
  * Partner signup (ADR-0011, CONTEXT.md): Das Formular auf der Partnerseite
  * (`/partner/signup.js`) legt hier in einer Anfrage das Konto an – die
- * 14-Tage-Testlizenz und die Testphasen-Mail (Desktop-Variante) hängt der
+ * 14-Tage-Testlizenz und die Testphasen-Mail (Partner-Variante) hängt der
  * Create-Hook daran wie bei jeder Registrierung (lib/auth.ts, ADR-0012) –,
  * markiert das Konto mit dem Partner und benachrichtigt ihn (ohne Personendaten).
  *
  * Eine Sitzung entsteht dabei nicht: Das Cookie wäre auf der Partnerseite ein
  * Drittanbieter-Cookie, Safari und Firefox sperren es. Angemeldet wird danach
- * in der Desktop-App.
+ * in der Web-App unter custix.ai/app/ (seit 28.10.2026 nur die Web-App,
+ * ADR-0011, Update).
  *
  *   POST /api/partner/signup?partner=finditoo
  *   { name, company, email, password, turnstileToken }
@@ -146,7 +147,7 @@ export async function POST(request: Request) {
   step("session removed");
 
   // Die Testlizenz hat der Create-Hook beim Anlegen schon gebunden und die
-  // Mail in der Partner-Variante verschickt (Download statt Web-App, ADR-0011).
+  // Mail in der Partner-Variante verschickt (Web-App, dort anmelden; ADR-0011).
   // Ist er gescheitert, hier ein zweiter Versuch.
   let trial: { ok: boolean; expiresAt: number | null } = { ok: false, expiresAt: null };
   try {

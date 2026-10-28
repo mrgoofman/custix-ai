@@ -91,8 +91,9 @@ See `docs/SETUP-PHASE1.md` for D1 create / migrate / secret steps (cloud resourc
 - Every registration (that flow, the web app, the desktop app, a partner form) goes through a
   Better Auth create hook (`src/lib/auth.ts` → `startTrialForNewAccount` in `src/lib/trial.ts`)
   that mints a 14-day `type='trial'` license bound to the account. Direct registrations also get
-  the welcome email (web-app link only — no key, no download; partner signups the desktop
-  variant); the email-first flow does not — its confirmation mail is the one mail.
+  the welcome email (web-app link only — no key, no download; partner signups too since
+  2026-10-28, their variant only says „sign in there“ because no browser session exists); the
+  email-first flow does not — its confirmation mail is the one mail.
   The beta waitlist and the old `/api/signup` are removed — existing beta licenses keep working.
 - Stripe subscriptions: 15 €/month or 150 €/year per seat, **prices include VAT**
   (the Stripe Prices must carry `tax_behavior: inclusive`). Checkout, Billing Portal
@@ -104,7 +105,9 @@ See `docs/SETUP-PHASE1.md` for D1 create / migrate / secret steps (cloud resourc
   promoted as the entry.
 - Partner signup (ADR-0011): partners embed `/partner/signup.js` on their own site;
   `/api/partner/signup` creates Account + trial server-side (no cross-site session)
-  and stamps `user.partner`. Registry `src/lib/partners.ts`; first partner finditoo
+  and stamps `user.partner`. Success panel and email offer only the web app („custix im
+  Browser starten“ → `/app/`, sign in with email + password), no download (ADR-0011,
+  update 2026-10-28). Registry `src/lib/partners.ts`; first partner finditoo
   (handover README in `partners/finditoo/`, `enabled: true` since 2026-10-01; preview for them at
   `custix.ai/finditoo/` from `public/finditoo/`, demo form that creates no account).
   Admin shows a partner funnel.

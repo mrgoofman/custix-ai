@@ -2,7 +2,7 @@
  * Das aktuelle Desktop-Release (Tauri-Updater-Manifest aus custix-releases)
  * und die Installer-Links daraus. Rein – ohne `@/…`-Importe und ohne
  * Worker-Kontext, damit Download-Seite (Client) und Partner-Endpunkt
- * (Server) dieselbe Regel nutzen.
+ * (Server, liefert die Links nur noch aus Kompatibilität) dieselbe Regel nutzen.
  */
 
 const MANIFEST_URL =
