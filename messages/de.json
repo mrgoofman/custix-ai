@@ -100,6 +100,20 @@
     "legalBrief": "Rechtliches Schreiben",
     "taxFiling": "Steuererklärung"
   },
+  "demo": {
+    "heading": "Beispiel-Akte: Stellungnahme und Gutachten",
+    "view": "Ansicht",
+    "original": "Original",
+    "anonymized": "Anonymisiert",
+    "sample": "Erfundenes Beispiel",
+    "legend": {
+      "person": "Personen",
+      "org": "Firmen",
+      "addr": "Adressen",
+      "id": "Aktenzeichen, Datum, IBAN"
+    },
+    "shared": "Dieselbe Mandantin heißt in beiden Dokumenten <ph>[PERSON_1]</ph> – so kann die KI Stellungnahme und Gutachten vergleichen."
+  },
   "audiences": {
     "title": "Für jede Branche die richtige Lösung",
     "subtitle": "custix passt sich Ihrem Arbeitsalltag an",

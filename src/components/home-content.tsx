@@ -3,6 +3,7 @@
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { AutoplayVideo } from "./autoplay-video";
+import { LiveDemo } from "./live-demo";
 import { TrustBadges } from "./trust-badges";
 import { AudienceCards } from "./audience-cards";
 import { HowItWorks } from "./how-it-works";
@@ -42,20 +43,10 @@ export function HomeContent() {
               </div>
             </div>
 
-            {/*
-            Eigene, leichtere Fassung fürs Web: 1280×720, ohne die stumme
-            Tonspur, die Remotion sonst mitschreibt – das drückt die Datei von
-            3,3 MB auf unter 1 MB. Über der Falz zählt jedes KB, deshalb auch
-            preload="auto": das Video steht sofort im Bild.
-          */}
-            <div>
-              <AutoplayVideo
-                className="w-full aspect-video rounded-2xl shadow-xl shadow-navy/10 bg-snow"
-                src="/videos/hero-16x9-web.mp4"
-                poster="/videos/poster-16x9.jpg"
-                preload="auto"
-              />
-            </div>
+            {/* Live-Demo statt Video (#15): Original ↔ Anonymisiert an einer
+                erfundenen Akte mit zwei Dokumenten – das Ergebnis sehen, bevor
+                man etwas eingibt. */}
+            <LiveDemo />
           </div>
         </div>
       </section>
@@ -65,6 +56,21 @@ export function HomeContent() {
 
       <div id="how-it-works">
         <HowItWorks />
+        {/*
+          Das Video aus dem Hero steht jetzt hier, beim „So funktioniert's“.
+          Eigene, leichtere Fassung fürs Web: 1280×720, ohne die stumme
+          Tonspur (unter 1 MB). Unter der Falz: erst laden, wenn es ins Bild
+          kommt (preload="none", AutoplayVideo startet beim Sichtbarwerden).
+        */}
+        <div className="bg-surface pb-16 lg:pb-24">
+          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <AutoplayVideo
+              className="w-full aspect-video rounded-2xl shadow-xl shadow-navy/10 bg-snow"
+              src="/videos/hero-16x9-web.mp4"
+              poster="/videos/poster-16x9.jpg"
+            />
+          </div>
+        </div>
       </div>
 
       <FAQ />

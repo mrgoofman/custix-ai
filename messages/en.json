@@ -100,6 +100,20 @@
     "legalBrief": "Legal Brief",
     "taxFiling": "Tax Filing"
   },
+  "demo": {
+    "heading": "Sample case file: statement and expert report",
+    "view": "View",
+    "original": "Original",
+    "anonymized": "Anonymized",
+    "sample": "Fictitious example",
+    "legend": {
+      "person": "People",
+      "org": "Companies",
+      "addr": "Addresses",
+      "id": "Case numbers, dates, IBAN"
+    },
+    "shared": "The client is <ph>[PERSON_1]</ph> in both documents – so the AI can compare the statement and the expert report."
+  },
   "audiences": {
     "title": "The Right Solution for Every Industry",
     "subtitle": "custix adapts to your daily workflow",
