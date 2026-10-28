@@ -31,13 +31,25 @@ export default async function HomePage({
     name: "custix",
     url: BASE_URL,
     applicationCategory: "BusinessApplication",
-    operatingSystem: "Windows",
+    operatingSystem: "Web, Windows, macOS",
+    browserRequirements: "Requires a current browser with WebAssembly",
     description: tMeta("home.description"),
-    offers: {
+    // Wie /fuer-aerzte: 15 €/Monat, 150 €/Jahr, inkl. USt.
+    offers: [
+      { unit: "MON", price: "15" },
+      { unit: "ANN", price: "150" },
+    ].map(({ unit, price }) => ({
       "@type": "Offer",
-      price: "49",
+      price,
       priceCurrency: "EUR",
-    },
+      priceSpecification: {
+        "@type": "UnitPriceSpecification",
+        price,
+        priceCurrency: "EUR",
+        unitCode: unit,
+        valueAddedTaxIncluded: true,
+      },
+    })),
   };
 
   const faqLd = {
