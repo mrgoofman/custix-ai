@@ -494,11 +494,9 @@
     "title": "Ihr Konto",
     "signedOut": "Legen Sie ein Konto an oder melden Sie sich an.",
     "manage": "Abo verwalten, kündigen und Rechnungen",
-    "downloadHint": "Sie haben custix noch nicht installiert?",
-    "downloadLink": "Hier herunterladen",
     "noLicense": {
       "heading": "14 Tage kostenlos testen",
-      "body": "Starten Sie Ihre Testphase. Sie erhalten sofort einen Lizenzschlüssel und nutzen custix 14 Tage lang uneingeschränkt – ohne Kreditkarte.",
+      "body": "Starten Sie Ihre Testphase und nutzen Sie custix 14 Tage lang uneingeschränkt im Browser – ohne Kreditkarte.",
       "cta": "Testphase starten"
     },
     "status": {
@@ -519,9 +517,9 @@
     "errors": {
       "generic": "Das hat nicht geklappt. Bitte versuchen Sie es erneut oder schreiben Sie an contact@custix.ai."
     },
-    "download": "custix herunterladen",
-    "startWeb": "Im Browser starten",
-    "startWebHint": "Im Browser läuft custix ohne Installation – Ihre Dokumente bleiben auch dort auf Ihrem Gerät.",
+    "download": "Desktop-App herunterladen",
+    "startWeb": "custix im Browser starten",
+    "startWebHint": "custix läuft im Browser, ohne Installation – Ihre Dokumente bleiben dabei auf Ihrem Gerät.",
     "signOut": "Abmelden",
     "showKey": "Lizenzschlüssel anzeigen",
     "keyHint": "Sie brauchen ihn normalerweise nicht – custix meldet sich mit Ihren Zugangsdaten an und holt die Lizenz automatisch.",
@@ -544,8 +542,7 @@
     },
     "fields": {
       "name": "Name",
-      "company": "Firma oder Kanzlei",
-      "companyDoctors": "Praxis, Ordination oder Einrichtung",
+      "company": "Firma, Kanzlei oder Praxis",
       "email": "E-Mail",
       "password": "Passwort (mind. 8 Zeichen)",
       "passwordRepeat": "Passwort wiederholen"

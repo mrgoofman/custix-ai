@@ -23,7 +23,7 @@ export type TrialResult =
 export async function startTrial(
   user: Pick<SessionUser, "id" | "email" | "name" | "company">,
   locale: "de" | "en",
-  opts: { showWebApp?: boolean } = {},
+  opts: { variant?: "trial" | "partner" } = {},
 ): Promise<TrialResult> {
   const db = getDb();
   const now = nowEpoch();
@@ -78,13 +78,12 @@ export async function startTrial(
   await upsertPerson(user, locale, now);
 
   // Ein Fehlschlag beim Versand darf die schon angelegte Lizenz nicht
-  // entwerten: die App holt den Schlüssel nach dem Login selbst
-  // (/api/license/mine), und /konto zeigt ihn dauerhaft.
+  // entwerten: Die Lizenz hängt am Konto, Web- und Desktop-App finden sie
+  // nach dem Login über /api/license/mine.
   try {
     await sendKeyEmail(user.email, user.name ?? user.email, key, locale, {
-      variant: "trial",
+      variant: opts.variant ?? "trial",
       expiresAt,
-      showWebApp: opts.showWebApp,
     });
   } catch (e) {
     console.error("trial key email failed:", e);

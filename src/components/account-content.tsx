@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useSyncExternalStore } from "react";
+import { useEffect, useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { Download, ExternalLink, Loader2, Play } from "lucide-react";
 import { Link } from "@/i18n/navigation";
@@ -8,12 +8,6 @@ import { AuthForm } from "./auth-form";
 import { ResetPasswordForm } from "./reset-password-form";
 import { signOut } from "@/lib/auth-client";
 import { formatDate } from "@/lib/format-date";
-import {
-  currentVisitSource,
-  rememberVisitSource,
-  visitSourceFromSearch,
-  type VisitSource,
-} from "@/lib/visit-source";
 
 type License = {
   key: string | null;
@@ -21,13 +15,11 @@ type License = {
   status?: string;
   expires_at?: number | null;
   grace_seconds?: number;
+  /** Läuft die Lizenz schon in der Desktop-App? Nur dann Download und Schlüssel. */
+  desktop_used?: boolean;
 };
 
 const DAY = 86400;
-
-/** sessionStorage meldet keine Änderungen; gelesen wird einmal pro Aufruf. */
-const subscribeToNothing = () => () => {};
-const noVisitSource = () => null;
 
 export function AccountContent() {
   const t = useTranslations("account");
@@ -39,23 +31,10 @@ export function AccountContent() {
   const [error, setError] = useState<string | null>(null);
   /** Aus der Zurücksetzen-E-Mail: /konto?token=… zeigt das Passwortformular. */
   const [resetToken, setResetToken] = useState<string | null>(null);
-  /**
-   * Woher der Besuch kam – entscheidet, ob Web-App oder Download vorne steht.
-   * Serverseitig unbekannt (null); im Browser aus URL oder sessionStorage.
-   */
-  const visitSource = useSyncExternalStore<VisitSource | null>(
-    subscribeToNothing,
-    currentVisitSource,
-    noVisitSource,
-  );
 
   useEffect(() => {
     const t = new URLSearchParams(window.location.search).get("token");
     if (t) setResetToken(t);
-    // `?from=doctors` für die Sitzung merken, damit die Herkunft auch nach
-    // Registrierung und Stripe-Rücksprung (beide ohne Parameter) noch gilt.
-    const fromUrl = visitSourceFromSearch(window.location.search);
-    if (fromUrl) rememberVisitSource(fromUrl);
   }, []);
 
   const load = () => {
@@ -133,17 +112,11 @@ export function AccountContent() {
           {t("title")}
         </h1>
         <p className="text-slate-text/80 mb-8">{t("signedOut")}</p>
-        <AuthForm
-          source={visitSource}
-          onDone={() => {
-            // Wer über die Ärzte-Seite kam, will in den Browser, nicht zum
-            // Download: nach Registrierung oder Anmeldung direkt in die
-            // Web-App (ADR-0010). Sie übernimmt die Website-Sitzung
-            // (znerol74/custix#41), also kein zweites Login.
-            if (visitSource === "doctors") window.location.href = "/app/";
-            else load();
-          }}
-        />
+        {/* Nach Registrierung oder Anmeldung bleibt es beim Konto: dort steht
+            für alle genau eine Hauptaktion, „custix im Browser starten“
+            (mrgoofman/custix-ai#14). Die Web-App übernimmt die Sitzung
+            (znerol74/custix#41), also kein zweites Login. */}
+        <AuthForm onDone={load} />
       </Shell>
     );
   }
@@ -221,20 +194,23 @@ export function AccountContent() {
             ) : null}
 
             {/*
-              Der Schlüssel ist kein Handgriff mehr: Die App holt ihn nach dem
-              Login selbst über /api/license/mine. Er bleibt einklappbar
-              sichtbar – für den Support und für die Beta-Lizenzen, die per
-              E-Mail verschickt wurden, bevor es ein Konto gab.
+              Den Schlüssel braucht nur die Desktop-App, und auch die holt ihn
+              nach dem Login selbst über /api/license/mine. Deshalb nur für
+              Konten, die schon in der Desktop-App laufen – einklappbar, für
+              den Support und die Beta-Lizenzen aus der Zeit vor den Konten.
+              Neue Konten sehen keinen Schlüssel (mrgoofman/custix-ai#14).
             */}
-            <details className="mb-6 group">
-              <summary className="text-sm text-muted cursor-pointer hover:text-navy transition-colors list-none">
-                {t("showKey")}
-              </summary>
-              <code className="mt-3 block font-mono text-base text-navy bg-snow rounded-lg px-4 py-3 select-all">
-                {license.key}
-              </code>
-              <p className="mt-2 text-xs text-muted">{t("keyHint")}</p>
-            </details>
+            {license.desktop_used ? (
+              <details className="mb-6 group">
+                <summary className="text-sm text-muted cursor-pointer hover:text-navy transition-colors list-none">
+                  {t("showKey")}
+                </summary>
+                <code className="mt-3 block font-mono text-base text-navy bg-snow rounded-lg px-4 py-3 select-all">
+                  {license.key}
+                </code>
+                <p className="mt-2 text-xs text-muted">{t("keyHint")}</p>
+              </details>
+            ) : null}
 
             {expired && !isSubscription ? (
               // Erst nach Ablauf der Testphase geht es ums Bezahlen.
@@ -262,7 +238,9 @@ export function AccountContent() {
               <>
                 {/* Aktive Lizenz (Testphase, Beta oder laufende Subscription):
                     der nächste Schritt ist starten, nicht kaufen. */}
-                {!expired ? <StartActions source={visitSource} /> : null}
+                {!expired ? (
+                  <StartActions desktop={license.desktop_used === true} />
+                ) : null}
                 {isSubscription ? (
                   <button
                     onClick={() => postAndFollow("/api/stripe/portal")}
@@ -304,45 +282,39 @@ export function AccountContent() {
 }
 
 /**
- * Die beiden Wege in die App für eine aktive Lizenz. Standard: Download zuerst,
- * Web-App als Alternative. Wer über die Ärzte-Seite kam, sieht es umgekehrt –
- * dort ist „nichts installieren" das Argument (siehe lib/visit-source.ts).
+ * Der Weg in die App für eine aktive Lizenz: für alle „custix im Browser
+ * starten“ (mrgoofman/custix-ai#14). Den Download sieht nur, wessen Lizenz
+ * schon in der Desktop-App läuft (`desktop`) – als Nebenaktion; neue Konten
+ * bekommen ihn nicht angeboten. /download selbst bleibt per Link erreichbar.
  */
-function StartActions({ source }: { source: VisitSource | null }) {
+function StartActions({ desktop }: { desktop: boolean }) {
   const t = useTranslations("account");
-  const webFirst = source === "doctors";
-  const primary =
-    "inline-flex items-center justify-center gap-2 px-6 py-3 bg-royal text-white font-semibold rounded-lg hover:bg-royal-dark transition-colors";
-  const secondary =
-    "inline-flex items-center justify-center gap-2 px-6 py-3 border-2 border-navy/10 text-navy font-semibold rounded-lg hover:bg-navy/5 transition-colors";
-
-  // /app liegt außerhalb der lokalisierten Routen (statische Web-App, siehe
-  // next.config.ts). Deshalb ein gewöhnliches <a> statt des next-intl-Links,
-  // der daraus auf Englisch /en/app machen würde.
-  const web = (
-    // eslint-disable-next-line @next/next/no-html-link-for-pages -- /app ist keine Next-Seite; die Regel hält es für die dynamische [locale]-Route.
-    <a key="web" href="/app/" className={webFirst ? primary : secondary}>
-      <Play className="w-4 h-4" />
-      {t("startWeb")}
-    </a>
-  );
-  // /api/download verlangt token+platform (Waitlist-Strecke) — Konto-Nutzer
-  // wählen ihre Plattform auf der Download-Seite.
-  const download = (
-    <Link
-      key="download"
-      href="/download"
-      className={webFirst ? secondary : primary}
-    >
-      <Download className="w-4 h-4" />
-      {t("download")}
-    </Link>
-  );
 
   return (
     <div>
       <div className="flex flex-col sm:flex-row gap-3">
-        {webFirst ? [web, download] : [download, web]}
+        {/* /app liegt außerhalb der lokalisierten Routen (statische Web-App,
+            siehe next.config.ts). Deshalb ein gewöhnliches <a> statt des
+            next-intl-Links, der daraus auf Englisch /en/app machen würde. */}
+        {/* eslint-disable-next-line @next/next/no-html-link-for-pages -- /app ist keine Next-Seite; die Regel hält es für die dynamische [locale]-Route. */}
+        <a
+          href="/app/"
+          className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-royal text-white font-semibold rounded-lg hover:bg-royal-dark transition-colors"
+        >
+          <Play className="w-4 h-4" />
+          {t("startWeb")}
+        </a>
+        {desktop ? (
+          // /api/download verlangt token+platform (Waitlist-Strecke) — Konto-
+          // Nutzer wählen ihre Plattform auf der Download-Seite.
+          <Link
+            href="/download"
+            className="inline-flex items-center justify-center gap-2 px-6 py-3 border-2 border-navy/10 text-navy font-semibold rounded-lg hover:bg-navy/5 transition-colors"
+          >
+            <Download className="w-4 h-4" />
+            {t("download")}
+          </Link>
+        ) : null}
       </div>
       <p className="mt-3 text-sm text-muted">{t("startWebHint")}</p>
     </div>

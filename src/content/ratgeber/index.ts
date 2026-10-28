@@ -1,5 +1,4 @@
 import type { Guide } from "./types";
-import { VISIT_SOURCE_PARAM } from "@/lib/visit-source";
 import { pseudonymisierungVsAnonymisierung } from "./pseudonymisierung-vs-anonymisierung";
 import { aerztlicheSchweigepflichtUndKi } from "./aerztliche-schweigepflicht-und-ki";
 import { arztbriefSchreibenMitKi } from "./arztbrief-schreiben-mit-ki";
@@ -33,12 +32,9 @@ export function hiddenGuideRouteKeys(): string[] {
 }
 
 /**
- * Wohin die Ratgeber-CTAs führen: bis zum Ärzte-Go-live die Registrierung mit
- * Herkunft „Ärzte" (Praxis-Formular, danach direkt in die Web-App, #12);
- * mrgoofman/custix-ai#11 stellt auf /fuer-aerzte um. Eine Stelle, damit der
- * Go-live nicht jeden Ratgeber anfassen muss.
+ * Wohin die Ratgeber-CTAs führen: bis zum Ärzte-Go-live die Registrierung auf
+ * /konto, dort steht danach für alle „custix im Browser starten“
+ * (mrgoofman/custix-ai#14); mrgoofman/custix-ai#11 stellt auf /fuer-aerzte um.
+ * Eine Stelle, damit der Go-live nicht jeden Ratgeber anfassen muss.
  */
-export const GUIDE_CTA_HREF = {
-  pathname: "/konto",
-  query: { [VISIT_SOURCE_PARAM]: "doctors" },
-} as const;
+export const GUIDE_CTA_HREF = "/konto";

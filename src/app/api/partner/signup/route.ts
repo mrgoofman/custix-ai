@@ -144,11 +144,12 @@ export async function POST(request: Request) {
   }
   step("session removed");
 
-  // Partner verteilen nur die Desktop-App: Testphasen-Mail ohne Web-App-Hinweis.
+  // Partner verteilen die Desktop-App: Testphasen-Mail mit Download statt
+  // Web-App (ADR-0011, Variante „partner“).
   const trial = await startTrial(
     { id: user.id, email: user.email, name: user.name, company },
     "de",
-    { showWebApp: false },
+    { variant: "partner" },
   );
   step(`trial ${trial.ok ? "started" : "failed"}`);
 

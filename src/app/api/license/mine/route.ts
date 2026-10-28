@@ -15,7 +15,7 @@ export async function GET(request: Request) {
 
   const lic = await findLicenseForAccount(user.id);
 
-  if (!lic) return NextResponse.json({ key: null });
+  if (!lic) return NextResponse.json({ key: null, desktop_used: false });
   return NextResponse.json({
     key: lic.license_key,
     type: lic.type,
@@ -24,5 +24,8 @@ export async function GET(request: Request) {
     // Damit das Konto „aktiv" so rechnet wie /api/license/validate:
     // innerhalb von expires_at + Kulanzfrist (CONTEXT.md, „Active").
     grace_seconds: lic.grace_seconds,
+    // Läuft die Lizenz schon in der Desktop-App? Nur dann zeigt /konto den
+    // Download (mrgoofman/custix-ai#14); neue Konten sehen nur die Web-App.
+    desktop_used: lic.last_validated_at != null,
   });
 }

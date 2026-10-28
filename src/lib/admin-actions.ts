@@ -390,7 +390,7 @@ export async function sendKeyEmail(
   name: string,
   key: string,
   locale: string,
-  opts: Pick<KeyEmailInput, "variant" | "expiresAt" | "showWebApp"> = {}
+  opts: Pick<KeyEmailInput, "variant" | "expiresAt"> = {}
 ) {
   const resend = getResend();
   if (!resend) return;

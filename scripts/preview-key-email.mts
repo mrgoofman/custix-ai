@@ -47,15 +47,14 @@ for (const locale of ["de", "en"]) {
     expiresAt: inFourteenDays,
     baseUrl,
   });
-  // Partner signup (ADR-0011): Testphase ohne Web-App-Hinweis.
+  // Partner signup (ADR-0011): Testphase mit Download, ohne Web-App-Hinweis.
   variants.push({
     file: `partner-${locale}.html`,
     name: locale === "de" ? "Mag. Paul Kanzlei" : "Paul Counsel",
     key: "CUSTIX-TEST-0000-0000-0000",
     locale,
-    variant: "trial",
+    variant: "partner",
     expiresAt: inFourteenDays,
-    showWebApp: false,
     baseUrl,
   });
   variants.push({

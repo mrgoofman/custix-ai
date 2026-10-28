@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect } from "react";
 import { useTranslations } from "next-intl";
 import {
   ArrowRight,
@@ -16,7 +15,6 @@ import {
 import { Link } from "@/i18n/navigation";
 import { BatchPreview } from "./batch-preview";
 import { FaqAccordion } from "./faq-accordion";
-import { rememberVisitSource } from "@/lib/visit-source";
 import { trackEvent } from "@/lib/analytics";
 
 /**
@@ -65,12 +63,6 @@ function StartCta({ position, className = "" }: { position: CtaPosition; classNa
 
 export function DoctorsPageContent() {
   const t = useTranslations("doctors");
-
-  // Herkunft für die Sitzung merken: Wer später auf /konto landet, sieht
-  // „Im Browser starten" als Hauptaktion (#7).
-  useEffect(() => {
-    rememberVisitSource("doctors");
-  }, []);
 
   const removed = t.raw("redaction.removed") as string[];
   const kept = t.raw("redaction.kept") as string[];

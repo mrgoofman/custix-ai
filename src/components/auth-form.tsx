@@ -5,7 +5,6 @@ import { useLocale, useTranslations } from "next-intl";
 import { Loader2, MailCheck } from "lucide-react";
 import { authClient, signIn, signUp } from "@/lib/auth-client";
 import { Link } from "@/i18n/navigation";
-import type { VisitSource } from "@/lib/visit-source";
 
 type Mode = "signup" | "signin" | "forgot";
 
@@ -14,17 +13,11 @@ type Mode = "signup" | "signin" | "forgot";
  * Bewusst auf /konto statt auf eigenen Seiten: die Preisseite schickt hierher,
  * und nach dem Anlegen steht der Nutzer direkt dort, wo die Testphase läuft.
  *
- * `source`: Wer über die Ärzte-Seite kommt, wird nach seiner Praxis oder
- * Einrichtung gefragt, nicht nach „Firma oder Kanzlei“ (mrgoofman/custix-ai#12).
- * Gespeichert wird in beiden Fällen dasselbe Feld `company`.
+ * Das Feld `company` heißt für alle „Firma, Kanzlei oder Praxis“. Früher bekam
+ * nur, wer über die Ärzte-Seite kam, „Praxis …“ zu sehen (#12); diese
+ * Herkunftsweiche ist mit mrgoofman/custix-ai#14 entfallen.
  */
-export function AuthForm({
-  onDone,
-  source = null,
-}: {
-  onDone: () => void;
-  source?: VisitSource | null;
-}) {
+export function AuthForm({ onDone }: { onDone: () => void }) {
   const t = useTranslations("auth");
   const locale = useLocale();
   const [mode, setMode] = useState<Mode>("signup");
@@ -129,7 +122,7 @@ export function AuthForm({
             />
             <input
               className={field}
-              placeholder={t(source === "doctors" ? "fields.companyDoctors" : "fields.company")}
+              placeholder={t("fields.company")}
               value={company}
               onChange={(e) => setCompany(e.target.value)}
               autoComplete="organization"

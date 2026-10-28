@@ -79,17 +79,17 @@ See `docs/SETUP-PHASE1.md` for D1 create / migrate / secret steps (cloud resourc
 
 - Self-serve registration on the website (`/konto`, Better Auth email+password);
   registering mints a 14-day `type='trial'` license bound to the account and sends the
-  trial email (download link, no key — the app fetches it after login via `/api/license/mine`).
+  welcome email (web-app link only — no key, no download; preview with
+  `node scripts/preview-key-email.mts`). Partner signups get the desktop variant (`partner`).
   The beta waitlist and `/api/signup` are removed — existing beta licenses keep working.
 - Stripe subscriptions: 15 €/month or 150 €/year per seat, **prices include VAT**
   (the Stripe Prices must carry `tax_behavior: inclusive`). Checkout, Billing Portal
   (cancel + invoices) and the webhook are wired.
-- Account (`/konto`) offers both ways into the app for an active License: download
-  and „Im Browser starten" → `/app`. `/konto?from=doctors` (or
-  `rememberVisitSource("doctors")` from the doctors landing page, issue #9) makes the
-  web app the primary action for that browser session (`src/lib/visit-source.ts`).
-  The trial welcome email links to the web app as well (except for Partner signups,
-  which are desktop-only).
+- Account (`/konto`) has one primary action for an active License: „custix im Browser
+  starten“ → `/app` (issue #14). The download and the licence key only show once the
+  desktop app has validated that licence (`desktop_used` from `/api/license/mine`, i.e.
+  `license.last_validated_at` is set). `/download` stays reachable by link but is not
+  promoted as the entry.
 - Partner signup (ADR-0011): partners embed `/partner/signup.js` on their own site;
   `/api/partner/signup` creates Account + trial server-side (no cross-site session)
   and stamps `user.partner`. Registry `src/lib/partners.ts`; first partner finditoo

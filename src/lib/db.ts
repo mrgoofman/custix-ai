@@ -32,6 +32,13 @@ export interface AccountLicense {
   grace_seconds: number;
   stripe_customer_id: string | null;
   stripe_subscription_id: string | null;
+  /**
+   * Letzte Prüfung über /api/license/validate. Die ruft nur die Desktop-App
+   * auf – die Web-App fragt /api/license/mine (ADR-0012; vor dem 27.09.2026
+   * prüfte auch sie über validate). „Gesetzt“ heißt also: Diese Lizenz läuft
+   * schon in der Desktop-App.
+   */
+  last_validated_at: number | null;
 }
 
 /**
@@ -44,7 +51,7 @@ export async function findLicenseForAccount(
   return await getDb()
     .prepare(
       `SELECT id, license_key, type, status, expires_at, grace_seconds,
-              stripe_customer_id, stripe_subscription_id
+              stripe_customer_id, stripe_subscription_id, last_validated_at
          FROM license
         WHERE account_id = ? AND status != 'revoked'
         ORDER BY created_at DESC LIMIT 1`

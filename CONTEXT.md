@@ -85,8 +85,9 @@ an Account counts for a Partner **if and only if it was created through that Par
 Copied into Stripe customer/subscription metadata at checkout. For now used for reporting only;
 Partners receive aggregate numbers, never personal data — including the per-signup notification
 email ("someone registered", plus the running total).
-_Avoid_: source, ref, lead source. Not to be confused with **VisitSource**
-(`src/lib/visit-source.ts`), which only weights buttons for one browser session and is never stored.
+_Avoid_: source, ref, lead source. (The former session-only **VisitSource**, which weighted the
+`/konto` buttons for visitors from the doctors page, is gone since issue #14 — the Web App is the
+primary action for everyone.)
 
 ### Destructive admin operations (purposes are distinct — do not conflate)
 
