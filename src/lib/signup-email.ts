@@ -8,7 +8,7 @@
  * diesem Modul – so stimmen Seite und Mail immer überein.
  *
  * Bei der Registrierung geht genau eine Mail hinaus:
- *  - confirm: neue Adresse → ein Knopf „Zugang bestätigen“, kein Schlüssel,
+ *  - confirm: neue Adresse → ein Button „Zugang bestätigen“, kein Schlüssel,
  *    kein Download. Die Willkommens-Mail mit der Testphase entfällt für diesen
  *    Weg (lib/trial.ts) – die Passwort-Seite zeigt das Ende der Testphase.
  *  - existing: Für die Adresse gibt es schon ein Konto → „Anmelden“ statt
@@ -73,7 +73,7 @@ ${inner}
 const CONTACT = "contact@custix.ai";
 
 /**
- * Bestätigungs-Mail: genau ein Knopf. `url` führt auf die Passwort-Seite,
+ * Bestätigungs-Mail: genau ein Button. `url` führt auf die Passwort-Seite,
  * das Token steht im Fragment (#token=…) und geht so weder an Server-Logs
  * noch an die Webanalyse.
  */
@@ -90,7 +90,7 @@ export function renderSignupConfirmEmail(input: {
     : "please confirm with one click that this email address belongs to you. Then choose a password and you can get started right away.";
   const cta = isDE ? "Zugang bestätigen" : "Confirm access";
   const validity = isDE
-    ? "Der Knopf funktioniert 24 Stunden lang. Sie haben custix nicht angefordert? Dann ignorieren Sie diese E-Mail einfach. Ohne Bestätigung legen wir kein Konto an."
+    ? "Der Button funktioniert 24 Stunden lang. Sie haben custix nicht angefordert? Dann ignorieren Sie diese E-Mail einfach. Ohne Bestätigung legen wir kein Konto an."
     : "The button works for 24 hours. Didn't request custix? Simply ignore this email. Without confirmation we won't create an account.";
   const questions = isDE
     ? `Fragen? Schreiben Sie uns an <a href="mailto:${CONTACT}" style="color:#2563eb;">${CONTACT}</a>.`

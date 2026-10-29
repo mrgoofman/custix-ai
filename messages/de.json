@@ -625,8 +625,8 @@
     "how": {
       "heading": "So funktioniert custix",
       "step1": "Sie ziehen Ihre Dokumente in custix.",
-      "step2": "custix ersetzt Namen, Adressen und Aktenzeichen durch Platzhalter wie <ph>[PERSON_1]</ph>, direkt auf Ihrem Computer. Nichts wird hochgeladen.",
-      "step3": "Das Ergebnis geben Sie an Ihre KI weiter, etwa ChatGPT oder Claude. Dort kommen nur Platzhalter an, keine echten Namen.",
+      "step2": "custix ersetzt Namen, Adressen und Aktenzeichen durch Platzhalter wie <ph>[PERSON_1]</ph>. Alles passiert lokal auf Ihrem Computer. Keine Daten landen online im Netz.",
+      "step3": "Nach einer kurzen Prüfung der pseudonymisierten Dokumente können Sie die Daten sicher mit der KI Ihrer Wahl weiterverarbeiten, ganz gleich ob ChatGPT, Claude, Mistral etc.",
       "cta": "custix öffnen",
       "trial": "Ihre Testphase läuft bis zum {date}: 14 Tage kostenlos, ohne Kreditkarte.",
       "trialNoDate": "Ihre 14-tägige Testphase läuft, ohne Kreditkarte."

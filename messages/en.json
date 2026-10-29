@@ -625,8 +625,8 @@
     "how": {
       "heading": "How custix works",
       "step1": "You drag your documents into custix.",
-      "step2": "custix replaces names, addresses and case numbers with placeholders such as <ph>[PERSON_1]</ph>, right on your computer. Nothing is uploaded.",
-      "step3": "You pass the result on to your AI, such as ChatGPT or Claude. Only placeholders arrive there, no real names.",
+      "step2": "custix replaces names, addresses and case numbers with placeholders such as <ph>[PERSON_1]</ph>. Everything happens locally on your computer. No data ends up online.",
+      "step3": "After a quick check of the pseudonymised documents, you can safely process the data with the AI of your choice, whether ChatGPT, Claude, Mistral or others.",
       "cta": "Open custix",
       "trial": "Your trial runs until {date}: 14 days free, no credit card.",
       "trialNoDate": "Your 14-day trial is running, no credit card needed."

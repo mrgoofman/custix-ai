@@ -17,7 +17,7 @@ import { symmetricDecodeJWT, symmetricEncodeJWT } from "better-auth/crypto";
  * macht alte nicht ungültig – das schadet nicht, gewinnen kann nur der erste.
  */
 
-/** So steht es in der Mail: „Der Knopf funktioniert 24 Stunden lang.“ */
+/** So steht es in der Mail: „Der Button funktioniert 24 Stunden lang.“ */
 export const SIGNUP_TOKEN_TTL_SECONDS = 24 * 3600;
 
 /** Trennt diese Tokens von allem anderen, was mit dem Auth-Geheimnis verschlüsselt wird. */
