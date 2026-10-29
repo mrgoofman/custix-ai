@@ -9,7 +9,7 @@ Stand: 28.10.2026 · Ansprechpartner custix.ai: Lorenz Kutschka
 > Kopie von `landing.html` bitte einen Satz anpassen: im Abschnitt
 > „Registrierung“ „Konto anlegen, App herunterladen, loslegen.“ durch
 > „Konto anlegen, im Browser starten, loslegen. Ohne Installation und ohne
-> Kreditkarte – die Testphase endet automatisch.“ ersetzen.
+> Kreditkarte. Die Testphase endet automatisch.“ ersetzen.
 
 Diese Landingpage stellt custix.ai Ihren Kundinnen und Kunden vor und nimmt
 Registrierungen für die 14-tägige Testphase direkt auf Ihrer Seite entgegen.

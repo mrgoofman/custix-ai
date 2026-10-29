@@ -201,7 +201,7 @@
       "<button type=\"submit\" class=\"cxs-btn\">Kostenlos registrieren</button>" +
       "<p class=\"cxs-legal\">Mit der Registrierung akzeptieren Sie die <a href=\"" + api +
       "/agb\" target=\"_blank\" rel=\"noopener\">AGB</a> und die <a href=\"" + api +
-      "/datenschutz\" target=\"_blank\" rel=\"noopener\">Datenschutzerklärung</a> von custix.ai (snekmedia GmbH). Ihre Angaben gehen direkt an custix.ai – " +
+      "/datenschutz\" target=\"_blank\" rel=\"noopener\">Datenschutzerklärung</a> von custix.ai (snekmedia GmbH). Ihre Angaben gehen direkt an custix.ai, " +
       esc(config.partnerName || "der Seitenbetreiber") + " erhält sie nicht.</p>" +
       "</form>";
 
@@ -317,7 +317,7 @@
           freshToken();
           showTurnstileNotice();
         } else {
-          errBox.innerHTML = "Die Sicherheitsprüfung läuft noch – bitte einen Moment warten und erneut klicken.";
+          errBox.innerHTML = "Die Sicherheitsprüfung läuft noch. Bitte einen Moment warten und erneut klicken.";
         }
         return;
       }
@@ -409,7 +409,7 @@
       (demo ? DEMO_NOTE : "") +
       "<div class=\"cxs-ok\" aria-hidden=\"true\">✓</div>" +
       "<h3 class=\"cxs-h\" tabindex=\"-1\">" + headline + "</h3>" +
-      "<p class=\"cxs-sub\">Willkommen bei custix. Sie arbeiten direkt im Browser – ohne Installation.</p>" +
+      "<p class=\"cxs-sub\">Willkommen bei custix. Sie arbeiten direkt im Browser, ohne Installation.</p>" +
       trialNote +
       "<div class=\"cxs-start\">" +
       "<a class=\"cxs-btn\" href=\"" + api + "/app/\" target=\"_blank\" rel=\"noopener\">custix im Browser starten</a>" +

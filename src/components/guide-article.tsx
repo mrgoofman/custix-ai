@@ -395,7 +395,7 @@ function Letter({ variant }: { variant: LetterVariant }) {
       <figcaption className="px-6 py-3 bg-navy/5 text-sm font-semibold text-navy flex flex-wrap items-center justify-between gap-2">
         <span>{BEISPIEL_ARZTBRIEF.title}</span>
         <span className="text-xs font-semibold text-amber bg-amber-light rounded-full px-2.5 py-0.5">
-          Beispieldaten – erfunden
+          Erfundene Beispieldaten
         </span>
       </figcaption>
       <div className="p-6 sm:p-8 text-[15px] leading-relaxed text-slate-text/90">

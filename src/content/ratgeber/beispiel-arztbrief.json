@@ -1,6 +1,6 @@
 {
   "title": "Beispiel-Arztbrief (Entlassungsbrief, Innere Medizin)",
-  "notice": "Beispieldaten: Alle Personen, Einrichtungen, Daten und Befunde sind erfunden. Kein Behandlungsstandard, kein medizinischer Rat. Vorlage von custix.ai – frei verwendbar.",
+  "notice": "Beispieldaten: Alle Personen, Einrichtungen, Daten und Befunde sind erfunden. Kein Behandlungsstandard, kein medizinischer Rat. Vorlage von custix.ai, frei verwendbar.",
   "blocks": [
     { "kind": "header", "lines": [
       "{{ORG:Landeskrankenhaus Musterstadt}}",
@@ -14,7 +14,7 @@
       "{{ADRESSE:Hauptplatz 3, 8010 Musterstadt}}"
     ]},
     { "kind": "date", "text": "Musterstadt, {{DATUM:14.03.2026}}" },
-    { "kind": "subject", "text": "Arztbrief: {{PERSON:Maria Huber}}, geb. {{DATUM:12.03.1968}}, SV-Nr. {{SVNR:1234 120368}} – stationärer Aufenthalt {{DATUM:08.03.2026}} bis {{DATUM:14.03.2026}}" },
+    { "kind": "subject", "text": "Arztbrief: {{PERSON:Maria Huber}}, geb. {{DATUM:12.03.1968}}, SV-Nr. {{SVNR:1234 120368}}, stationärer Aufenthalt {{DATUM:08.03.2026}} bis {{DATUM:14.03.2026}}" },
     { "kind": "salutation", "text": "Sehr geehrte Frau Kollegin, sehr geehrter Herr Kollege," },
     { "kind": "paragraph", "text": "wir berichten über die oben genannte Patientin, die sich vom {{DATUM:08.03.2026}} bis {{DATUM:14.03.2026}} in unserer stationären Behandlung befand." },
     { "kind": "section", "heading": "Diagnosen", "lines": [

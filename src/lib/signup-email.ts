@@ -90,8 +90,8 @@ export function renderSignupConfirmEmail(input: {
     : "please confirm with one click that this email address belongs to you. Then choose a password and you can get started right away.";
   const cta = isDE ? "Zugang bestätigen" : "Confirm access";
   const validity = isDE
-    ? "Der Knopf funktioniert 24 Stunden lang. Sie haben custix nicht angefordert? Dann ignorieren Sie diese E-Mail einfach – ohne Bestätigung legen wir kein Konto an."
-    : "The button works for 24 hours. Didn't request custix? Simply ignore this email – without confirmation we won't create an account.";
+    ? "Der Knopf funktioniert 24 Stunden lang. Sie haben custix nicht angefordert? Dann ignorieren Sie diese E-Mail einfach. Ohne Bestätigung legen wir kein Konto an."
+    : "The button works for 24 hours. Didn't request custix? Simply ignore this email. Without confirmation we won't create an account.";
   const questions = isDE
     ? `Fragen? Schreiben Sie uns an <a href="mailto:${CONTACT}" style="color:#2563eb;">${CONTACT}</a>.`
     : `Questions? Write to us at <a href="mailto:${CONTACT}" style="color:#2563eb;">${CONTACT}</a>.`;
@@ -137,8 +137,8 @@ export function renderExistingAccountEmail(input: {
     : "You already have a custix account";
 
   const intro = isDE
-    ? "Sie wollten custix testen. Für diese E-Mail-Adresse gibt es bereits ein custix-Konto – melden Sie sich einfach mit Ihrem Passwort an."
-    : "You asked to try custix. There is already a custix account for this email address – simply sign in with your password.";
+    ? "Sie wollten custix testen. Für diese E-Mail-Adresse gibt es bereits ein custix-Konto. Melden Sie sich einfach mit Ihrem Passwort an."
+    : "You asked to try custix. There is already a custix account for this email address. Simply sign in with your password.";
   const cta = isDE ? "Anmelden" : "Sign in";
   const forgot = isDE
     ? `Passwort vergessen? Dann <a href="${escapeHtml(input.forgotUrl)}" style="color:#2563eb;">setzen Sie es hier neu</a>.`

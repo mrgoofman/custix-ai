@@ -91,8 +91,8 @@ export function renderKeyEmail(input: KeyEmailInput): {
      * Kein Download – die Desktop-App bewirbt die Mail nicht mehr.
      */
     const intro = isDE
-      ? `Ihr Konto ist angelegt, Ihre 14-tägige Testphase läuft${until ? ` bis zum ${until}` : ""}. custix läuft direkt im Browser – ohne Installation, Ihre Dokumente bleiben auf Ihrem Gerät.`
-      : `Your account is ready and your 14-day trial is running${until ? ` until ${until}` : ""}. custix runs right in your browser – nothing to install, and your documents stay on your device.`;
+      ? `Ihr Konto ist angelegt, Ihre 14-tägige Testphase läuft${until ? ` bis zum ${until}` : ""}. custix läuft direkt im Browser, ohne Installation. Ihre Dokumente bleiben auf Ihrem Gerät.`
+      : `Your account is ready and your 14-day trial is running${until ? ` until ${until}` : ""}. custix runs right in your browser with nothing to install, and your documents stay on your device.`;
     /**
      * Partner signup legt keine Sitzung im Browser an (ADR-0011): Die Web-App
      * fragt dort immer nach den Zugangsdaten. Nach /konto oder der

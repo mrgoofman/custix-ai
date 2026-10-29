@@ -145,7 +145,7 @@ export function getAuth(
         await resend.emails.send({
           from: "custix.ai <info@custix.ai>",
           to: user.email,
-          subject: "custix — Passwort zurücksetzen / Reset your password",
+          subject: "custix: Passwort zurücksetzen / Reset your password",
           html: `
 <!DOCTYPE html><html><head><meta charset="UTF-8"></head>
 <body style="margin:0;padding:0;font-family:-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:#f8fafc;">

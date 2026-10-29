@@ -21,9 +21,9 @@ export const pseudonymisierungVsAnonymisierung: Guide = {
   title: "Pseudonymisierung vs. Anonymisierung: der Unterschied einfach erklärt",
   metaTitle: "Pseudonymisierung vs. Anonymisierung: der Unterschied | custix",
   description:
-    "Unterschied Anonymisierung und Pseudonymisierung einfach erklärt: Definitionen nach DSGVO, Beispiele aus Praxis und Kanzlei – und was custix davon tut.",
+    "Unterschied Anonymisierung und Pseudonymisierung einfach erklärt: Definitionen nach DSGVO, Beispiele aus Praxis und Kanzlei und was custix davon tut.",
   teaser:
-    "Beide Begriffe werden oft gleichgesetzt, rechtlich liegen Welten dazwischen. Mit Beispielen aus Arztpraxis und Kanzlei – und einer ehrlichen Antwort, was custix macht.",
+    "Beide Begriffe werden oft gleichgesetzt, rechtlich liegen Welten dazwischen. Mit Beispielen aus Arztpraxis und Kanzlei und einer ehrlichen Antwort, was custix macht.",
   published: "2026-09-27",
   updated: "2026-09-27",
   readingMinutes: 8,
@@ -62,7 +62,7 @@ export const pseudonymisierungVsAnonymisierung: Guide = {
             "Patientin Maria Huber, geb. 12.03.1968, SV-Nr. 1234 120368, stellt sich mit seit drei Wochen bestehendem Husten vor. Überweisung durch Dr. Peter Gruber, Graz.",
           after:
             "Patientin [PERSON_1], geb. [DATUM_1], SV-Nr. [SVNR_1], stellt sich mit seit drei Wochen bestehendem Husten vor. Überweisung durch [PERSON_2], [ADRESSE_1].",
-          note: "Der medizinische Inhalt bleibt vollständig erhalten. Die Zuordnungsliste (PERSON_1 = Maria Huber) liegt getrennt vom Text. Wer sie hat, kann den Befund wieder zuordnen – deshalb ist das Pseudonymisierung, nicht Anonymisierung. Alle Namen sind erfunden.",
+          note: "Der medizinische Inhalt bleibt vollständig erhalten. Die Zuordnungsliste (PERSON_1 = Maria Huber) liegt getrennt vom Text. Wer sie hat, kann den Befund wieder zuordnen. Deshalb ist das Pseudonymisierung, nicht Anonymisierung. Alle Namen sind erfunden.",
         },
         {
           type: "p",
@@ -80,7 +80,7 @@ export const pseudonymisierungVsAnonymisierung: Guide = {
       blocks: [
         {
           type: "p",
-          text: "Für Anonymisierung gibt es in der DSGVO keine eigene Definition. Erwägungsgrund 26 beschreibt aber, wann Daten anonym sind: wenn sie sich nicht auf eine identifizierte oder identifizierbare Person beziehen. Maßstab dafür sind alle Mittel, die „nach allgemeinem Ermessen wahrscheinlich“ eingesetzt werden, um die Person zu bestimmen – unter Berücksichtigung von Kosten, Zeitaufwand und verfügbarer Technik.",
+          text: "Für Anonymisierung gibt es in der DSGVO keine eigene Definition. Erwägungsgrund 26 beschreibt aber, wann Daten anonym sind: wenn sie sich nicht auf eine identifizierte oder identifizierbare Person beziehen. Maßstab dafür sind alle Mittel, die „nach allgemeinem Ermessen wahrscheinlich“ eingesetzt werden, um die Person zu bestimmen, unter Berücksichtigung von Kosten, Zeitaufwand und verfügbarer Technik.",
         },
         {
           type: "example",
@@ -89,7 +89,7 @@ export const pseudonymisierungVsAnonymisierung: Guide = {
             "Drei Befunde von Maria Huber, Josef Bauer und Anna Steiner mit Diagnosen, Geburtsdaten und Behandlern.",
           after:
             "„Von 120 Patientinnen und Patienten zwischen 50 und 60 Jahren erhielten 37 % im letzten Quartal eine Lungenfunktionsprüfung.“",
-          note: "Aus der Zahl lässt sich kein einzelner Fall mehr herauslesen. Es gibt keine Liste, die zurückführt. Das ist anonym – solange die Gruppe groß genug ist.",
+          note: "Aus der Zahl lässt sich kein einzelner Fall mehr herauslesen. Es gibt keine Liste, die zurückführt. Das ist anonym, solange die Gruppe groß genug ist.",
         },
         {
           type: "p",
@@ -131,7 +131,7 @@ export const pseudonymisierungVsAnonymisierung: Guide = {
         },
         {
           type: "p",
-          text: "Der praktische Unterschied: Pseudonymisierung erhält den Einzelfall und damit den Nutzen des Dokuments – man kann weiter mit dem Befund, dem Schriftsatz oder der Akte arbeiten. Anonymisierung opfert den Einzelfall, um jeden Rückweg auszuschließen.",
+          text: "Der praktische Unterschied: Pseudonymisierung erhält den Einzelfall und damit den Nutzen des Dokuments. Man kann weiter mit dem Befund, dem Schriftsatz oder der Akte arbeiten. Anonymisierung opfert den Einzelfall, um jeden Rückweg auszuschließen.",
         },
       ],
     },
@@ -164,12 +164,12 @@ export const pseudonymisierungVsAnonymisierung: Guide = {
         },
         {
           type: "p",
-          text: "Ein Freibrief ist das nicht. Ob ein KI-Dienst, der Texte speichert und mit anderen Daten verknüpfen kann, wirklich an der Zuordnung gehindert ist, muss man für den konkreten Anbieter und Vertrag prüfen – und die eigenen Pflichten als Stelle, die die Daten erhebt und weitergibt, bleiben bestehen. Sicher ist: Das Risiko für die Betroffenen sinkt drastisch, und man kann nachweisen, eine anerkannte Schutzmaßnahme ergriffen zu haben.",
+          text: "Ein Freibrief ist das nicht. Ob ein KI-Dienst, der Texte speichert und mit anderen Daten verknüpfen kann, wirklich an der Zuordnung gehindert ist, muss man für den konkreten Anbieter und Vertrag prüfen, und die eigenen Pflichten als Stelle, die die Daten erhebt und weitergibt, bleiben bestehen. Sicher ist: Das Risiko für die Betroffenen sinkt drastisch, und man kann nachweisen, eine anerkannte Schutzmaßnahme ergriffen zu haben.",
         },
         {
           type: "callout",
           title: "Faustregel",
-          text: "Brauchen Sie die Antwort der KI später wieder für den konkreten Fall, kommen Sie um Pseudonymisierung nicht herum – eine anonymisierte Anfrage ließe sich nicht mehr zuordnen. Geben Sie dafür so wenig wie möglich weiter: Namen, Daten und Nummern raus, und prüfen Sie, was der Text danach noch verrät.",
+          text: "Brauchen Sie die Antwort der KI später wieder für den konkreten Fall, kommen Sie um Pseudonymisierung nicht herum, denn eine anonymisierte Anfrage ließe sich nicht mehr zuordnen. Geben Sie dafür so wenig wie möglich weiter: Namen, Daten und Nummern raus, und prüfen Sie, was der Text danach noch verrät.",
         },
       ],
     },
@@ -185,13 +185,13 @@ export const pseudonymisierungVsAnonymisierung: Guide = {
           type: "ul",
           items: [
             "custix erkennt Namen, Adressen, Geburtsdaten, Aktenzeichen, Steuernummern und weitere identifizierende Angaben und ersetzt sie durch Platzhalter wie [PERSON_1] oder [DATUM_1].",
-            "Die Zuordnungstabelle zwischen Platzhaltern und Originaldaten entsteht und bleibt **auf Ihrem Gerät** – in der Desktop-App auf Ihrem Rechner, in der Web-App im lokalen Speicher Ihres Browsers. Sie wird nicht an uns und nicht an den KI-Anbieter übertragen (siehe [Datenschutzerklärung](/datenschutz)).",
+            "Die Zuordnungstabelle zwischen Platzhaltern und Originaldaten entsteht und bleibt **auf Ihrem Gerät**: in der Desktop-App auf Ihrem Rechner, in der Web-App im lokalen Speicher Ihres Browsers. Sie wird nicht an uns und nicht an den KI-Anbieter übertragen (siehe [Datenschutzerklärung](/datenschutz)).",
             "An die KI Ihrer Wahl geht nur der Text mit Platzhaltern. Die Antwort setzen Sie mit custix lokal wieder in den Klartext zurück.",
           ],
         },
         {
           type: "p",
-          text: "Für den KI-Anbieter ist der Text damit ohne Schlüssel. Für Sie bleibt er zuordenbar, und genau das wollen Sie ja: Der Arztbrief soll am Ende wieder den richtigen Namen tragen. Deshalb ist custix Pseudonymisierung – und wir nennen es auch so, wo es um die rechtliche Einordnung geht.",
+          text: "Für den KI-Anbieter ist der Text damit ohne Schlüssel. Für Sie bleibt er zuordenbar, und genau das wollen Sie ja: Der Arztbrief soll am Ende wieder den richtigen Namen tragen. Deshalb ist custix Pseudonymisierung, und wir nennen es auch so, wo es um die rechtliche Einordnung geht.",
         },
         {
           type: "p",
@@ -208,7 +208,7 @@ export const pseudonymisierungVsAnonymisierung: Guide = {
           items: [
             "**Brauche ich den Rückweg?** Soll die Antwort oder Auswertung wieder einem konkreten Fall zugeordnet werden, ist Pseudonymisierung der richtige Weg.",
             "**Geht der Text dauerhaft aus dem Haus?** Bei Veröffentlichung, Schulungsunterlagen oder Statistik sollte man Anonymisierung anstreben: aggregieren, vergröbern, Einzelfälle weglassen.",
-            "**Sind besondere Kategorien betroffen?** Gesundheitsdaten, Religion, Gewerkschaftszugehörigkeit oder Strafsachen verlangen einen strengeren Maßstab – und Berufsgeheimnisträger müssen zusätzlich ihre Schweigepflicht prüfen.",
+            "**Sind besondere Kategorien betroffen?** Gesundheitsdaten, Religion, Gewerkschaftszugehörigkeit oder Strafsachen verlangen einen strengeren Maßstab, und Berufsgeheimnisträger müssen zusätzlich ihre Schweigepflicht prüfen.",
             "**Was bleibt nach dem Ersetzen identifizierend?** Seltene Merkmale, exakte Daten, Orte und Kombinationen daraus einzeln prüfen und gegebenenfalls zusätzlich entschärfen.",
             "**Wo liegt der Schlüssel?** Die Zuordnung getrennt vom Text aufbewahren und schützen. Liegt sie beim selben Empfänger wie der Text, ist nichts gewonnen.",
           ],
@@ -223,7 +223,7 @@ export const pseudonymisierungVsAnonymisierung: Guide = {
   faq: [
     {
       q: "Sind pseudonymisierte Daten personenbezogene Daten?",
-      a: "Für die Stelle, die den Schlüssel hat: ja. Solange sich die Daten wieder einer Person zuordnen lassen, bleiben sie personenbezogen (Erwägungsgrund 26 DSGVO), und die DSGVO gilt weiter. Für einen Empfänger, den die Pseudonymisierung tatsächlich an der Zuordnung hindert, kann es nach dem EuGH-Urteil vom September 2025 (Rs. C‑413/23 P) anders sein – das hängt vom Einzelfall ab.",
+      a: "Für die Stelle, die den Schlüssel hat: ja. Solange sich die Daten wieder einer Person zuordnen lassen, bleiben sie personenbezogen (Erwägungsgrund 26 DSGVO), und die DSGVO gilt weiter. Für einen Empfänger, den die Pseudonymisierung tatsächlich an der Zuordnung hindert, kann es nach dem EuGH-Urteil vom September 2025 (Rs. C‑413/23 P) anders sein. Das hängt vom Einzelfall ab.",
     },
     {
       q: "Ist Pseudonymisierung nach der DSGVO Pflicht?",
@@ -243,7 +243,7 @@ export const pseudonymisierungVsAnonymisierung: Guide = {
     },
     {
       q: "Darf ich pseudonymisierte Befunde oder Akten an ChatGPT und Co. geben?",
-      a: "Das hängt von Rechtsgrundlage, Verträgen und – bei Ärztinnen, Anwälten und anderen Berufsgeheimnisträgern – von der Schweigepflicht ab. Pseudonymisierung senkt das Risiko erheblich und ist eine anerkannte Schutzmaßnahme, ersetzt diese Prüfung aber nicht. Im Zweifel fragen Sie Ihre Datenschutzbeauftragte oder Ihren Rechtsbeistand.",
+      a: "Das hängt von Rechtsgrundlage, Verträgen und (bei Ärztinnen, Anwälten und anderen Berufsgeheimnisträgern) von der Schweigepflicht ab. Pseudonymisierung senkt das Risiko erheblich und ist eine anerkannte Schutzmaßnahme, ersetzt diese Prüfung aber nicht. Im Zweifel fragen Sie Ihre Datenschutzbeauftragte oder Ihren Rechtsbeistand.",
     },
   ],
 };

@@ -18,17 +18,17 @@ export const aerztlicheSchweigepflichtUndKi: Guide = {
   routeKey: "/ratgeber/aerztliche-schweigepflicht-und-ki",
   hidden: true,
   byline: "Vom custix-Team · Juristische Prüfung: ausstehend",
-  title: "Ärztliche Schweigepflicht und KI: Was Sie ChatGPT & Co. geben dürfen – und was nicht",
+  title: "Ärztliche Schweigepflicht und KI: Was Sie ChatGPT & Co. geben dürfen und was nicht",
   metaTitle: "Ärztliche Schweigepflicht und KI: Was erlaubt ist | custix",
   description:
     "Ärztliche Schweigepflicht (§ 54 ÄrzteG, § 203 StGB) und Art. 9 DSGVO bei KI-Diensten: was erlaubt ist, welche Ausnahmen gelten und wie Pseudonymisierung hilft. Für Österreich und Deutschland.",
   teaser:
-    "Befund in ChatGPT kopieren, Arztbrief entwerfen lassen: praktisch, aber was sagt die Schweigepflicht dazu? Die Rechtslage in Österreich und Deutschland, die Ausnahmen – und der Weg, der ohne Patientendaten auskommt.",
+    "Befund in ChatGPT kopieren, Arztbrief entwerfen lassen: praktisch, aber was sagt die Schweigepflicht dazu? Die Rechtslage in Österreich und Deutschland, die Ausnahmen und der Weg, der ohne Patientendaten auskommt.",
   published: "2026-09-29",
   updated: "2026-09-29",
   readingMinutes: 9,
   intro: [
-    "KI-Werkzeuge wie ChatGPT, Claude oder Gemini können Arztbriefe entwerfen, Befunde zusammenfassen und Differenzialdiagnosen sortieren. Der Haken: Alles, was Sie eingeben, verlässt Ihre Praxis. Für Patientendaten ist das kein technisches Detail, sondern eine Frage der **ärztlichen Schweigepflicht** – und zusätzlich des Datenschutzrechts.",
+    "KI-Werkzeuge wie ChatGPT, Claude oder Gemini können Arztbriefe entwerfen, Befunde zusammenfassen und Differenzialdiagnosen sortieren. Der Haken: Alles, was Sie eingeben, verlässt Ihre Praxis. Für Patientendaten ist das kein technisches Detail, sondern eine Frage der **ärztlichen Schweigepflicht** und zusätzlich des Datenschutzrechts.",
     "Dieser Ratgeber erklärt, was die Schweigepflicht in Österreich und Deutschland umfasst, welche Ausnahmen es gibt, was Art. 9 DSGVO dazu sagt und wie Sie KI nutzen können, ohne Patientendaten preiszugeben. Er informiert allgemein und ersetzt keine Rechtsberatung im Einzelfall.",
   ],
   sections: [
@@ -53,7 +53,7 @@ export const aerztlicheSchweigepflichtUndKi: Guide = {
       blocks: [
         {
           type: "p",
-          text: "Die Schweigepflicht schützt alles, was Ihnen in Ausübung des Berufs anvertraut oder bekannt wird: Diagnosen, Befunde, Behandlungsverläufe, Lebensumstände – und schon die Tatsache, dass jemand bei Ihnen in Behandlung ist. Sie gilt gegenüber allen Dritten, auch gegenüber Angehörigen, Arbeitgebern, Versicherungen und Dienstleistern, und sie endet nicht mit dem Tod der Patientin.",
+          text: "Die Schweigepflicht schützt alles, was Ihnen in Ausübung des Berufs anvertraut oder bekannt wird: Diagnosen, Befunde, Behandlungsverläufe, Lebensumstände und schon die Tatsache, dass jemand bei Ihnen in Behandlung ist. Sie gilt gegenüber allen Dritten, auch gegenüber Angehörigen, Arbeitgebern, Versicherungen und Dienstleistern, und sie endet nicht mit dem Tod der Patientin.",
         },
         {
           type: "p",
@@ -89,11 +89,11 @@ export const aerztlicheSchweigepflichtUndKi: Guide = {
         },
         {
           type: "p",
-          text: "Seit der Reform 2017 erlaubt § 203 Abs. 3 StGB, Geheimnisse gegenüber „sonstigen mitwirkenden Personen“ zu offenbaren, soweit das für deren Tätigkeit erforderlich ist – gemeint sind etwa IT-Dienstleister, die Praxissoftware warten. Voraussetzung ist, dass die mitwirkende Person zur Geheimhaltung verpflichtet wird (§ 203 Abs. 4 StGB) und die Offenbarung wirklich erforderlich ist.",
+          text: "Seit der Reform 2017 erlaubt § 203 Abs. 3 StGB, Geheimnisse gegenüber „sonstigen mitwirkenden Personen“ zu offenbaren, soweit das für deren Tätigkeit erforderlich ist. Gemeint sind etwa IT-Dienstleister, die Praxissoftware warten. Voraussetzung ist, dass die mitwirkende Person zur Geheimhaltung verpflichtet wird (§ 203 Abs. 4 StGB) und die Offenbarung wirklich erforderlich ist.",
         },
         {
           type: "p",
-          text: "Ob ein KI-Dienst eine solche mitwirkende Person sein kann, ist umstritten. Gegen die Einordnung sprechen vor allem Dienste, die Eingaben speichern, zum Training verwenden oder außerhalb der EU verarbeiten, und die nicht weisungsgebunden für Ihre Praxis tätig sind. Selbst bei Unternehmensverträgen mit Trainingsausschluss bleibt die Frage der Erforderlichkeit: Ein Arztbrief lässt sich auch ohne Übermittlung der Patientendaten entwerfen – siehe unten.",
+          text: "Ob ein KI-Dienst eine solche mitwirkende Person sein kann, ist umstritten. Gegen die Einordnung sprechen vor allem Dienste, die Eingaben speichern, zum Training verwenden oder außerhalb der EU verarbeiten, und die nicht weisungsgebunden für Ihre Praxis tätig sind. Selbst bei Unternehmensverträgen mit Trainingsausschluss bleibt die Frage der Erforderlichkeit: Ein Arztbrief lässt sich auch ohne Übermittlung der Patientendaten entwerfen (siehe unten).",
         },
       ],
     },
@@ -103,11 +103,11 @@ export const aerztlicheSchweigepflichtUndKi: Guide = {
       blocks: [
         {
           type: "p",
-          text: "Schweigepflicht und Datenschutzrecht gelten nebeneinander. Gesundheitsdaten sind **besondere Kategorien personenbezogener Daten** (Art. 9 Abs. 1 DSGVO); ihre Verarbeitung ist grundsätzlich verboten und nur mit einer der Ausnahmen aus Art. 9 Abs. 2 erlaubt. Für die Behandlung ist das in der Regel Art. 9 Abs. 2 lit. h in Verbindung mit Abs. 3 – Verarbeitung durch Personen, die dem Berufsgeheimnis unterliegen. Ein externer KI-Dienst ist keine solche Person.",
+          text: "Schweigepflicht und Datenschutzrecht gelten nebeneinander. Gesundheitsdaten sind **besondere Kategorien personenbezogener Daten** (Art. 9 Abs. 1 DSGVO); ihre Verarbeitung ist grundsätzlich verboten und nur mit einer der Ausnahmen aus Art. 9 Abs. 2 erlaubt. Für die Behandlung ist das in der Regel Art. 9 Abs. 2 lit. h in Verbindung mit Abs. 3: Verarbeitung durch Personen, die dem Berufsgeheimnis unterliegen. Ein externer KI-Dienst ist keine solche Person.",
         },
         {
           type: "p",
-          text: "Wer Patientendaten an einen Dienstleister gibt, braucht außerdem einen Auftragsverarbeitungsvertrag (Art. 28 DSGVO), muss bei Anbietern außerhalb der EU die Regeln für Drittlandübermittlungen einhalten (Art. 44 ff.) und die Betroffenen informieren. Die DSGVO nennt Pseudonymisierung ausdrücklich als Schutzmaßnahme (Art. 25, Art. 32) – sie hebt die Pflichten nicht auf, senkt aber das Risiko und den Prüfaufwand erheblich.",
+          text: "Wer Patientendaten an einen Dienstleister gibt, braucht außerdem einen Auftragsverarbeitungsvertrag (Art. 28 DSGVO), muss bei Anbietern außerhalb der EU die Regeln für Drittlandübermittlungen einhalten (Art. 44 ff.) und die Betroffenen informieren. Die DSGVO nennt Pseudonymisierung ausdrücklich als Schutzmaßnahme (Art. 25, Art. 32). Sie hebt die Pflichten nicht auf, senkt aber das Risiko und den Prüfaufwand erheblich.",
         },
         {
           type: "callout",
@@ -126,7 +126,7 @@ export const aerztlicheSchweigepflichtUndKi: Guide = {
           rows: [
             [
               "Befund oder Arztbrief im Klartext, mit Namen",
-              "Offenbaren gegenüber einem Dritten – ohne Einwilligung oder Ausnahme unzulässig",
+              "Offenbaren gegenüber einem Dritten, ohne Einwilligung oder Ausnahme unzulässig",
               "Verarbeitung von Gesundheitsdaten durch einen Dritten; Vertrag, Rechtsgrundlage und Drittlandprüfung nötig",
             ],
             [
@@ -136,7 +136,7 @@ export const aerztlicheSchweigepflichtUndKi: Guide = {
             ],
             [
               "Pseudonymisierter Text: Namen, Daten, Nummern, Adressen und Behandler durch Platzhalter ersetzt, Zuordnung bleibt in der Praxis",
-              "Kein Geheimnis wird offenbart, solange der Empfänger die Person nicht erkennen kann – seltene Merkmale prüfen",
+              "Kein Geheimnis wird offenbart, solange der Empfänger die Person nicht erkennen kann; seltene Merkmale prüfen",
               "Deutlich geringeres Risiko; ob für den Anbieter noch ein Personenbezug besteht, hängt vom Einzelfall ab (EuGH C‑413/23 P)",
             ],
             [
@@ -148,7 +148,7 @@ export const aerztlicheSchweigepflichtUndKi: Guide = {
         },
         {
           type: "p",
-          text: "Die Zeile, die im Alltag zählt, ist die dritte: Der Arztbrief lässt sich aus einem Befund entwerfen, in dem statt „Maria Huber, geb. 12.03.1968“ nur „[PERSON_1], geb. [DATUM_1]“ steht. Der medizinische Inhalt bleibt, das Geheimnis – wer die Person ist – bleibt bei Ihnen. Wie das konkret geht, zeigt der Ratgeber [Arztbrief schreiben mit KI](/ratgeber/arztbrief-schreiben-mit-ki).",
+          text: "Die Zeile, die im Alltag zählt, ist die dritte: Der Arztbrief lässt sich aus einem Befund entwerfen, in dem statt „Maria Huber, geb. 12.03.1968“ nur „[PERSON_1], geb. [DATUM_1]“ steht. Der medizinische Inhalt bleibt, das Geheimnis (wer die Person ist) bleibt bei Ihnen. Wie das konkret geht, zeigt der Ratgeber [Arztbrief schreiben mit KI](/ratgeber/arztbrief-schreiben-mit-ki).",
         },
         {
           type: "p",
@@ -166,17 +166,17 @@ export const aerztlicheSchweigepflichtUndKi: Guide = {
             "**Keine Klartext-Patientendaten in KI-Dienste.** Weder in kostenlose Chatdienste noch in Unternehmensversionen, solange nicht Einwilligung oder eine geprüfte Rechtsgrundlage vorliegen.",
             "**Vor der Eingabe pseudonymisieren.** Namen, Geburtsdaten, Versicherungs- und Aktennummern, Adressen, Behandler und Einrichtungen durch Platzhalter ersetzen; die Zuordnung bleibt in der Praxis.",
             "**Prüfen, was übrig bleibt.** Seltene Diagnosen, genaue Daten, kleine Orte: im Zweifel vergröbern oder weglassen.",
-            "**Anbieter bewusst wählen.** Keine Nutzung der Eingaben zum Training, Vertrag zur Auftragsverarbeitung, Speicherort in der EU wo möglich – auch für pseudonymisierte Texte eine gute Praxis.",
+            "**Anbieter bewusst wählen.** Keine Nutzung der Eingaben zum Training, Vertrag zur Auftragsverarbeitung, Speicherort in der EU, wo möglich. Auch für pseudonymisierte Texte eine gute Praxis.",
             "**Team einweisen.** Die Schweigepflicht gilt für alle in der Praxis; eine kurze schriftliche Regel, welche Werkzeuge wie genutzt werden dürfen, verhindert Zufallsentscheidungen.",
-            "**Dokumentieren.** Welche Werkzeuge im Einsatz sind, was hineingeht und warum – das ist im Fall einer Anfrage der Kammer oder der Datenschutzbehörde Gold wert.",
-            "**Im Zweifel fragen.** Ärztekammer, Datenschutzbeauftragte oder Rechtsbeistand – bevor der erste Befund den Rechner verlässt, nicht danach.",
+            "**Dokumentieren.** Welche Werkzeuge im Einsatz sind, was hineingeht und warum: Das ist im Fall einer Anfrage der Kammer oder der Datenschutzbehörde Gold wert.",
+            "**Im Zweifel fragen.** Ärztekammer, Datenschutzbeauftragte oder Rechtsbeistand, und zwar bevor der erste Befund den Rechner verlässt, nicht danach.",
           ],
         },
       ],
     },
     {
       id: "custix",
-      heading: "Was custix dabei leistet – und was nicht",
+      heading: "Was custix dabei leistet und was nicht",
       blocks: [
         {
           type: "p",
@@ -192,7 +192,7 @@ export const aerztlicheSchweigepflichtUndKi: Guide = {
   faq: [
     {
       q: "Darf ich ChatGPT für Arztbriefe nutzen?",
-      a: "Ja, wenn keine Patientendaten übermittelt werden: Entweder Sie geben nur allgemeine Fragen ein, oder Sie pseudonymisieren den Befund vorher, sodass Namen, Daten, Nummern und Adressen durch Platzhalter ersetzt sind. Mit Klartext-Patientendaten brauchen Sie eine Einwilligung oder eine geprüfte Rechtsgrundlage – für den Alltag ist das selten praktikabel. Anleitung: Arztbrief schreiben mit KI.",
+      a: "Ja, wenn keine Patientendaten übermittelt werden: Entweder Sie geben nur allgemeine Fragen ein, oder Sie pseudonymisieren den Befund vorher, sodass Namen, Daten, Nummern und Adressen durch Platzhalter ersetzt sind. Mit Klartext-Patientendaten brauchen Sie eine Einwilligung oder eine geprüfte Rechtsgrundlage. Für den Alltag ist das selten praktikabel. Anleitung: Arztbrief schreiben mit KI.",
     },
     {
       q: "Gilt die Schweigepflicht auch gegenüber einem KI-Anbieter mit Auftragsverarbeitungsvertrag?",

@@ -179,7 +179,7 @@ def build_pdf(variant, path):
                     story.append(Spacer(1, 8 * mm))
     SimpleDocTemplate(
         str(path), pagesize=A4, leftMargin=22 * mm, rightMargin=22 * mm, topMargin=20 * mm, bottomMargin=20 * mm,
-        title=letter["title"], author="custix.ai", subject="Beispieldaten – erfunden",
+        title=letter["title"], author="custix.ai", subject="Erfundene Beispieldaten",
     ).build(story)
 
 

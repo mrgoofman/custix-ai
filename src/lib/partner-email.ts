@@ -33,7 +33,7 @@ export function renderPartnerSignupNotice(input: PartnerSignupNoticeInput): {
 <p style="margin:0 0 16px;font-size:16px;color:#1e293b;">Guten Tag,</p>
 <p style="margin:0 0 16px;font-size:16px;color:#475569;">über das custix-Formular auf Ihrer Seite hat sich soeben eine Person registriert. Für sie läuft jetzt die 14-tägige Testphase.</p>
 <p style="margin:0 0 24px;font-size:16px;color:#475569;">Registrierungen über Ihre Seite bisher: <strong style="color:#1e293b;">${total}</strong></p>
-<p style="margin:0 0 24px;font-size:13px;color:#94a3b8;">Name, Kanzlei und E-Mail-Adresse geben wir nicht weiter – so steht es im Formular. Fragen gern an info@custix.ai.</p>
+<p style="margin:0 0 24px;font-size:13px;color:#94a3b8;">Name, Kanzlei und E-Mail-Adresse geben wir nicht weiter. So steht es im Formular. Fragen gern an info@custix.ai.</p>
 <p style="margin:0;font-size:16px;color:#1e293b;">Mit freundlichen Grüßen,<br>Das custix.ai Team</p>
 </td></tr></table></td></tr></table></body></html>`.trim();
   return { subject, html };

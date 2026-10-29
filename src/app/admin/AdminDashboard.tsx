@@ -96,7 +96,7 @@ export function AdminDashboard({
     setMsg(null);
     try {
       const r = await callAction(payload);
-      setMsg(r.ok || r.success ? `✓ ${payload.action} done${r.key ? ` — key: ${r.key}` : ""}` : `✕ ${r.error ?? r.message_key ?? "failed"}`);
+      setMsg(r.ok || r.success ? `✓ ${payload.action} done${r.key ? `, key: ${r.key}` : ""}` : `✕ ${r.error ?? r.message_key ?? "failed"}`);
       if (r.ok || r.success) setTimeout(() => window.location.reload(), 900);
     } catch (e) {
       setMsg(`✕ ${String(e)}`);
@@ -188,7 +188,7 @@ export function AdminDashboard({
               onChange={(e) => setSendProfession(e.target.value)}
               className="rounded border border-slate-300 px-3 py-2 text-sm bg-white"
             >
-              <option value="">— wählen —</option>
+              <option value="">Bitte wählen</option>
               <option value="lawyer">Anwalt / Anwältin</option>
               <option value="taxAdvisor">Steuerberater:in</option>
               <option value="hr">HR / Personal</option>
