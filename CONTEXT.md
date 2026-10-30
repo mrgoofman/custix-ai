@@ -206,6 +206,15 @@ GDPR, and honest label wording ("documents never leave your device" is true for 
 the analytics counts). See ADR-0009.
 _Avoid_: tracking, GA (it is first-party, content-free)
 
+**Feedback**:
+What a signed-in user sends from the app (web or desktop): a description („Was ist das Problem
+oder die Idee?“), optionally a screenshot of custix' own UI that the app has already redacted
+(file names, document content, automatic Akte names, the user's email), and the context
+(platform, screen/step, window size, app version). Older desktop versions still send a 1–5 star
+rating instead. Screenshots are personal data: private storage, visible only to the sender and
+Admins, deleted after 90 days and on Anonymize (person). See ADR-0014.
+_Avoid_: rating, review, bug report (it covers ideas too)
+
 ### Billing
 
 **Subscription**:

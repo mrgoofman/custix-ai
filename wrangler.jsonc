@@ -1,6 +1,8 @@
 {
   "name": "custix-ai",
-  "main": ".open-next/worker.js",
+  // custom-worker.ts reicht den OpenNext-Handler (.open-next/worker.js) durch
+  // und ergänzt `scheduled` für die Cron Trigger unten (ADR-0014).
+  "main": "./custom-worker.ts",
   "assets": {
     "directory": ".open-next/assets",
     "binding": "ASSETS"
@@ -56,6 +58,19 @@
     {
       "binding": "MODELS",
       "bucket_name": "custix-models"
+    },
+    // Feedback-Screenshots (mrgoofman/custix-ai#16, ADR-0014). Privat: kein
+    // öffentlicher Zugang, keine r2.dev-URL; ausgeliefert nur über
+    // /api/feedback/screenshot/<id> an Eigentümer und Admins.
+    // Anlegen (einmalig): `npx wrangler r2 bucket create custix-feedback`.
+    {
+      "binding": "FEEDBACK",
+      "bucket_name": "custix-feedback"
     }
-  ]
+  ],
+  // Täglich 03:17 UTC: Feedback-Screenshots älter als 90 Tage löschen
+  // (scheduled-Handler in custom-worker.ts, ADR-0014).
+  "triggers": {
+    "crons": ["17 3 * * *"]
+  }
 }

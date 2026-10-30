@@ -56,9 +56,13 @@ interface PartnerFunnelRow {
 interface FeedbackRow {
   id: string;
   user_email: string | null;
-  rating: number;
-  comment: string | null;
+  /** Nur ältere Desktop-Versionen senden Sterne (ADR-0014). */
+  rating: number | null;
+  description: string | null;
+  has_screenshot: number;
+  context_json: string | null;
   app_version: string | null;
+  anonymized_at: number | null;
   created_at: number;
 }
 
@@ -151,8 +155,10 @@ export default async function AdminPage() {
   const feedback = (
     await db
       .prepare(
-        `SELECT id, user_email, rating, comment, app_version, created_at
-           FROM feedback ORDER BY created_at DESC LIMIT 200`
+        `SELECT id, user_email, rating, description,
+                screenshot_key IS NOT NULL AS has_screenshot,
+                context_json, app_version, anonymized_at, created_at
+           FROM feedback ORDER BY created_at DESC, rowid DESC LIMIT 200`
       )
       .all<FeedbackRow>()
   ).results;

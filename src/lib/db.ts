@@ -1,5 +1,5 @@
 import { getCloudflareContext } from "@opennextjs/cloudflare";
-import type { D1Database } from "@cloudflare/workers-types";
+import type { D1Database, R2Bucket } from "@cloudflare/workers-types";
 
 /**
  * The D1 database binding. On Workers the binding only exists inside a request,
@@ -15,6 +15,15 @@ export function getDb(): D1Database {
     );
   }
   return db;
+}
+
+/**
+ * Privater R2-Bucket `custix-feedback` für Feedback-Screenshots (ADR-0014).
+ * Wie DB nur innerhalb eines Requests verfügbar. `undefined`, wenn das Binding
+ * fehlt (`next dev`); wer ein Bild schreiben oder löschen muss, bricht dann ab.
+ */
+export function getFeedbackBucket(): R2Bucket | undefined {
+  return getCloudflareContext().env.FEEDBACK;
 }
 
 /** Current time as epoch seconds — the unit all timestamps use (see migrations). */
