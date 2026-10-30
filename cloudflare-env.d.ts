@@ -1,10 +1,12 @@
 // Augments the CloudflareEnv used by @opennextjs/cloudflare's getCloudflareContext()
 // with this project's bindings and vars. Keep in sync with wrangler.jsonc.
-import type { D1Database, RateLimit } from "@cloudflare/workers-types";
+import type { D1Database, R2Bucket, RateLimit } from "@cloudflare/workers-types";
 
 declare global {
   interface CloudflareEnv {
     DB: D1Database;
+    /** Privater Bucket `custix-feedback`: Feedback-Screenshots (ADR-0014). */
+    FEEDBACK?: R2Bucket;
     BETTER_AUTH_SECRET?: string;
     BETTER_AUTH_URL?: string;
     NEXT_PUBLIC_BASE_URL?: string;

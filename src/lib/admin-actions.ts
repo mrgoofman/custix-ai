@@ -1,6 +1,7 @@
 import { Resend } from "resend";
 import { renderKeyEmail, KEY_EMAIL_FROM, type KeyEmailInput } from "@/lib/key-email";
-import { getDb, nowEpoch } from "@/lib/db";
+import { getDb, getFeedbackBucket, nowEpoch } from "@/lib/db";
+import { anonymizeFeedbackOf } from "@/lib/feedback";
 import { generateLicenseKey, newId } from "@/lib/license-key";
 import { GRACE } from "@/lib/license-policy";
 
@@ -372,16 +373,36 @@ export async function resetClaim(adminUserId: string, licenseId: string, reason?
   return { ok: true };
 }
 
-/** GDPR erasure (ADR-0008): anonymize PII in place; License/billing retained. Irreversible. */
+/**
+ * GDPR erasure (ADR-0008): anonymize PII in place; License/billing retained. Irreversible.
+ * Feedback (ADR-0014): the person's screenshots are deleted from R2 and their
+ * feedback rows unlinked (account, email, free text) BEFORE the person row loses
+ * the email we match them by. Fails without touching the person if the bucket is
+ * missing while screenshots exist, so a retry can finish the job.
+ */
 export async function anonymizePerson(adminUserId: string, personId: string) {
   const db = getDb();
+  const subject = await db
+    .prepare("SELECT email, user_id FROM person WHERE id = ?")
+    .bind(personId)
+    .first<{ email: string | null; user_id: string | null }>();
+  const feedback = await anonymizeFeedbackOf(
+    db,
+    getFeedbackBucket(),
+    { userId: subject?.user_id ?? null, email: subject?.email ?? null },
+    nowEpoch(),
+  );
   await db
     .prepare(
       "UPDATE person SET email = NULL, name = NULL, profession = NULL, anonymized_at = ?, updated_at = ? WHERE id = ?"
     )
     .bind(nowEpoch(), nowEpoch(), personId)
     .run();
-  await audit(adminUserId, "person_anonymized", { personId });
+  // Counts only, no PII in the audit detail.
+  await audit(adminUserId, "person_anonymized", {
+    personId,
+    detail: { feedback_rows: feedback.rows, feedback_screenshots: feedback.screenshots },
+  });
   return { ok: true };
 }
 

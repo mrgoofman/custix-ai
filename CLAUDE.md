@@ -66,6 +66,13 @@ Bindings (`wrangler.jsonc` → `d1_databases`):
 - `PARTNER_SIGNUP_LIMITER` (`ratelimits`) - per-IP limit on `/api/partner/signup`
 - `SIGNUP_IP_LIMITER`, `SIGNUP_EMAIL_LIMITER` (`ratelimits`) - per IP / per address on
   `/api/signup/start` (confirmation mails, ADR-0013)
+- `FEEDBACK` (`r2_buckets`, bucket `custix-feedback`) - private feedback screenshots (ADR-0014);
+  create once with `npx wrangler r2 bucket create custix-feedback`
+
+Worker entry is `custom-worker.ts` (`main`), not `.open-next/worker.js`: it passes OpenNext's
+`fetch` through and adds `scheduled` for `triggers.crons` (daily: delete feedback screenshots
+older than 90 days, ADR-0014). Test the cron locally with `wrangler dev --test-scheduled` and
+`curl "http://localhost:8787/__scheduled?cron=17+3+*+*+*"`.
 
 ## Database (Cloudflare D1)
 
@@ -77,6 +84,8 @@ Migrations in `migrations/`. Schema designed in `docs/schema/d1-licensing-schema
 - `admin_role` — who can use the admin panel
 - `admin_event` — audit trail of admin actions
 - `license_event` — funnel/telemetry (replaces old `download_events`)
+- `feedback` — in-app feedback (description, optional screenshot in R2 `FEEDBACK`, context;
+  legacy star `rating`), rebuilt in migration 0006 (ADR-0014)
 
 See `docs/SETUP-PHASE1.md` for D1 create / migrate / secret steps (cloud resources you set up).
 
@@ -112,6 +121,12 @@ See `docs/SETUP-PHASE1.md` for D1 create / migrate / secret steps (cloud resourc
   `custix.ai/finditoo/` from `public/finditoo/`, demo form that creates no account).
   Admin shows a partner funnel.
 - Admin panel (`/admin`) — approve→mint+email key, revoke, reset claim, anonymize
+  (also deletes the person's feedback screenshots and unlinks their feedback, ADR-0014),
+  feedback with screenshot thumbnails
+- Feedback v2 (issue #16, ADR-0014, app side znerol74/custix#65): `POST /api/feedback`
+  (JSON or multipart; description, PNG/WebP ≤ 2 MB, context; legacy desktop `rating`+`comment`
+  still accepted), `GET /api/feedback/mine`, `GET /api/feedback/screenshot/<id>` (owner or
+  admin only, `no-store`). Screenshots deleted after 90 days by the cron.
 - License validate (`/api/license/validate`) + claim (`/api/license/claim`) — desktop app contract
 - Web app behind trial + subscription (ADR-0012, replaces ADR-0010's free phase): the web app
   asks `/api/license/mine` with its session (no key; response contract in ADR-0012). validate

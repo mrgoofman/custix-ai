@@ -1,13 +1,28 @@
 import { NextResponse } from "next/server";
-import { getDb, nowEpoch } from "@/lib/db";
-import { newId } from "@/lib/license-key";
+import { getDb, getFeedbackBucket, nowEpoch } from "@/lib/db";
 import { getSessionUser } from "@/lib/auth";
+import { FeedbackInputError, insertFeedback, parseFeedbackRequest } from "@/lib/feedback";
 
 /**
- * In-app feedback intake (called from the desktop app). Authenticated via the
- * Better Auth session cookie the app already holds — the user's email is taken
- * from the session, NOT trusted from the body. Stores a 1-5 rating + optional
- * comment + app version; shown in the admin panel.
+ * Feedback aus der App (Web und Desktop), Vertrag mit znerol74/custix#65,
+ * Speicherung und Löschung: ADR-0014.
+ *
+ * Angemeldet über die Better-Auth-Sitzung (Cookie), wie bisher: Konto und
+ * E-Mail kommen aus der Sitzung, nie aus dem Body.
+ *
+ * Body (JSON oder multipart/form-data):
+ *   description  Text ≤ 4000 Zeichen (länger wird gekürzt)
+ *   screenshot?  PNG oder WebP ≤ 2 MB: Base64 (auch Data-URL) oder Datei-Teil
+ *   context?     { platform: "web"|"desktop-mac"|"desktop-win", screen,
+ *                  viewport: { w, h }, appVersion }; im Multipart als JSON-Text
+ *   rating?      1..5, nur ältere Desktop-Versionen; dann darf `description`
+ *                fehlen. Alte Clients senden `comment` statt `description` und
+ *                `appVersion` auf oberster Ebene, beides wird angenommen.
+ *
+ * Antwort 200: { ok: true, id, has_screenshot }
+ * Fehler: 401 unauthorized · 400 description_required | rating_invalid |
+ * invalid_body | screenshot_invalid_base64 · 413 payload_too_large |
+ * screenshot_too_large · 415 screenshot_unsupported_type · 429 too_many_requests
  */
 export async function POST(request: Request) {
   try {
@@ -16,30 +31,19 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "unauthorized" }, { status: 401 });
     }
 
-    const body = (await request.json()) as {
-      rating?: number;
-      comment?: string;
-      appVersion?: string;
-    };
-
-    const rating = Number(body.rating);
-    if (!Number.isInteger(rating) || rating < 1 || rating > 5) {
-      return NextResponse.json({ error: "rating must be 1-5" }, { status: 400 });
-    }
-    // Trim + cap the free text so a runaway client can't write huge rows.
-    const comment = (body.comment ?? "").trim().slice(0, 4000) || null;
-    const appVersion = (body.appVersion ?? "").trim().slice(0, 32) || null;
-
-    const db = getDb();
-    await db
-      .prepare(
-        "INSERT INTO feedback (id, user_email, rating, comment, app_version, created_at) VALUES (?, ?, ?, ?, ?, ?)"
-      )
-      .bind(newId(), user.email, rating, comment, appVersion, nowEpoch())
-      .run();
-
-    return NextResponse.json({ ok: true });
+    const submission = await parseFeedbackRequest(request);
+    const saved = await insertFeedback(
+      getDb(),
+      getFeedbackBucket(),
+      { id: user.id, email: user.email },
+      submission,
+      nowEpoch(),
+    );
+    return NextResponse.json({ ok: true, ...saved });
   } catch (error) {
+    if (error instanceof FeedbackInputError) {
+      return NextResponse.json({ error: error.code }, { status: error.status });
+    }
     console.error("feedback error:", error);
     return NextResponse.json({ error: "internal server error" }, { status: 500 });
   }

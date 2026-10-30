@@ -42,10 +42,42 @@ interface PartnerFunnelRow {
 interface FeedbackRow {
   id: string;
   user_email: string | null;
-  rating: number;
-  comment: string | null;
+  rating: number | null;
+  description: string | null;
+  has_screenshot: number;
+  context_json: string | null;
   app_version: string | null;
+  anonymized_at: number | null;
   created_at: number;
+}
+
+const PLATFORM_LABEL: Record<string, string> = {
+  web: "Web",
+  "desktop-mac": "Desktop macOS",
+  "desktop-win": "Desktop Windows",
+};
+
+/** Plattform · Bildschirm · Fenstergröße aus context_json (ADR-0014). */
+function contextLine(json: string | null): string | null {
+  if (!json) return null;
+  try {
+    const c = JSON.parse(json) as {
+      platform?: string | null;
+      screen?: string | null;
+      viewport?: { w: number; h: number } | null;
+    };
+    return (
+      [
+        c.platform ? (PLATFORM_LABEL[c.platform] ?? c.platform) : null,
+        c.screen,
+        c.viewport ? `${c.viewport.w}×${c.viewport.h}` : null,
+      ]
+        .filter(Boolean)
+        .join(" · ") || null
+    );
+  } catch {
+    return null;
+  }
 }
 
 async function callAction(payload: Record<string, unknown>) {
@@ -208,7 +240,11 @@ export function AdminDashboard({
       </section>
 
       <section className="mb-12">
-        <h2 className="text-lg font-semibold mb-3">Feedback ({feedback.length})</h2>
+        <h2 className="text-lg font-semibold mb-1">Feedback ({feedback.length})</h2>
+        <p className="text-xs text-slate-500 mb-3">
+          Screenshots sind in der App geschwärzt und werden nach 90 Tagen gelöscht (ADR-0014).
+          Ein Klick auf das Vorschaubild öffnet es in voller Größe.
+        </p>
         {feedback.length === 0 ? (
           <p className="text-sm text-slate-400">Noch kein Feedback eingegangen.</p>
         ) : (
@@ -216,24 +252,55 @@ export function AdminDashboard({
             <table className="w-full text-sm">
               <thead className="bg-slate-50 text-left text-slate-500">
                 <tr>
-                  <th className="px-3 py-2">Datum</th><th className="px-3 py-2">Bewertung</th>
-                  <th className="px-3 py-2">Kommentar</th><th className="px-3 py-2">Nutzer</th>
-                  <th className="px-3 py-2">Version</th>
+                  <th className="px-3 py-2">Datum</th><th className="px-3 py-2">Beschreibung</th>
+                  <th className="px-3 py-2">Screenshot</th><th className="px-3 py-2">Kontext</th>
+                  <th className="px-3 py-2">Nutzer</th><th className="px-3 py-2">Version</th>
                 </tr>
               </thead>
               <tbody>
-                {feedback.map((f) => (
-                  <tr key={f.id} className="border-t border-slate-100 align-top">
-                    <td className="px-3 py-2 whitespace-nowrap">{fmt(f.created_at)}</td>
-                    <td className="px-3 py-2 whitespace-nowrap" title={`${f.rating}/5`}>
-                      <span className="text-amber-500">{"★".repeat(f.rating)}</span>
-                      <span className="text-slate-300">{"★".repeat(5 - f.rating)}</span>
-                    </td>
-                    <td className="px-3 py-2 max-w-md whitespace-pre-wrap">{f.comment ?? <em className="text-slate-400">—</em>}</td>
-                    <td className="px-3 py-2 whitespace-nowrap">{f.user_email ?? "—"}</td>
-                    <td className="px-3 py-2 whitespace-nowrap text-slate-500">{f.app_version ?? "—"}</td>
-                  </tr>
-                ))}
+                {feedback.map((f) => {
+                  const shot = `/api/feedback/screenshot/${encodeURIComponent(f.id)}`;
+                  return (
+                    <tr key={f.id} className="border-t border-slate-100 align-top">
+                      <td className="px-3 py-2 whitespace-nowrap">{fmt(f.created_at)}</td>
+                      <td className="px-3 py-2 max-w-md whitespace-pre-wrap">
+                        {f.rating != null && (
+                          <div title={`${f.rating}/5`}>
+                            <span className="text-amber-500">{"★".repeat(f.rating)}</span>
+                            <span className="text-slate-300">{"★".repeat(5 - f.rating)}</span>
+                          </div>
+                        )}
+                        {f.description ?? (
+                          <em className="text-slate-400">
+                            {f.anonymized_at ? "anonymisiert" : "ohne Text"}
+                          </em>
+                        )}
+                      </td>
+                      <td className="px-3 py-2">
+                        {f.has_screenshot ? (
+                          <a href={shot} target="_blank" rel="noopener noreferrer" title="In voller Größe öffnen">
+                            {/* eslint-disable-next-line @next/next/no-img-element -- privates Bild hinter Login, kein next/image */}
+                            <img
+                              src={shot}
+                              alt="Screenshot zum Feedback"
+                              loading="lazy"
+                              className="h-20 w-32 rounded border border-slate-200 object-cover object-top"
+                            />
+                          </a>
+                        ) : (
+                          <span className="text-slate-400">—</span>
+                        )}
+                      </td>
+                      <td className="px-3 py-2 text-xs text-slate-500">{contextLine(f.context_json) ?? "—"}</td>
+                      <td className="px-3 py-2 whitespace-nowrap">
+                        {f.user_email ?? (
+                          <span className="text-slate-400">{f.anonymized_at ? "anonymisiert" : "—"}</span>
+                        )}
+                      </td>
+                      <td className="px-3 py-2 whitespace-nowrap text-slate-500">{f.app_version ?? "—"}</td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </div>
